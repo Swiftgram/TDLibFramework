@@ -73,50 +73,19 @@ jobs:
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM
-
-      - name: Upload Artifacts
+    
+      - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v2
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
 
-  build-tdlib-iOS-simulator:
-    runs-on: macos-latest
-    needs: [build-openssl-iOS]
-    env:
-      PLATFORM: iOS-simulator
-      PARENT_PLATFORM: iOS
-    steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: openssl-${{ env.PARENT_PLATFORM }}
-          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
-
-      - name: Patch Build script
-        run: |
-          cd td
-          git apply ../tdlib-patches/build.patch
-
-      - name: Build TDLib
-        run: |
-          cd td/example/ios
-          ./build.sh $PLATFORM
-
-      - name: Upload Artifacts
+      - name: Upload ${{ env.PLATFORM }}-simulator install artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: tdlib-install-${{ env.PLATFORM }}
-          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          name: tdlib-install-${{ env.PLATFORM }}-simulator
+          path: td/example/ios/build/install-${{ env.PLATFORM }}-simulator
           if-no-files-found: error
 
   build-framework-iOS:
@@ -136,7 +105,7 @@ jobs:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
-      - name: Download TDLib install
+      - name: Download TDLib ${{ env.PLATFORM }} install
         uses: actions/download-artifact@v2
         with:
           name: tdlib-install-${{ env.PLATFORM }}
@@ -157,7 +126,7 @@ jobs:
 
   build-framework-iOS-simulator:
     runs-on: macos-latest
-    needs: [build-tdlib-iOS-simulator]
+    needs: [build-tdlib-iOS]
     env:
       PLATFORM: iOS-simulator
       PARENT_PLATFORM: iOS
@@ -173,7 +142,7 @@ jobs:
           name: openssl-${{ env.PARENT_PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
 
-      - name: Download TDLib install
+      - name: Download TDLib ${{ env.PLATFORM }} install
         uses: actions/download-artifact@v2
         with:
           name: tdlib-install-${{ env.PLATFORM }}
