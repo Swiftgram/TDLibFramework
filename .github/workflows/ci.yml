@@ -1,0 +1,264 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # iOS
+  build-openssl-iOS:
+    runs-on: macos-latest
+    env:
+        PLATFORM: iOS
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+            submodules: recursive
+      - name: Patch Build script
+        run: |
+            cd td 
+            git apply ../tdlib-patches/build-openssl.patch
+      - name: Build Openssl
+        run: |
+            cd td/example/ios
+            ./build-openssl.sh $PLATFORM
+      - name: Export libs
+        run: ls -R td/example/ios/third_party
+  
+  build-tdlib-iOS:
+    runs-on: macos-latest
+    needs: [build-openssl-iOS]
+    env:
+      PLATFORM: iOS
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+            submodules: recursive
+      - name: Patch Build script
+        run: |
+            cd td
+            git apply ../tdlib-patches/build.patch
+  
+  build-tdlib-iOS-simulator:
+    runs-on: macos-latest
+    needs: [build-openssl-iOS]
+    env:
+      PLATFORM: iOS-simulator
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+            submodules: recursive
+      - name: Replace Build scripts
+        run: |
+          cd td
+          git apply ../tdlib-patches/build.patch
+
+  build-framework-iOS:
+    runs-on: macos-latest
+    needs: [build-tdlib-iOS]
+    env:
+      PLATFORM: iOS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # - name: Download Openssl & TDLib
+      - name: Generate project
+        run: .tuist-bin/tuist generate
+      - name: Build .framework
+        run: ./build.sh $PLATFORM
+      
+  build-framework-iOS-simulator:
+    runs-on: macos-latest
+    needs: [build-tdlib-iOS-simulator]
+    env:
+      PLATFORM: iOS-simulator
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # - name: Download Openssl & TDLib
+      - name: Generate project
+        run: .tuist-bin/tuist generate
+      - name: Build .framework
+        run: ./build.sh $PLATFORM
+      
+  
+  # # macOS
+  # build-openssl-macOS:
+  #   runs-on: macos-latest
+  #   env:
+  #       PLATFORM: macOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+  
+  # build-tdlib-macOS:
+  #   runs-on: macos-latest
+  #   needs: [build-openssl-macOS]
+  #   env:
+  #     PLATFORM: macOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+
+  # build-framework-macOS:
+  #   runs-on: macos-latest
+  #   needs: [build-tdlib-macOS]
+  #   env:
+  #     PLATFORM: macOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+  
+      
+  # # watchOS
+  # build-openssl-watchOS:
+  #   runs-on: macos-latest
+  #   env:
+  #       PLATFORM: watchOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+  
+  # build-tdlib-watchOS:
+  #   runs-on: macos-latest
+  #   needs: [build-openssl-watchOS]
+  #   env:
+  #     PLATFORM: watchOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+  
+  # build-tdlib-watchOS-simulator:
+  #   runs-on: macos-latest
+  #   needs: [build-openssl-watchOS]
+  #   env:
+  #     PLATFORM: watchOS-simulator
+  #   steps:
+  #     - uses: actions/checkout@v2
+
+  # build-framework-watchOS:
+  #   runs-on: macos-latest
+  #   needs: [build-tdlib-watchOS]
+  #   env:
+  #     PLATFORM: watchOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+      
+  # build-framework-watchOS-simulator:
+  #   runs-on: macos-latest
+  #   needs: [build-tdlib-watchOS-simulator]
+  #   env:
+  #     PLATFORM: watchOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+  
+  
+  # # tvOS
+  # build-openssl-tvOS:
+  #   runs-on: macos-latest
+  #   env:
+  #       PLATFORM: tvOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+  
+  # build-tdlib-tvOS:
+  #   runs-on: macos-latest
+  #   needs: [build-openssl-tvOS]
+  #   env:
+  #     PLATFORM: tvOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+  
+  # build-tdlib-tvOS-simulator:
+  #   runs-on: macos-latest
+  #   needs: [build-openssl-tvOS]
+  #   env:
+  #     PLATFORM: tvOS-simulator
+  #   steps:
+  #     - uses: actions/checkout@v2
+
+  # build-framework-tvOS:
+  #   runs-on: macos-latest
+  #   needs: [build-tdlib-tvOS]
+  #   env:
+  #     PLATFORM: tvOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+      
+  # build-framework-tvOS-simulator:
+  #   runs-on: macos-latest
+  #   needs: [build-tdlib-tvOS-simulator]
+  #   env:
+  #     PLATFORM: tvOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+  
+  
+  # Merge frameworks
+  merge-xcframework:
+    runs-on: macos-latest
+    needs: 
+      - build-framework-iOS
+      - build-framework-iOS-simulator
+      # - build-framework-macOS
+      # - build-framework-watchOS
+      # - build-framework-watchOS-simulator
+      # - build-framework-tvOS
+      # - build-framework-tvOS-simulator
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+  # Tests
+  # test-iOS:
+  #   runs-on: macos-latest
+  #   needs: 
+  #     - merge-xcframework
+  #   steps:
+  #     - uses: actions/checkout@v2
+      
+  # test-macOS:
+  #   runs-on: macos-latest
+  #   needs: 
+  #     - merge-xcframework
+  #   steps:
+  #     - uses: actions/checkout@v2
+    
+  # test-watchOS:
+  #   runs-on: macos-latest
+  #   needs: 
+  #     - merge-xcframework
+  #   steps:
+  #     - uses: actions/checkout@v2
+      
+  # test-tvOS:
+  #   runs-on: macos-latest
+  #   needs: 
+  #     - merge-xcframework
+  #   steps:
+  #     - uses: actions/checkout@v2
+  
+  # Publish
+  # publish:
+  #   runs-on: macos-latest
+  #   needs:
+  #     - merge-xcframework
+  #     - test-iOS
+  #     - test-macOS
+  #     - test-watchOS
+  #     - test-tvOS
+  #   steps:
+  #     - uses: actions/checkout@v2
+      

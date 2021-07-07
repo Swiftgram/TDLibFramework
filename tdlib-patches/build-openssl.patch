@@ -1,0 +1,14 @@
+diff --git a/example/ios/build-openssl.sh b/example/ios/build-openssl.sh
+index 3477530d..366eb1a8 100755
+--- a/example/ios/build-openssl.sh
++++ b/example/ios/build-openssl.sh
+@@ -7,7 +7,7 @@ git apply ../Python-Apple-support.patch
+ cd ..
+ 
+ #TODO: change openssl version
+-platforms="macOS iOS watchOS tvOS"
++platforms="$1"
+ #platforms="watchOS"
+ for platform in $platforms;
+ do
+

@@ -1,0 +1,13 @@
+diff --git a/example/ios/build.sh b/example/ios/build.sh
+index 34bfe58e..36c58c5d 100755
+--- a/example/ios/build.sh
++++ b/example/ios/build.sh
+@@ -5,7 +5,7 @@ rm -rf build
+ mkdir -p build
+ cd build
+ 
+-platforms="macOS iOS watchOS tvOS"
++platforms="$1"
+ #platforms="watchOS"
+ for platform in $platforms;
+ do
