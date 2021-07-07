@@ -15,7 +15,7 @@ on:
 jobs:
   # iOS
   build-openssl-iOS:
-    runs-on: macos-latest
+    runs-on: self-hosted
     env:
       PLATFORM: iOS
     steps:
@@ -44,7 +44,7 @@ jobs:
           path: td/example/ios/third_party/openssl/$PLATFORM
 
   build-tdlib-iOS:
-    runs-on: macos-latest
+    runs-on: self-hosted
     needs: [build-openssl-iOS]
     env:
       PLATFORM: iOS
@@ -80,7 +80,7 @@ jobs:
           path: td/example/ios/build/install-$PLATFORM
 
   build-tdlib-iOS-simulator:
-    runs-on: macos-latest
+    runs-on: self-hosted
     needs: [build-openssl-iOS]
     env:
       PLATFORM: iOS-simulator
@@ -116,7 +116,7 @@ jobs:
           path: td/example/ios/build/install-$PLATFORM
 
   build-framework-iOS:
-    runs-on: macos-latest
+    runs-on: self-hosted
     needs: [build-tdlib-iOS]
     env:
       PLATFORM: iOS
@@ -151,7 +151,7 @@ jobs:
           path: ./build/$PLATFORM.xcarchive
 
   build-framework-iOS-simulator:
-    runs-on: macos-latest
+    runs-on: self-hosted
     needs: [build-tdlib-iOS-simulator]
     env:
       PLATFORM: iOS-simulator
@@ -188,14 +188,14 @@ jobs:
 
   # # macOS
   # build-openssl-macOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   env:
   #       PLATFORM: macOS
   #   steps:
   #     - uses: actions/checkout@v2
 
   # build-tdlib-macOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs: [build-openssl-macOS]
   #   env:
   #     PLATFORM: macOS
@@ -203,7 +203,7 @@ jobs:
   #     - uses: actions/checkout@v2
 
   # build-framework-macOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs: [build-tdlib-macOS]
   #   env:
   #     PLATFORM: macOS
@@ -212,14 +212,14 @@ jobs:
 
   # # watchOS
   # build-openssl-watchOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   env:
   #       PLATFORM: watchOS
   #   steps:
   #     - uses: actions/checkout@v2
 
   # build-tdlib-watchOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs: [build-openssl-watchOS]
   #   env:
   #     PLATFORM: watchOS
@@ -227,7 +227,7 @@ jobs:
   #     - uses: actions/checkout@v2
 
   # build-tdlib-watchOS-simulator:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs: [build-openssl-watchOS]
   #   env:
   #     PLATFORM: watchOS-simulator
@@ -235,7 +235,7 @@ jobs:
   #     - uses: actions/checkout@v2
 
   # build-framework-watchOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs: [build-tdlib-watchOS]
   #   env:
   #     PLATFORM: watchOS
@@ -243,7 +243,7 @@ jobs:
   #     - uses: actions/checkout@v2
 
   # build-framework-watchOS-simulator:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs: [build-tdlib-watchOS-simulator]
   #   env:
   #     PLATFORM: watchOS
@@ -252,14 +252,14 @@ jobs:
 
   # # tvOS
   # build-openssl-tvOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   env:
   #       PLATFORM: tvOS
   #   steps:
   #     - uses: actions/checkout@v2
 
   # build-tdlib-tvOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs: [build-openssl-tvOS]
   #   env:
   #     PLATFORM: tvOS
@@ -267,7 +267,7 @@ jobs:
   #     - uses: actions/checkout@v2
 
   # build-tdlib-tvOS-simulator:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs: [build-openssl-tvOS]
   #   env:
   #     PLATFORM: tvOS-simulator
@@ -275,7 +275,7 @@ jobs:
   #     - uses: actions/checkout@v2
 
   # build-framework-tvOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs: [build-tdlib-tvOS]
   #   env:
   #     PLATFORM: tvOS
@@ -283,7 +283,7 @@ jobs:
   #     - uses: actions/checkout@v2
 
   # build-framework-tvOS-simulator:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs: [build-tdlib-tvOS-simulator]
   #   env:
   #     PLATFORM: tvOS
@@ -292,7 +292,7 @@ jobs:
 
   # Merge frameworks
   merge-xcframework:
-    runs-on: macos-latest
+    runs-on: self-hosted
     needs:
       - build-framework-iOS
       - build-framework-iOS-simulator
@@ -331,28 +331,28 @@ jobs:
 
   # Tests
   # test-iOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs:
   #     - merge-xcframework
   #   steps:
   #     - uses: actions/checkout@v2
 
   # test-macOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs:
   #     - merge-xcframework
   #   steps:
   #     - uses: actions/checkout@v2
 
   # test-watchOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs:
   #     - merge-xcframework
   #   steps:
   #     - uses: actions/checkout@v2
 
   # test-tvOS:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs:
   #     - merge-xcframework
   #   steps:
@@ -360,7 +360,7 @@ jobs:
 
   # Publish
   # publish:
-  #   runs-on: macos-latest
+  #   runs-on: self-hosted
   #   needs:
   #     - merge-xcframework
   #     - test-iOS
