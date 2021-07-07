@@ -4,9 +4,9 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -17,25 +17,32 @@ jobs:
   build-openssl-iOS:
     runs-on: macos-latest
     env:
-        PLATFORM: iOS
+      PLATFORM: iOS
     steps:
       - name: Install deps
         run: brew install gperf cmake coreutils
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
-            submodules: recursive
+          submodules: recursive
+
       - name: Patch Build script
         run: |
-            cd td 
-            git apply ../tdlib-patches/build-openssl.patch
+          cd td 
+          git apply ../tdlib-patches/build-openssl.patch
+
       - name: Build Openssl
         run: |
-            cd td/example/ios
-            ./build-openssl.sh $PLATFORM
-      - name: Export libs
-        run: ls -R td/example/ios/third_party
-  
+          cd td/example/ios
+          ./build-openssl.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifacts@v2
+        with:
+          name: openssl-$PLATFORM
+          path: td/example/ios/third_party/openssl/$PLATFORM
+
   build-tdlib-iOS:
     runs-on: macos-latest
     needs: [build-openssl-iOS]
@@ -44,15 +51,34 @@ jobs:
     steps:
       - name: Install deps
         run: brew install gperf cmake coreutils
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
-            submodules: recursive
+          submodules: recursive
+
+      - name: Download Artifacts
+        uses: actions/download-artifacts@v2
+        with:
+          name: openssl-$PLATFORM
+          path: td/example/ios/third_party/openssl/$PLATFORM
+
       - name: Patch Build script
         run: |
-            cd td
-            git apply ../tdlib-patches/build.patch
-  
+          cd td
+          git apply ../tdlib-patches/build.patch
+
+      - name: Build TDLib
+        run: |
+          cd td/example/ios
+          ./build.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifacts@v2
+        with:
+          name: tdlib-install-$PLATFORM
+          path: td/example/ios/build/install-$PLATFORM
+
   build-tdlib-iOS-simulator:
     runs-on: macos-latest
     needs: [build-openssl-iOS]
@@ -61,14 +87,33 @@ jobs:
     steps:
       - name: Install deps
         run: brew install gperf cmake coreutils
+
       - name: Checkout
         uses: actions/checkout@v2
         with:
-            submodules: recursive
-      - name: Replace Build scripts
+          submodules: recursive
+
+      - name: Download Artifacts
+        uses: actions/download-artifacts@v2
+        with:
+          name: openssl-$PLATFORM
+          path: td/example/ios/third_party/openssl/$PLATFORM
+
+      - name: Patch Build script
         run: |
           cd td
           git apply ../tdlib-patches/build.patch
+
+      - name: Build TDLib
+        run: |
+          cd td/example/ios
+          ./build.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifacts@v2
+        with:
+          name: tdlib-install-$PLATFORM
+          path: td/example/ios/build/install-$PLATFORM
 
   build-framework-iOS:
     runs-on: macos-latest
@@ -78,27 +123,69 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # - name: Download Openssl & TDLib
+        with:
+          submodules: recursive
+
+      - name: Download Openssl
+        uses: actions/download-artifacts@v2
+        with:
+          name: openssl-$PLATFORM
+          path: td/example/ios/third_party/openssl/$PLATFORM
+
+      - name: Download TDLib install
+        uses: actions/download-artifacts@v2
+        with:
+          name: tdlib-install-$PLATFORM
+          path: td/example/ios/build/install-$PLATFORM
+
       - name: Generate project
         run: .tuist-bin/tuist generate
+
       - name: Build .framework
         run: ./build.sh $PLATFORM
-      
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifacts@v2
+        with:
+          name: xcarchive-$PLATFORM
+          path: ./build/$PLATFORM.xcarchive
+
   build-framework-iOS-simulator:
     runs-on: macos-latest
     needs: [build-tdlib-iOS-simulator]
     env:
       PLATFORM: iOS-simulator
+      PARENT_PLATFORM: iOS
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # - name: Download Openssl & TDLib
+        with:
+          submodules: recursive
+
+      - name: Download Openssl
+        uses: actions/download-artifacts@v2
+        with:
+          name: openssl-$PARENT_PLATFORM
+          path: td/example/ios/third_party/openssl/$PARENT_PLATFORM
+
+      - name: Download TDLib install
+        uses: actions/download-artifacts@v2
+        with:
+          name: tdlib-install-$PLATFORM
+          path: td/example/ios/build/install-$PLATFORM
+
       - name: Generate project
         run: .tuist-bin/tuist generate
+
       - name: Build .framework
         run: ./build.sh $PLATFORM
-      
-  
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifacts@v2
+        with:
+          name: xcarchive-$PLATFORM
+          path: ./build/$PLATFORM.xcarchive
+
   # # macOS
   # build-openssl-macOS:
   #   runs-on: macos-latest
@@ -106,7 +193,7 @@ jobs:
   #       PLATFORM: macOS
   #   steps:
   #     - uses: actions/checkout@v2
-  
+
   # build-tdlib-macOS:
   #   runs-on: macos-latest
   #   needs: [build-openssl-macOS]
@@ -122,8 +209,7 @@ jobs:
   #     PLATFORM: macOS
   #   steps:
   #     - uses: actions/checkout@v2
-  
-      
+
   # # watchOS
   # build-openssl-watchOS:
   #   runs-on: macos-latest
@@ -131,7 +217,7 @@ jobs:
   #       PLATFORM: watchOS
   #   steps:
   #     - uses: actions/checkout@v2
-  
+
   # build-tdlib-watchOS:
   #   runs-on: macos-latest
   #   needs: [build-openssl-watchOS]
@@ -139,7 +225,7 @@ jobs:
   #     PLATFORM: watchOS
   #   steps:
   #     - uses: actions/checkout@v2
-  
+
   # build-tdlib-watchOS-simulator:
   #   runs-on: macos-latest
   #   needs: [build-openssl-watchOS]
@@ -155,7 +241,7 @@ jobs:
   #     PLATFORM: watchOS
   #   steps:
   #     - uses: actions/checkout@v2
-      
+
   # build-framework-watchOS-simulator:
   #   runs-on: macos-latest
   #   needs: [build-tdlib-watchOS-simulator]
@@ -163,8 +249,7 @@ jobs:
   #     PLATFORM: watchOS
   #   steps:
   #     - uses: actions/checkout@v2
-  
-  
+
   # # tvOS
   # build-openssl-tvOS:
   #   runs-on: macos-latest
@@ -172,7 +257,7 @@ jobs:
   #       PLATFORM: tvOS
   #   steps:
   #     - uses: actions/checkout@v2
-  
+
   # build-tdlib-tvOS:
   #   runs-on: macos-latest
   #   needs: [build-openssl-tvOS]
@@ -180,7 +265,7 @@ jobs:
   #     PLATFORM: tvOS
   #   steps:
   #     - uses: actions/checkout@v2
-  
+
   # build-tdlib-tvOS-simulator:
   #   runs-on: macos-latest
   #   needs: [build-openssl-tvOS]
@@ -196,7 +281,7 @@ jobs:
   #     PLATFORM: tvOS
   #   steps:
   #     - uses: actions/checkout@v2
-      
+
   # build-framework-tvOS-simulator:
   #   runs-on: macos-latest
   #   needs: [build-tdlib-tvOS-simulator]
@@ -204,12 +289,11 @@ jobs:
   #     PLATFORM: tvOS
   #   steps:
   #     - uses: actions/checkout@v2
-  
-  
+
   # Merge frameworks
   merge-xcframework:
     runs-on: macos-latest
-    needs: 
+    needs:
       - build-framework-iOS
       - build-framework-iOS-simulator
       # - build-framework-macOS
@@ -220,36 +304,60 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+  
+      - name: Download iOS Framework
+        uses: actions/download-artifacts@v2
+        with:
+          name: xcarchive-iOS
+          path: ./build/iOS.xcarchive
+      
+      - name: Download iOS-simulator Framework
+        uses: actions/download-artifacts@v2
+        with:
+          name: xcarchive-iOS-simulator
+          path: ./build/iOS-simulator.xcarchive
+      
+      # ...
+
+      - name: Merge Frameworks
+        run: ./merge-frameworks.sh "iOS iOS-simulator" # "iOS iOS-simulator macOS watchOS watchOS-simulator tvOS tvOS-simulator"
+      
+      - name: Upload Artifacts
+        uses: actions/upload-artifacts@v2
+        with:
+          name: TDLib.xcframework
+          path: ./build/TDLib.xcframework
+        
 
   # Tests
   # test-iOS:
   #   runs-on: macos-latest
-  #   needs: 
+  #   needs:
   #     - merge-xcframework
   #   steps:
   #     - uses: actions/checkout@v2
-      
+
   # test-macOS:
   #   runs-on: macos-latest
-  #   needs: 
+  #   needs:
   #     - merge-xcframework
   #   steps:
   #     - uses: actions/checkout@v2
-    
+
   # test-watchOS:
   #   runs-on: macos-latest
-  #   needs: 
+  #   needs:
   #     - merge-xcframework
   #   steps:
   #     - uses: actions/checkout@v2
-      
+
   # test-tvOS:
   #   runs-on: macos-latest
-  #   needs: 
+  #   needs:
   #     - merge-xcframework
   #   steps:
   #     - uses: actions/checkout@v2
-  
+
   # Publish
   # publish:
   #   runs-on: macos-latest
@@ -261,4 +369,3 @@ jobs:
   #     - test-tvOS
   #   steps:
   #     - uses: actions/checkout@v2
-      

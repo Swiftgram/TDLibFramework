@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-PLATFORMS="iOS iOS-simulator macOS watchOS watchOS-simulator tvOS tvOS-simulator"
+PLATFORMS="$1"
 FRAMEWORK_NAME=TDLib
 
 xcodebuild_frameworks=()
