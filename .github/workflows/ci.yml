@@ -38,7 +38,7 @@ jobs:
           ./build-openssl.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifacts@v2
+        uses: actions/upload-artifact@v2
         with:
           name: openssl-$PLATFORM
           path: td/example/ios/third_party/openssl/$PLATFORM
@@ -74,7 +74,7 @@ jobs:
           ./build.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifacts@v2
+        uses: actions/upload-artifact@v2
         with:
           name: tdlib-install-$PLATFORM
           path: td/example/ios/build/install-$PLATFORM
@@ -110,7 +110,7 @@ jobs:
           ./build.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifacts@v2
+        uses: actions/upload-artifact@v2
         with:
           name: tdlib-install-$PLATFORM
           path: td/example/ios/build/install-$PLATFORM
@@ -145,7 +145,7 @@ jobs:
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifacts@v2
+        uses: actions/upload-artifact@v2
         with:
           name: xcarchive-$PLATFORM
           path: ./build/$PLATFORM.xcarchive
@@ -181,7 +181,7 @@ jobs:
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifacts@v2
+        uses: actions/upload-artifact@v2
         with:
           name: xcarchive-$PLATFORM
           path: ./build/$PLATFORM.xcarchive
@@ -323,7 +323,7 @@ jobs:
         run: ./merge-frameworks.sh "iOS iOS-simulator" # "iOS iOS-simulator macOS watchOS watchOS-simulator tvOS tvOS-simulator"
       
       - name: Upload Artifacts
-        uses: actions/upload-artifacts@v2
+        uses: actions/upload-artifact@v2
         with:
           name: TDLib.xcframework
           path: ./build/TDLib.xcframework
