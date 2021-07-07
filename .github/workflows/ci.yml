@@ -84,6 +84,7 @@ jobs:
     needs: [build-openssl-iOS]
     env:
       PLATFORM: iOS-simulator
+      PARENT_PLATFORM: iOS
     steps:
       - name: Install deps
         run: brew install gperf cmake coreutils
@@ -96,8 +97,8 @@ jobs:
       - name: Download Artifacts
         uses: actions/download-artifacts@v2
         with:
-          name: openssl-$PLATFORM
-          path: td/example/ios/third_party/openssl/$PLATFORM
+          name: openssl-$PARENT_PLATFORM
+          path: td/example/ios/third_party/openssl/$PARENT_PLATFORM
 
       - name: Patch Build script
         run: |
