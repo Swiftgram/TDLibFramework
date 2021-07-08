@@ -70,6 +70,14 @@ jobs:
           cd td
           git apply ../tdlib-patches/build.patch
 
+      - name: Pregenerate Sources
+        run: |
+          cd td
+          mkdir native-build
+          cd native-build
+          cmake ..
+          cmake --build . --target prepare_cross_compiling
+
       - name: Build TDLib
         run: |
           ls -R td/tdutils/generate
