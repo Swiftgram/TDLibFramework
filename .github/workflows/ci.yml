@@ -74,9 +74,7 @@ jobs:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Patch Build script
-        run: |
-          cd td
-          git apply ../tdlib-patches/build.patch
+        run: cp tdlib-patches/build.sh td/example/ios
 
       - name: Pregenerate Sources
         run: |
@@ -98,11 +96,48 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
 
-      - name: Upload ${{ env.PLATFORM }}-simulator install artifacts
+  build-tdlib-iOS-simulator:
+    runs-on: macos-latest
+    needs: [build-openssl-iOS]
+    env:
+      PLATFORM: iOS-simulator
+      PARENT_PLATFORM: iOS
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PARENT_PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+
+      - name: Patch Build script
+        run: cp tdlib-patches/build.sh td/example/ios
+
+      - name: Pregenerate Sources
+        run: |
+          cd td
+          mkdir native-build
+          cd native-build
+          cmake ..
+          cmake --build . --target prepare_cross_compiling
+
+      - name: Build TDLib
+        run: |
+          cd td/example/ios
+          ./build.sh $PLATFORM
+
+      - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: tdlib-install-${{ env.PLATFORM }}-simulator
-          path: td/example/ios/build/install-${{ env.PLATFORM }}-simulator
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
 
   build-framework-iOS:
@@ -143,7 +178,7 @@ jobs:
 
   build-framework-iOS-simulator:
     runs-on: macos-latest
-    needs: [build-tdlib-iOS]
+    needs: [build-tdlib-iOS-simulator]
     env:
       PLATFORM: iOS-simulator
       PARENT_PLATFORM: iOS
@@ -239,9 +274,7 @@ jobs:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Patch Build script
-        run: |
-          cd td
-          git apply ../tdlib-patches/build.patch
+        run: cp tdlib-patches/build.sh td/example/ios
 
       # Sources are pregenerated in build phase
       # - name: Pregenerate Sources
@@ -263,14 +296,6 @@ jobs:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
-
-      # macOS does not have a simulator
-      # - name: Upload ${{ env.PLATFORM }}-simulator install artifacts
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: tdlib-install-${{ env.PLATFORM }}-simulator
-      #     path: td/example/ios/build/install-${{ env.PLATFORM }}-simulator
-      #     if-no-files-found: error
 
   build-framework-macOS:
     runs-on: macos-latest
@@ -369,9 +394,7 @@ jobs:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Patch Build script
-        run: |
-          cd td
-          git apply ../tdlib-patches/build.patch
+        run: cp tdlib-patches/build.sh td/example/ios
 
       - name: Pregenerate Sources
         run: |
@@ -393,11 +416,48 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
 
-      - name: Upload ${{ env.PLATFORM }}-simulator install artifacts
+  build-tdlib-watchOS-simulator:
+    runs-on: macos-latest
+    needs: [build-openssl-watchOS]
+    env:
+      PLATFORM: watchOS-simulator
+      PARENT_PLATFORM: watchOS
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PARENT_PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+
+      - name: Patch Build script
+        run: cp tdlib-patches/build.sh td/example/ios
+
+      - name: Pregenerate Sources
+        run: |
+          cd td
+          mkdir native-build
+          cd native-build
+          cmake ..
+          cmake --build . --target prepare_cross_compiling
+
+      - name: Build TDLib
+        run: |
+          cd td/example/ios
+          ./build.sh $PLATFORM
+
+      - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: tdlib-install-${{ env.PLATFORM }}-simulator
-          path: td/example/ios/build/install-${{ env.PLATFORM }}-simulator
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
 
   build-framework-watchOS:
@@ -438,7 +498,7 @@ jobs:
 
   build-framework-watchOS-simulator:
     runs-on: macos-latest
-    needs: [build-tdlib-watchOS]
+    needs: [build-tdlib-watchOS-simulator]
     env:
       PLATFORM: watchOS-simulator
       PARENT_PLATFORM: watchOS
@@ -534,9 +594,7 @@ jobs:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Patch Build script
-        run: |
-          cd td
-          git apply ../tdlib-patches/build.patch
+        run: cp tdlib-patches/build.sh td/example/ios
 
       - name: Pregenerate Sources
         run: |
@@ -558,11 +616,48 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
 
-      - name: Upload ${{ env.PLATFORM }}-simulator install artifacts
+  build-tdlib-tvOS-simulator:
+    runs-on: macos-latest
+    needs: [build-openssl-tvOS]
+    env:
+      PLATFORM: tvOS
+      PARENT_PLATFORM: tvOS-simulator
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PARENT_PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+
+      - name: Patch Build script
+        run: cp tdlib-patches/build.sh td/example/ios
+
+      - name: Pregenerate Sources
+        run: |
+          cd td
+          mkdir native-build
+          cd native-build
+          cmake ..
+          cmake --build . --target prepare_cross_compiling
+
+      - name: Build TDLib
+        run: |
+          cd td/example/ios
+          ./build.sh $PLATFORM
+
+      - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: tdlib-install-${{ env.PLATFORM }}-simulator
-          path: td/example/ios/build/install-${{ env.PLATFORM }}-simulator
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
 
   build-framework-tvOS:
@@ -603,7 +698,7 @@ jobs:
 
   build-framework-tvOS-simulator:
     runs-on: macos-latest
-    needs: [build-tdlib-tvOS]
+    needs: [build-tdlib-tvOS-simulator]
     env:
       PLATFORM: tvOS-simulator
       PARENT_PLATFORM: tvOS
