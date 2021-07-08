@@ -27,12 +27,21 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Cache Openssl
+        id: cache-openssl
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          key: openssl-${{ env.PLATFORM }}
+
       - name: Patch Build script
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td 
           git apply ../tdlib-patches/build-openssl.patch
 
       - name: Build Openssl
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
           ./build-openssl.sh $PLATFORM
@@ -81,7 +90,7 @@ jobs:
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM
-    
+
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -183,12 +192,21 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Cache Openssl
+        id: cache-openssl
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          key: openssl-${{ env.PLATFORM }}
+
       - name: Patch Build script
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td 
           git apply ../tdlib-patches/build-openssl.patch
 
       - name: Build Openssl
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
           ./build-openssl.sh $PLATFORM
@@ -238,7 +256,7 @@ jobs:
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM
-    
+
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -304,12 +322,21 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Cache Openssl
+        id: cache-openssl
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          key: openssl-${{ env.PLATFORM }}
+
       - name: Patch Build script
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td 
           git apply ../tdlib-patches/build-openssl.patch
 
       - name: Build Openssl
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
           ./build-openssl.sh $PLATFORM
@@ -358,7 +385,7 @@ jobs:
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM
-    
+
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -460,12 +487,21 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Cache Openssl
+        id: cache-openssl
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          key: openssl-${{ env.PLATFORM }}
+
       - name: Patch Build script
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td 
           git apply ../tdlib-patches/build-openssl.patch
 
       - name: Build Openssl
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
           ./build-openssl.sh $PLATFORM
@@ -514,7 +550,7 @@ jobs:
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM
-    
+
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -616,19 +652,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-  
+
       - name: Download iOS Framework
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-iOS
           path: ./build/iOS.xcarchive
-      
+
       - name: Download iOS-simulator Framework
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-iOS-simulator
           path: ./build/iOS-simulator.xcarchive
-      
+
       - name: Download macOS Framework
         uses: actions/download-artifact@v2
         with:
@@ -640,19 +676,19 @@ jobs:
         with:
           name: xcarchive-watchOS-simulator
           path: ./build/watchOS.xcarchive
-      
+
       - name: Download watchOS-simulator Framework
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-watchOS-simulator
           path: ./build/watchOS-simulator.xcarchive
-      
+
       - name: Download tvOS Framework
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-tvOS-simulator
           path: ./build/tvOS.xcarchive
-      
+
       - name: Download tvOS-simulator Framework
         uses: actions/download-artifact@v2
         with:
@@ -661,14 +697,13 @@ jobs:
 
       - name: Merge Frameworks
         run: ./merge-frameworks.sh "iOS iOS-simulator macOS watchOS watchOS-simulator tvOS tvOS-simulator"
-      
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: TDLib.xcframework
           path: ./build/TDLib.xcframework
           if-no-files-found: error
-        
 
   # Tests
   # test-iOS:
