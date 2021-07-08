@@ -674,7 +674,7 @@ jobs:
       - name: Download watchOS Framework
         uses: actions/download-artifact@v2
         with:
-          name: xcarchive-watchOS-simulator
+          name: xcarchive-watchOS
           path: ./build/watchOS.xcarchive
 
       - name: Download watchOS-simulator Framework
@@ -686,7 +686,7 @@ jobs:
       - name: Download tvOS Framework
         uses: actions/download-artifact@v2
         with:
-          name: xcarchive-tvOS-simulator
+          name: xcarchive-tvOS
           path: ./build/tvOS.xcarchive
 
       - name: Download tvOS-simulator Framework
