@@ -120,7 +120,7 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
       - name: Generate project
-        run: .tuist-bin/tuist generate
+        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
 
       - name: Build .framework
         run: ./build.sh $PLATFORM
@@ -157,7 +157,7 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
       - name: Generate project
-        run: .tuist-bin/tuist generate
+        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
 
       - name: Build .framework
         run: ./build.sh $PLATFORM

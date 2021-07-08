@@ -35,6 +35,14 @@ func getVersion() -> String {
 let SimulatorSuffix = "-simulator"
 let tdPath = "td/example/ios"
 
+
+func getBuildPlatforms() -> [String] {
+  return Environment.platform.getString(default: "iOS,iOS-simulator,macOS,watchOS,watchOS-simulator,tvOS,tvOS-simulator").components(separatedBy: ",")
+}
+
+let BuildPlatforms = getBuildPlatforms()
+print("\nGenerating project for platforms \(BuildPlatforms)")
+
 func platformFromString(_ platformString: String) -> Platform {
     switch platformString.lowercased() {
     case "ios":
@@ -142,7 +150,7 @@ func getExcludedArchs(platform: String, isSimulator: Bool) -> SettingsDictionary
 
 func getTargets() -> [Target] {
     var targets: [Target] = []
-    for rawPlatform in ["iOS", "iOS-simulator", "macOS", "watchOS", "watchOS-simulator", "tvOS", "tvOS-simulator"] {
+    for rawPlatform in BuildPlatforms {
         var isSimulator = false
         var platform = rawPlatform
         var platformSuffix = ""
