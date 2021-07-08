@@ -72,6 +72,7 @@ jobs:
       - name: Build TDLib
         run: |
           cd td/example/ios
+          ls -R
           ./build.sh $PLATFORM
     
       - name: Upload ${{ env.PLATFORM }} install artifacts
