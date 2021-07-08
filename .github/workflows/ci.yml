@@ -169,109 +169,437 @@ jobs:
           path: ./build/${{ env.PLATFORM }}.xcarchive
           if-no-files-found: error
 
-  # # macOS
-  # build-openssl-macOS:
-  #   runs-on: macos-latest
-  #   env:
-  #       PLATFORM: macOS
-  #   steps:
-  #     - uses: actions/checkout@v2
+  # macOS
+  build-openssl-macOS:
+    runs-on: macos-latest
+    env:
+      PLATFORM: macOS
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
 
-  # build-tdlib-macOS:
-  #   runs-on: macos-latest
-  #   needs: [build-openssl-macOS]
-  #   env:
-  #     PLATFORM: macOS
-  #   steps:
-  #     - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
-  # build-framework-macOS:
-  #   runs-on: macos-latest
-  #   needs: [build-tdlib-macOS]
-  #   env:
-  #     PLATFORM: macOS
-  #   steps:
-  #     - uses: actions/checkout@v2
+      - name: Patch Build script
+        run: |
+          cd td 
+          git apply ../tdlib-patches/build-openssl.patch
 
-  # # watchOS
-  # build-openssl-watchOS:
-  #   runs-on: macos-latest
-  #   env:
-  #       PLATFORM: watchOS
-  #   steps:
-  #     - uses: actions/checkout@v2
+      - name: Build Openssl
+        run: |
+          cd td/example/ios
+          ./build-openssl.sh $PLATFORM
 
-  # build-tdlib-watchOS:
-  #   runs-on: macos-latest
-  #   needs: [build-openssl-watchOS]
-  #   env:
-  #     PLATFORM: watchOS
-  #   steps:
-  #     - uses: actions/checkout@v2
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          if-no-files-found: error
 
-  # build-tdlib-watchOS-simulator:
-  #   runs-on: macos-latest
-  #   needs: [build-openssl-watchOS]
-  #   env:
-  #     PLATFORM: watchOS-simulator
-  #   steps:
-  #     - uses: actions/checkout@v2
+  build-tdlib-macOS:
+    runs-on: macos-latest
+    needs: [build-openssl-macOS]
+    env:
+      PLATFORM: macOS
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
 
-  # build-framework-watchOS:
-  #   runs-on: macos-latest
-  #   needs: [build-tdlib-watchOS]
-  #   env:
-  #     PLATFORM: watchOS
-  #   steps:
-  #     - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
-  # build-framework-watchOS-simulator:
-  #   runs-on: macos-latest
-  #   needs: [build-tdlib-watchOS-simulator]
-  #   env:
-  #     PLATFORM: watchOS
-  #   steps:
-  #     - uses: actions/checkout@v2
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
-  # # tvOS
-  # build-openssl-tvOS:
-  #   runs-on: macos-latest
-  #   env:
-  #       PLATFORM: tvOS
-  #   steps:
-  #     - uses: actions/checkout@v2
+      - name: Patch Build script
+        run: |
+          cd td
+          git apply ../tdlib-patches/build.patch
 
-  # build-tdlib-tvOS:
-  #   runs-on: macos-latest
-  #   needs: [build-openssl-tvOS]
-  #   env:
-  #     PLATFORM: tvOS
-  #   steps:
-  #     - uses: actions/checkout@v2
+      # Sources are pregenerated in build phase
+      # - name: Pregenerate Sources
+      #   run: |
+      #     cd td
+      #     mkdir native-build
+      #     cd native-build
+      #     cmake ..
+      #     cmake --build . --target prepare_cross_compiling
 
-  # build-tdlib-tvOS-simulator:
-  #   runs-on: macos-latest
-  #   needs: [build-openssl-tvOS]
-  #   env:
-  #     PLATFORM: tvOS-simulator
-  #   steps:
-  #     - uses: actions/checkout@v2
+      - name: Build TDLib
+        run: |
+          cd td/example/ios
+          ./build.sh $PLATFORM
+    
+      - name: Upload ${{ env.PLATFORM }} install artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          if-no-files-found: error
 
-  # build-framework-tvOS:
-  #   runs-on: macos-latest
-  #   needs: [build-tdlib-tvOS]
-  #   env:
-  #     PLATFORM: tvOS
-  #   steps:
-  #     - uses: actions/checkout@v2
+      - name: Upload ${{ env.PLATFORM }}-simulator install artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}-simulator
+          path: td/example/ios/build/install-${{ env.PLATFORM }}-simulator
+          if-no-files-found: error
 
-  # build-framework-tvOS-simulator:
-  #   runs-on: macos-latest
-  #   needs: [build-tdlib-tvOS-simulator]
-  #   env:
-  #     PLATFORM: tvOS
-  #   steps:
-  #     - uses: actions/checkout@v2
+  build-framework-macOS:
+    runs-on: macos-latest
+    needs: [build-tdlib-macOS]
+    env:
+      PLATFORM: macOS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Download Openssl
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+
+      - name: Download TDLib ${{ env.PLATFORM }} install
+        uses: actions/download-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+
+      - name: Generate project
+        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+
+      - name: Build .framework
+        run: ./build.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcarchive-${{ env.PLATFORM }}
+          path: ./build/${{ env.PLATFORM }}.xcarchive
+          if-no-files-found: error
+
+  # watchOS
+  build-openssl-watchOS:
+    runs-on: macos-latest
+    env:
+      PLATFORM: watchOS
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Patch Build script
+        run: |
+          cd td 
+          git apply ../tdlib-patches/build-openssl.patch
+
+      - name: Build Openssl
+        run: |
+          cd td/example/ios
+          ./build-openssl.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          if-no-files-found: error
+
+  build-tdlib-watchOS:
+    runs-on: macos-latest
+    needs: [build-openssl-watchOS]
+    env:
+      PLATFORM: watchOS
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+
+      - name: Patch Build script
+        run: |
+          cd td
+          git apply ../tdlib-patches/build.patch
+
+      - name: Pregenerate Sources
+        run: |
+          cd td
+          mkdir native-build
+          cd native-build
+          cmake ..
+          cmake --build . --target prepare_cross_compiling
+
+      - name: Build TDLib
+        run: |
+          cd td/example/ios
+          ./build.sh $PLATFORM
+    
+      - name: Upload ${{ env.PLATFORM }} install artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          if-no-files-found: error
+
+      - name: Upload ${{ env.PLATFORM }}-simulator install artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}-simulator
+          path: td/example/ios/build/install-${{ env.PLATFORM }}-simulator
+          if-no-files-found: error
+
+  build-framework-watchOS:
+    runs-on: macos-latest
+    needs: [build-tdlib-watchOS]
+    env:
+      PLATFORM: watchOS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Download Openssl
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+
+      - name: Download TDLib ${{ env.PLATFORM }} install
+        uses: actions/download-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+
+      - name: Generate project
+        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+
+      - name: Build .framework
+        run: ./build.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcarchive-${{ env.PLATFORM }}
+          path: ./build/${{ env.PLATFORM }}.xcarchive
+          if-no-files-found: error
+
+  build-framework-watchOS-simulator:
+    runs-on: macos-latest
+    needs: [build-tdlib-watchOS]
+    env:
+      PLATFORM: watchOS-simulator
+      PARENT_PLATFORM: watchOS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Download Openssl
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PARENT_PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+
+      - name: Download TDLib ${{ env.PLATFORM }} install
+        uses: actions/download-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+
+      - name: Generate project
+        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+
+      - name: Build .framework
+        run: ./build.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcarchive-${{ env.PLATFORM }}
+          path: ./build/${{ env.PLATFORM }}.xcarchive
+          if-no-files-found: error
+
+  # tvOS
+  build-openssl-tvOS:
+    runs-on: macos-latest
+    env:
+      PLATFORM: tvOS
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Patch Build script
+        run: |
+          cd td 
+          git apply ../tdlib-patches/build-openssl.patch
+
+      - name: Build Openssl
+        run: |
+          cd td/example/ios
+          ./build-openssl.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          if-no-files-found: error
+
+  build-tdlib-tvOS:
+    runs-on: macos-latest
+    needs: [build-openssl-tvOS]
+    env:
+      PLATFORM: tvOS
+    steps:
+      - name: Install deps
+        run: brew install gperf cmake coreutils
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+
+      - name: Patch Build script
+        run: |
+          cd td
+          git apply ../tdlib-patches/build.patch
+
+      - name: Pregenerate Sources
+        run: |
+          cd td
+          mkdir native-build
+          cd native-build
+          cmake ..
+          cmake --build . --target prepare_cross_compiling
+
+      - name: Build TDLib
+        run: |
+          cd td/example/ios
+          ./build.sh $PLATFORM
+    
+      - name: Upload ${{ env.PLATFORM }} install artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          if-no-files-found: error
+
+      - name: Upload ${{ env.PLATFORM }}-simulator install artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}-simulator
+          path: td/example/ios/build/install-${{ env.PLATFORM }}-simulator
+          if-no-files-found: error
+
+  build-framework-tvOS:
+    runs-on: macos-latest
+    needs: [build-tdlib-tvOS]
+    env:
+      PLATFORM: tvOS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Download Openssl
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+
+      - name: Download TDLib ${{ env.PLATFORM }} install
+        uses: actions/download-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+
+      - name: Generate project
+        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+
+      - name: Build .framework
+        run: ./build.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcarchive-${{ env.PLATFORM }}
+          path: ./build/${{ env.PLATFORM }}.xcarchive
+          if-no-files-found: error
+
+  build-framework-tvOS-simulator:
+    runs-on: macos-latest
+    needs: [build-tdlib-tvOS]
+    env:
+      PLATFORM: tvOS-simulator
+      PARENT_PLATFORM: tvOS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Download Openssl
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PARENT_PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+
+      - name: Download TDLib ${{ env.PLATFORM }} install
+        uses: actions/download-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+
+      - name: Generate project
+        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+
+      - name: Build .framework
+        run: ./build.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: xcarchive-${{ env.PLATFORM }}
+          path: ./build/${{ env.PLATFORM }}.xcarchive
+          if-no-files-found: error
 
   # Merge frameworks
   merge-xcframework:
@@ -279,11 +607,11 @@ jobs:
     needs:
       - build-framework-iOS
       - build-framework-iOS-simulator
-      # - build-framework-macOS
-      # - build-framework-watchOS
-      # - build-framework-watchOS-simulator
-      # - build-framework-tvOS
-      # - build-framework-tvOS-simulator
+      - build-framework-macOS
+      - build-framework-watchOS
+      - build-framework-watchOS-simulator
+      - build-framework-tvOS
+      - build-framework-tvOS-simulator
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -303,7 +631,7 @@ jobs:
       # ...
 
       - name: Merge Frameworks
-        run: ./merge-frameworks.sh "iOS iOS-simulator" # "iOS iOS-simulator macOS watchOS watchOS-simulator tvOS tvOS-simulator"
+        run: ./merge-frameworks.sh "iOS iOS-simulator macOS watchOS watchOS-simulator tvOS tvOS-simulator"
       
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
