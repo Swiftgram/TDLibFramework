@@ -19,20 +19,22 @@ jobs:
     env:
       PLATFORM: iOS
     steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
       - name: Cache Openssl
         id: cache-openssl
         uses: actions/cache@v2
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}
+
+      - name: Install deps
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
+      - name: Checkout
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive 
 
       - name: Patch Build script
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -219,20 +221,22 @@ jobs:
     env:
       PLATFORM: macOS
     steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
       - name: Cache Openssl
         id: cache-openssl
         uses: actions/cache@v2
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}
+
+      - name: Install deps
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
+      - name: Checkout
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       - name: Patch Build script
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -339,20 +343,22 @@ jobs:
     env:
       PLATFORM: watchOS
     steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
       - name: Cache Openssl
         id: cache-openssl
         uses: actions/cache@v2
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}
+
+      - name: Install deps
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
+      - name: Checkout
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       - name: Patch Build script
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -539,20 +545,22 @@ jobs:
     env:
       PLATFORM: tvOS
     steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
       - name: Cache Openssl
         id: cache-openssl
         uses: actions/cache@v2
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}
+
+      - name: Install deps
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
+      - name: Checkout
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       - name: Patch Build script
         if: steps.cache-openssl.outputs.cache-hit != 'true'
