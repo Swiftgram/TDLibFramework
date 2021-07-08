@@ -620,8 +620,8 @@ jobs:
     runs-on: macos-latest
     needs: [build-openssl-tvOS]
     env:
-      PLATFORM: tvOS
-      PARENT_PLATFORM: tvOS-simulator
+      PLATFORM: tvOS-simulator
+      PARENT_PLATFORM: tvOS
     steps:
       - name: Install deps
         run: brew install gperf cmake coreutils
