@@ -36,7 +36,6 @@ jobs:
         run: |
           cd td/example/ios
           ./build-openssl.sh $PLATFORM
-          ls -R td/tdutils/generate
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -80,7 +79,6 @@ jobs:
 
       - name: Build TDLib
         run: |
-          ls -R td/tdutils/generate
           cd td/example/ios
           ./build.sh $PLATFORM
     
