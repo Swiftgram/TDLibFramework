@@ -180,7 +180,7 @@ func getTargets() -> [Target] {
             settings: Settings(
                 base: [
                     "SWIFT_VERSION": "5.0",
-                    "PRODUCT_NAME": "TDLib-\(rawPlatform)",
+                    "PRODUCT_NAME": "TDLib",
                 ].merging(getExcludedArchs(platform: platform, isSimulator: isSimulator)),
                 configurations: [
                     .release(name: "Release", settings: ["SWIFT_OPTIMIZATION_LEVEL": "-O"]),

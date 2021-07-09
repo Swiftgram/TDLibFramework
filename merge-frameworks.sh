@@ -8,7 +8,7 @@ xcodebuild_frameworks=()
 
 for PLATFORM in $PLATFORMS;
 do
-    xcodebuild_frameworks+=(-framework "./build/$PLATFORM.xcarchive/Products/Library/Frameworks/$FRAMEWORK_NAME-$PLATFORM.framework")
+    xcodebuild_frameworks+=(-framework "./build/$PLATFORM.xcarchive/Products/Library/Frameworks/$FRAMEWORK_NAME.framework")
 done
 
 # make framework
