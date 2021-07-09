@@ -28,7 +28,7 @@ jobs:
         if: steps.cache-openssl.outputs.cache-hit != 'true'
         uses: actions/checkout@v2
         with:
-          submodules: recursive 
+          submodules: recursive
 
       - name: Patch Build script
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -159,6 +159,9 @@ jobs:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
+      - name: Patch headers
+        run: ./patch-headers.sh
+
       - name: Generate project
         run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
 
@@ -195,6 +198,9 @@ jobs:
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
+
+      - name: Patch headers
+        run: ./patch-headers.sh
 
       - name: Generate project
         run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
@@ -317,6 +323,9 @@ jobs:
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
+
+      - name: Patch headers
+        run: ./patch-headers.sh
 
       - name: Generate project
         run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
@@ -483,6 +492,9 @@ jobs:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
+      - name: Patch headers
+        run: ./patch-headers.sh
+
       - name: Generate project
         run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
 
@@ -519,6 +531,9 @@ jobs:
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
+
+      - name: Patch headers
+        run: ./patch-headers.sh
 
       - name: Generate project
         run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
@@ -685,6 +700,9 @@ jobs:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
+      - name: Patch headers
+        run: ./patch-headers.sh
+
       - name: Generate project
         run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
 
@@ -721,6 +739,9 @@ jobs:
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
+
+      - name: Patch headers
+        run: ./patch-headers.sh
 
       - name: Generate project
         run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
