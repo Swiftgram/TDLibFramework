@@ -15,6 +15,8 @@ You can find more about build process in [Build Docs](BUILD.md)
 
 
 ### TODO
+- [ ] Auto release from GH actions
+- [ ] Lib tests on simulators
 - [ ] SPM with .xcframework binary ([Docs](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages))
 - [ ] Build docs
 - [ ] Links to M1 issues
