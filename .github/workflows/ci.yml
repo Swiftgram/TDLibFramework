@@ -477,53 +477,59 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-watchOS-simulator:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        submodules: recursive
+    runs-on: macos-latest
+    needs: [build-openssl-watchOS]
+    env:
+      PLATFORM: watchOS-simulator
+      PARENT_PLATFORM: watchOS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
-    - name: Patch Build script
-      run: cp builder/tdlib-patches/build.sh td/example/ios
+      - name: Patch Build script
+        run: cp builder/tdlib-patches/build.sh td/example/ios
 
-    - name: Cache tdlib
-      id: cache-tdlib
-      uses: actions/cache@v2
-      with:
-        path: td/example/ios/build/install-${{ env.PLATFORM }}
-        key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+      - name: Cache tdlib
+        id: cache-tdlib
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
 
-    - name: Install deps
-      if: steps.cache-tdlib.outputs.cache-hit != 'true'
-      run: brew install gperf cmake coreutils
+      - name: Install deps
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
 
-    - name: Download Artifacts
-      if: steps.cache-tdlib.outputs.cache-hit != 'true'
-      uses: actions/download-artifact@v2
-      with:
-        name: openssl-${{ env.PARENT_PLATFORM }}
-        path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+      - name: Download Artifacts
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        uses: actions/download-artifact@v2
+        with:
+          name: openssl-${{ env.PARENT_PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
 
-    - name: Pregenerate Sources
-      if: steps.cache-tdlib.outputs.cache-hit != 'true'
-      run: |
-        cd td
-        mkdir native-build
-        cd native-build
-        cmake ..
-        cmake --build . --target prepare_cross_compiling
+      - name: Pregenerate Sources
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: |
+          cd td
+          mkdir native-build
+          cd native-build
+          cmake ..
+          cmake --build . --target prepare_cross_compiling
 
-    - name: Build TDLib
-      if: steps.cache-tdlib.outputs.cache-hit != 'true'
-      run: |
-        cd td/example/ios
-        ./build.sh $PLATFORM
+      - name: Build TDLib
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: |
+          cd td/example/ios
+          ./build.sh $PLATFORM
 
-    - name: Upload ${{ env.PLATFORM }} install artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: tdlib-install-${{ env.PLATFORM }}
-        path: td/example/ios/build/install-${{ env.PLATFORM }}
-        if-no-files-found: error
+      - name: Upload ${{ env.PLATFORM }} install artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: tdlib-install-${{ env.PLATFORM }}
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          if-no-files-found: error
 
   build-framework-watchOS:
     runs-on: macos-latest
