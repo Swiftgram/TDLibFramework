@@ -193,7 +193,7 @@ jobs:
 
       - name: Build .framework
         working-directory: ./builder
-        run: ./build.sh $PLATFORM
+        run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -236,7 +236,7 @@ jobs:
 
       - name: Build .framework
         working-directory: ./builder
-        run: ./build.sh $PLATFORM
+        run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -373,7 +373,7 @@ jobs:
 
       - name: Build .framework
         working-directory: ./builder
-        run: ./build.sh $PLATFORM
+        run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -564,7 +564,7 @@ jobs:
 
       - name: Build .framework
         working-directory: ./builder
-        run: ./build.sh $PLATFORM
+        run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -607,7 +607,7 @@ jobs:
 
       - name: Build .framework
         working-directory: ./builder
-        run: ./build.sh $PLATFORM
+        run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -798,7 +798,7 @@ jobs:
 
       - name: Build .framework
         working-directory: ./builder
-        run: ./build.sh $PLATFORM
+        run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -841,7 +841,7 @@ jobs:
 
       - name: Build .framework
         working-directory: ./builder
-        run: ./build.sh $PLATFORM
+        run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
