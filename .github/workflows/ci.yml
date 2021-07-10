@@ -3,13 +3,12 @@ name: CI
 # Controls when the workflow will run
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'td' # on TDLib updates
-  
+      - "td" # on TDLib updates
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-
 
 jobs:
   # iOS
@@ -27,14 +26,14 @@ jobs:
         run: |
           cd td 
           git apply ../builder/tdlib-patches/build-openssl.patch
-      
+
       - name: Cache Openssl
         id: cache-openssl
         uses: actions/cache@v2
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
-      
+
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: brew install gperf cmake coreutils
@@ -58,24 +57,34 @@ jobs:
     env:
       PLATFORM: iOS
     steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
 
+      - name: Patch Build script
+        run: cp builder/tdlib-patches/build.sh td/example/ios
+
+      - name: Cache tdlib
+        id: cache-tdlib
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+
+      - name: Install deps
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
       - name: Download Artifacts
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         uses: actions/download-artifact@v2
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
-
       - name: Pregenerate Sources
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td
           mkdir native-build
@@ -84,6 +93,7 @@ jobs:
           cmake --build . --target prepare_cross_compiling
 
       - name: Build TDLib
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM
@@ -102,24 +112,34 @@ jobs:
       PLATFORM: iOS-simulator
       PARENT_PLATFORM: iOS
     steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
 
+      - name: Patch Build script
+        run: cp builder/tdlib-patches/build.sh td/example/ios
+
+      - name: Cache tdlib
+        id: cache-tdlib
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+
+      - name: Install deps
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
       - name: Download Artifacts
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         uses: actions/download-artifact@v2
         with:
           name: openssl-${{ env.PARENT_PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
-
       - name: Pregenerate Sources
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td
           mkdir native-build
@@ -128,6 +148,7 @@ jobs:
           cmake --build . --target prepare_cross_compiling
 
       - name: Build TDLib
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM
@@ -239,14 +260,14 @@ jobs:
         run: |
           cd td 
           git apply ../builder/tdlib-patches/build-openssl.patch
-      
+
       - name: Cache Openssl
         id: cache-openssl
         uses: actions/cache@v2
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
-      
+
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: brew install gperf cmake coreutils
@@ -270,25 +291,35 @@ jobs:
     env:
       PLATFORM: macOS
     steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
 
+      - name: Patch Build script
+        run: cp builder/tdlib-patches/build.sh td/example/ios
+
+      - name: Cache tdlib
+        id: cache-tdlib
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+
+      - name: Install deps
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
       - name: Download Artifacts
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         uses: actions/download-artifact@v2
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
-
       # Sources are pregenerated in build phase
       # - name: Pregenerate Sources
+      #   if: steps.cache-tdlib.outputs.cache-hit != 'true'
       #   run: |
       #     cd td
       #     mkdir native-build
@@ -297,6 +328,7 @@ jobs:
       #     cmake --build . --target prepare_cross_compiling
 
       - name: Build TDLib
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM
@@ -365,14 +397,14 @@ jobs:
         run: |
           cd td 
           git apply ../builder/tdlib-patches/build-openssl.patch
-      
+
       - name: Cache Openssl
         id: cache-openssl
         uses: actions/cache@v2
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
-      
+
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: brew install gperf cmake coreutils
@@ -396,24 +428,34 @@ jobs:
     env:
       PLATFORM: watchOS
     steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
 
+      - name: Patch Build script
+        run: cp builder/tdlib-patches/build.sh td/example/ios
+
+      - name: Cache tdlib
+        id: cache-tdlib
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+
+      - name: Install deps
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
       - name: Download Artifacts
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         uses: actions/download-artifact@v2
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
-
       - name: Pregenerate Sources
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td
           mkdir native-build
@@ -422,6 +464,7 @@ jobs:
           cmake --build . --target prepare_cross_compiling
 
       - name: Build TDLib
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM
@@ -434,48 +477,53 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-watchOS-simulator:
-    runs-on: macos-latest
-    needs: [build-openssl-watchOS]
-    env:
-      PLATFORM: watchOS-simulator
-      PARENT_PLATFORM: watchOS
-    steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
 
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
+    - name: Patch Build script
+      run: cp builder/tdlib-patches/build.sh td/example/ios
 
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: openssl-${{ env.PARENT_PLATFORM }}
-          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+    - name: Cache tdlib
+      id: cache-tdlib
+      uses: actions/cache@v2
+      with:
+        path: td/example/ios/build/install-${{ env.PLATFORM }}
+        key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
+    - name: Install deps
+      if: steps.cache-tdlib.outputs.cache-hit != 'true'
+      run: brew install gperf cmake coreutils
 
-      - name: Pregenerate Sources
-        run: |
-          cd td
-          mkdir native-build
-          cd native-build
-          cmake ..
-          cmake --build . --target prepare_cross_compiling
+    - name: Download Artifacts
+      if: steps.cache-tdlib.outputs.cache-hit != 'true'
+      uses: actions/download-artifact@v2
+      with:
+        name: openssl-${{ env.PARENT_PLATFORM }}
+        path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
 
-      - name: Build TDLib
-        run: |
-          cd td/example/ios
-          ./build.sh $PLATFORM
+    - name: Pregenerate Sources
+      if: steps.cache-tdlib.outputs.cache-hit != 'true'
+      run: |
+        cd td
+        mkdir native-build
+        cd native-build
+        cmake ..
+        cmake --build . --target prepare_cross_compiling
 
-      - name: Upload ${{ env.PLATFORM }} install artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: tdlib-install-${{ env.PLATFORM }}
-          path: td/example/ios/build/install-${{ env.PLATFORM }}
-          if-no-files-found: error
+    - name: Build TDLib
+      if: steps.cache-tdlib.outputs.cache-hit != 'true'
+      run: |
+        cd td/example/ios
+        ./build.sh $PLATFORM
+
+    - name: Upload ${{ env.PLATFORM }} install artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: tdlib-install-${{ env.PLATFORM }}
+        path: td/example/ios/build/install-${{ env.PLATFORM }}
+        if-no-files-found: error
 
   build-framework-watchOS:
     runs-on: macos-latest
@@ -577,14 +625,14 @@ jobs:
         run: |
           cd td 
           git apply ../builder/tdlib-patches/build-openssl.patch
-      
+
       - name: Cache Openssl
         id: cache-openssl
         uses: actions/cache@v2
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
-      
+
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: brew install gperf cmake coreutils
@@ -608,24 +656,34 @@ jobs:
     env:
       PLATFORM: tvOS
     steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
 
+      - name: Patch Build script
+        run: cp builder/tdlib-patches/build.sh td/example/ios
+
+      - name: Cache tdlib
+        id: cache-tdlib
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+
+      - name: Install deps
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
       - name: Download Artifacts
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         uses: actions/download-artifact@v2
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
-
       - name: Pregenerate Sources
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td
           mkdir native-build
@@ -634,6 +692,7 @@ jobs:
           cmake --build . --target prepare_cross_compiling
 
       - name: Build TDLib
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM
@@ -652,24 +711,34 @@ jobs:
       PLATFORM: tvOS-simulator
       PARENT_PLATFORM: tvOS
     steps:
-      - name: Install deps
-        run: brew install gperf cmake coreutils
-
       - name: Checkout
         uses: actions/checkout@v2
         with:
           submodules: recursive
 
+      - name: Patch Build script
+        run: cp builder/tdlib-patches/build.sh td/example/ios
+
+      - name: Cache tdlib
+        id: cache-tdlib
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/build/install-${{ env.PLATFORM }}
+          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+
+      - name: Install deps
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
       - name: Download Artifacts
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         uses: actions/download-artifact@v2
         with:
           name: openssl-${{ env.PARENT_PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
-
       - name: Pregenerate Sources
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td
           mkdir native-build
@@ -678,6 +747,7 @@ jobs:
           cmake --build . --target prepare_cross_compiling
 
       - name: Build TDLib
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM
@@ -808,7 +878,7 @@ jobs:
           path: ./builder/build/macOS.xcarchive
 
       - name: Download watchOS Framework
-        
+
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-watchOS
