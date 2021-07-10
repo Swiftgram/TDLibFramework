@@ -1,3 +1,9 @@
 *.xcodeproj
 *.xcworkspace
 builder/build
+.DS_Store
+/.build
+/Packages
+xcuserdata/
+DerivedData/
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata

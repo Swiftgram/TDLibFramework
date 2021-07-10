@@ -36,5 +36,5 @@ if __name__ == '__main__':
     parser.add_argument("checksum", help="Checksum of zip archive from `swift package compute-checksum <zip>`")
     
     args = parser.parse_args()
-    with open('Project.swift', 'w') as f:
+    with open('Package.swift', 'w') as f:
         f.write(get_file_content(args.url, args.checksum))

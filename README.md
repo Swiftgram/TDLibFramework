@@ -2,12 +2,12 @@
 
 [![CI](https://github.com/Swiftgram/TDLibFramework/actions/workflows/ci.yml/badge.svg)](https://github.com/Swiftgram/TDLibFramework/actions/workflows/ci.yml)
 
-Project builds and bundles [TDLib](https://github.com/tdlib/td) for iOS, macOS, watchOS, tvOS and simulators in `.xcframework`
+Project contains raw [TDLib](https://github.com/tdlib/td) for iOS, macOS, watchOS, tvOS and simulators in `.xcframework` format
 
 ### Releases
-You can find latest release at [Releases](https://github.com/Swiftgram/TDLibFramework/releases) page.
+You can find latest releases at [Releases](https://github.com/Swiftgram/TDLibFramework/releases) page.
 
-You can request tdlib version update with [Issue](https://github.com/Swiftgram/TDLibFramework/issues)
+You can request tdlib version update with an [Issue](https://github.com/Swiftgram/TDLibFramework/issues)
 
 
 ### Build
@@ -17,7 +17,6 @@ You can find more about build process in [Build Docs](BUILD.md)
 ### TODO
 - [ ] Auto release from GH actions
 - [ ] Lib tests on simulators
-- [ ] SPM with .xcframework binary ([Docs](https://developer.apple.com/documentation/swift_packages/distributing_binary_frameworks_as_swift_packages))
 - [ ] Build docs
 - [ ] Links to M1 issues
 
