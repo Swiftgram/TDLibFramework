@@ -927,16 +927,19 @@ jobs:
     runs-on: macos-latest
     needs:
       - merge-xcframework
-    env: 
-        ARTIFACT_NAME: TDLibFramework.zip
-        ARTIFACT_PATH: ./builder/build/${{ env.ARTIFACT_NAME }}
-        TDLIB_REPO: https://github.com/tdlib/td
-        RELEASES_DOWNLOAD_URL: https://github.com/${{ env.GITHUB_REPOSITORY }}/releases/download
+    env:
+      TDLIB_REPO: https://github.com/tdlib/td
+      RELEASES_DOWNLOAD_URL: https://github.com/${{ github.GITHUB_REPOSITORY }}/releases/download
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
+
+      - name: Set Artifact envs
+        run: |
+          echo "ARTIFACT_NAME=TDLibFramework.zip" >> $GITHUB_ENV
+          echo "ARTIFACT_PATH=./builder/build/${{ env.ARTIFACT_NAME }}" >> $GITHUB_ENV
+
       - name: Download XCFramework
         uses: actions/download-artifact@v2
         with:
@@ -950,13 +953,13 @@ jobs:
           echo "ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})" >> $GITHUB_ENV
           echo "TDLIB_COMMIT_URL=${{ env.TDLIB_REPO }}/tree/${{ env.TDLIB_COMMIT }}" >> $GITHUB_ENV
           echo "RELEASE_TAG=${{ env.TDLIB_VERSION }}-${{ env.TDLIB_COMMIT }}" >>$GITHUB_ENV
-      
+
       - name: Update Package.swift
-        run: | 
-            python3 scripts/swift_package_generator.py "${{ env.RELEASES_DOWNLOAD_URL }}/${{ env.RELEASE_TAG }}/${{ env.ARTIFACT_NAME }}" ${{ env.ARTIFACT_CHECKSUM }}
-            git add Package.swift || true
-            git commit -m "[no ci] Bump tdlib ${{ env.RELEASE_TAG }}" || true
-            git push origin main || true
+        run: |
+          python3 scripts/swift_package_generator.py "${{ env.RELEASES_DOWNLOAD_URL }}/${{ env.RELEASE_TAG }}/${{ env.ARTIFACT_NAME }}" ${{ env.ARTIFACT_CHECKSUM }}
+          git add Package.swift || true
+          git commit -m "[no ci] Bump tdlib ${{ env.RELEASE_TAG }}" || true
+          git push origin main || true
 
       - name: Release
         uses: softprops/action-gh-release@v0.1.5
@@ -967,7 +970,6 @@ jobs:
           body: "XCFramework based on TDLib-${{ env.TDLIB_VERSION }} commit [${{ env.TDLIB_COMMIT }}](${{ env.TDLIB_COMMIT_URL }}]\n\nZIP Checksum `${{ env.ARTIFACT_CHECKSUM }}`"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 
   # Tests
   # test-iOS:
