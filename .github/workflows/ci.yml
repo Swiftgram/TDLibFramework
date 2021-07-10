@@ -940,7 +940,7 @@ jobs:
       - name: Set Envs
         run: |
           
-          ARTIFACT_PATH=./builder/build/${{ env.ARTIFACT_NAME }}
+          ARTIFACT_PATH="./builder/build/${{ env.ARTIFACT_NAME }}"
           echo "$ARTIFACT_PATH" >> $GITHUB_ENV
 
           RELEASES_DOWNLOAD_URL=https://github.com/$GITHUB_REPOSITORY/releases/download
