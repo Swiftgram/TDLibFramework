@@ -928,17 +928,18 @@ jobs:
     needs:
       - merge-xcframework
     env:
-      TDLIB_REPO: https://github.com/tdlib/td
-      RELEASES_DOWNLOAD_URL: https://github.com/${{ github.GITHUB_REPOSITORY }}/releases/download
+      TDLIB_REPO: https://github.com/tdlib/td      
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          submodules: recursive
 
       - name: Set Artifact envs
         run: |
           echo "ARTIFACT_NAME=TDLibFramework.zip" >> $GITHUB_ENV
-          echo "ARTIFACT_PATH=./builder/build/${{ env.ARTIFACT_NAME }}" >> $GITHUB_ENV
+          echo "ARTIFACT_PATH=./builder/build/$ARTIFACT_NAME" >> $GITHUB_ENV
 
       - name: Download XCFramework
         uses: actions/download-artifact@v2
@@ -948,11 +949,12 @@ jobs:
 
       - name: Setup Envs
         run: |
+          echo "RELEASES_DOWNLOAD_URL=https://github.com/${{ env.GITHUB_REPOSITORY }}/releases/download"
           echo "TDLIB_COMMIT=$(cd td && git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "TDLIB_VERSION=$(python3 scripts/extract_td_version.py td/td/telegram/Td.h)" >> $GITHUB_ENV
-          echo "ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})" >> $GITHUB_ENV
-          echo "TDLIB_COMMIT_URL=${{ env.TDLIB_REPO }}/tree/${{ env.TDLIB_COMMIT }}" >> $GITHUB_ENV
-          echo "RELEASE_TAG=${{ env.TDLIB_VERSION }}-${{ env.TDLIB_COMMIT }}" >>$GITHUB_ENV
+          echo "ARTIFACT_CHECKSUM=$(swift package compute-checksum ${ARTIFACT_PATH})" >> $GITHUB_ENV
+          echo "TDLIB_COMMIT_URL=${TDLIB_REPO}/tree/${TDLIB_COMMIT}" >> $GITHUB_ENV
+          echo "RELEASE_TAG=${TDLIB_VERSION}-${TDLIB_COMMIT}" >> $GITHUB_ENV
 
       - name: Update Package.swift
         run: |
