@@ -557,7 +557,6 @@ jobs:
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
-        working-directory: ./builder
         uses: actions/upload-artifact@v2
         with:
           name: xcarchive-${{ env.PLATFORM }}
@@ -729,7 +728,6 @@ jobs:
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
-        working-directory: ./builder
         uses: actions/upload-artifact@v2
         with:
           name: xcarchive-${{ env.PLATFORM }}
@@ -773,7 +771,6 @@ jobs:
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
-        working-directory: ./builder
         uses: actions/upload-artifact@v2
         with:
           name: xcarchive-${{ env.PLATFORM }}
@@ -796,21 +793,18 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Download iOS Framework
-        working-directory: ./builder
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-iOS
           path: ./builder/build/iOS.xcarchive
 
       - name: Download iOS-simulator Framework
-        working-directory: ./builder
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-iOS-simulator
           path: ./builder/build/iOS-simulator.xcarchive
 
       - name: Download macOS Framework
-        working-directory: ./builder
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-macOS
