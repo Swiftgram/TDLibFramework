@@ -919,9 +919,55 @@ jobs:
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: TDLib.xcframework
+          name: TDLibFramework.zip
           path: ./builder/build/TDLibFramework.zip
           if-no-files-found: error
+
+  create-release:
+    runs-on: macos-latest
+    needs:
+      - merge-xcframework
+    env: 
+        ARTIFACT_NAME: TDLibFramework.zip
+        ARTIFACT_PATH: ./builder/build/${{ env.ARTIFACT_NAME }}
+        TDLIB_REPO: https://github.com/tdlib/td
+        RELEASES_DOWNLOAD_URL: https://github.com/${{ env.GITHUB_REPOSITORY }}/releases/download
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Download XCFramework
+        uses: actions/download-artifact@v2
+        with:
+          name: TDLibFramework.zip
+          path: ${{ env.ARTIFACT_PATH }}
+
+      - name: Setup Envs
+        run: |
+          echo "TDLIB_COMMIT=$(cd td && git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "TDLIB_VERSION=$(python3 scripts/extract_td_version.py td/td/telegram/Td.h)" >> $GITHUB_ENV
+          echo "ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})" >> $GITHUB_ENV
+          echo "TDLIB_COMMIT_URL=${{ env.TDLIB_REPO }}/tree/${{ env.TDLIB_COMMIT }}" >> $GITHUB_ENV
+          echo "RELEASE_TAG=${{ env.TDLIB_VERSION }}-${{ env.TDLIB_COMMIT }}" >>$GITHUB_ENV
+      
+      - name: Update Package.swift
+        run: | 
+            python3 scripts/swift_package_generator.py "${{ env.RELEASES_DOWNLOAD_URL }}/${{ env.RELEASE_TAG }}/${{ env.ARTIFACT_NAME }}" ${{ env.ARTIFACT_CHECKSUM }}
+            git add Package.swift || true
+            git commit -m "[no ci] Bump tdlib ${{ env.RELEASE_TAG }}" || true
+            git push origin main || true
+
+      - name: Release
+        uses: softprops/action-gh-release@v0.1.5
+        with:
+          target_commitish: main
+          tag_name: ${{ env.RELEASE_TAG }}
+          files: ${{ env.ARTIFACT_PATH }}
+          body: "XCFramework based on TDLib-${{ env.TDLIB_VERSION }} commit [${{ env.TDLIB_COMMIT }}](${{ env.TDLIB_COMMIT_URL }}]\n\nZIP Checksum `${{ env.ARTIFACT_CHECKSUM }}`"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
   # Tests
   # test-iOS:

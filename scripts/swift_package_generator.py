@@ -1,12 +1,12 @@
 import argparse
 
 def get_file_content(url, checksum):
-    return f"""// swift-tools-version:5.0
+    return f"""// swift-tools-version:5.3
 import PackageDescription
 
 
 let package = Package(
-    name: "TDLib",
+    name: "TDLibFramework",
     platforms: [
         .iOS(.v9),
         .macOS(.v10_12),
@@ -15,17 +15,17 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "TDLib",
-            targets: ["TDLib"])
+            name: "TDLibFramework",
+            targets: ["TDLibFramework"]
+        )
     ],
-    dependencies: [
-    ],
+    dependencies: [],
     targets: [
         .binaryTarget(
-            name: "TDLib",
-            url: "{url}", 
+            name: "TDLibFramework",
+            url: "{url}",
             checksum: "{checksum}"
-        )
+        ),
     ]
 )
 """
