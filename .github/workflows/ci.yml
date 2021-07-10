@@ -34,7 +34,7 @@ jobs:
         if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td 
-          git apply ../tdlib-patches/build-openssl.patch
+          git apply ../builder/tdlib-patches/build-openssl.patch
 
       - name: Build Openssl
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -70,7 +70,7 @@ jobs:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Patch Build script
-        run: cp tdlib-patches/build.sh td/example/ios
+        run: cp builder/tdlib-patches/build.sh td/example/ios
 
       - name: Pregenerate Sources
         run: |
@@ -114,7 +114,7 @@ jobs:
           path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
 
       - name: Patch Build script
-        run: cp tdlib-patches/build.sh td/example/ios
+        run: cp builder/tdlib-patches/build.sh td/example/ios
 
       - name: Pregenerate Sources
         run: |
@@ -160,19 +160,22 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
       - name: Patch headers
+        working-directory: ./builder
         run: ./patch-headers.sh
 
       - name: Generate project
-        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+        working-directory: ./builder
+        run: TUIST_PLATFORM=$PLATFORM ../.tuist-bin/tuist generate
 
       - name: Build .framework
+        working-directory: ./builder
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: xcarchive-${{ env.PLATFORM }}
-          path: ./build/${{ env.PLATFORM }}.xcarchive
+          path: ./builder/build/${{ env.PLATFORM }}.xcarchive
           if-no-files-found: error
 
   build-framework-iOS-simulator:
@@ -200,19 +203,22 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
       - name: Patch headers
+        working-directory: ./builder
         run: ./patch-headers.sh
 
       - name: Generate project
-        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+        working-directory: ./builder
+        run: TUIST_PLATFORM=$PLATFORM ../.tuist-bin/tuist generate
 
       - name: Build .framework
+        working-directory: ./builder
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: xcarchive-${{ env.PLATFORM }}
-          path: ./build/${{ env.PLATFORM }}.xcarchive
+          path: ./builder/build/${{ env.PLATFORM }}.xcarchive
           if-no-files-found: error
 
   # macOS
@@ -242,7 +248,7 @@ jobs:
         if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td 
-          git apply ../tdlib-patches/build-openssl.patch
+          git apply ../builder/tdlib-patches/build-openssl.patch
 
       - name: Build Openssl
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -278,7 +284,7 @@ jobs:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Patch Build script
-        run: cp tdlib-patches/build.sh td/example/ios
+        run: cp builder/tdlib-patches/build.sh td/example/ios
 
       # Sources are pregenerated in build phase
       # - name: Pregenerate Sources
@@ -325,19 +331,22 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
       - name: Patch headers
+        working-directory: ./builder
         run: ./patch-headers.sh
 
       - name: Generate project
-        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+        working-directory: ./builder
+        run: TUIST_PLATFORM=$PLATFORM ../.tuist-bin/tuist generate
 
       - name: Build .framework
+        working-directory: ./builder
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: xcarchive-${{ env.PLATFORM }}
-          path: ./build/${{ env.PLATFORM }}.xcarchive
+          path: ./builder/build/${{ env.PLATFORM }}.xcarchive
           if-no-files-found: error
 
   # watchOS
@@ -367,7 +376,7 @@ jobs:
         if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td 
-          git apply ../tdlib-patches/build-openssl.patch
+          git apply ../builder/tdlib-patches/build-openssl.patch
 
       - name: Build Openssl
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -403,7 +412,7 @@ jobs:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Patch Build script
-        run: cp tdlib-patches/build.sh td/example/ios
+        run: cp builder/tdlib-patches/build.sh td/example/ios
 
       - name: Pregenerate Sources
         run: |
@@ -447,7 +456,7 @@ jobs:
           path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
 
       - name: Patch Build script
-        run: cp tdlib-patches/build.sh td/example/ios
+        run: cp builder/tdlib-patches/build.sh td/example/ios
 
       - name: Pregenerate Sources
         run: |
@@ -493,19 +502,22 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
       - name: Patch headers
+        working-directory: ./builder
         run: ./patch-headers.sh
 
       - name: Generate project
-        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+        working-directory: ./builder
+        run: TUIST_PLATFORM=$PLATFORM ../.tuist-bin/tuist generate
 
       - name: Build .framework
+        working-directory: ./builder
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: xcarchive-${{ env.PLATFORM }}
-          path: ./build/${{ env.PLATFORM }}.xcarchive
+          path: ./builder/build/${{ env.PLATFORM }}.xcarchive
           if-no-files-found: error
 
   build-framework-watchOS-simulator:
@@ -533,19 +545,23 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
       - name: Patch headers
+        working-directory: ./builder
         run: ./patch-headers.sh
 
       - name: Generate project
-        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+        working-directory: ./builder
+        run: TUIST_PLATFORM=$PLATFORM ../.tuist-bin/tuist generate
 
       - name: Build .framework
+        working-directory: ./builder
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
+        working-directory: ./builder
         uses: actions/upload-artifact@v2
         with:
           name: xcarchive-${{ env.PLATFORM }}
-          path: ./build/${{ env.PLATFORM }}.xcarchive
+          path: ./builder/build/${{ env.PLATFORM }}.xcarchive
           if-no-files-found: error
 
   # tvOS
@@ -575,7 +591,7 @@ jobs:
         if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
           cd td 
-          git apply ../tdlib-patches/build-openssl.patch
+          git apply ../builder/tdlib-patches/build-openssl.patch
 
       - name: Build Openssl
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -611,7 +627,7 @@ jobs:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Patch Build script
-        run: cp tdlib-patches/build.sh td/example/ios
+        run: cp builder/tdlib-patches/build.sh td/example/ios
 
       - name: Pregenerate Sources
         run: |
@@ -655,7 +671,7 @@ jobs:
           path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
 
       - name: Patch Build script
-        run: cp tdlib-patches/build.sh td/example/ios
+        run: cp builder/tdlib-patches/build.sh td/example/ios
 
       - name: Pregenerate Sources
         run: |
@@ -701,19 +717,23 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
       - name: Patch headers
+        working-directory: ./builder
         run: ./patch-headers.sh
 
       - name: Generate project
-        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+        working-directory: ./builder
+        run: TUIST_PLATFORM=$PLATFORM ../.tuist-bin/tuist generate
 
       - name: Build .framework
+        working-directory: ./builder
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
+        working-directory: ./builder
         uses: actions/upload-artifact@v2
         with:
           name: xcarchive-${{ env.PLATFORM }}
-          path: ./build/${{ env.PLATFORM }}.xcarchive
+          path: ./builder/build/${{ env.PLATFORM }}.xcarchive
           if-no-files-found: error
 
   build-framework-tvOS-simulator:
@@ -741,19 +761,23 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
 
       - name: Patch headers
+        working-directory: ./builder
         run: ./patch-headers.sh
 
       - name: Generate project
-        run: TUIST_PLATFORM=$PLATFORM .tuist-bin/tuist generate
+        working-directory: ./builder
+        run: TUIST_PLATFORM=$PLATFORM ../.tuist-bin/tuist generate
 
       - name: Build .framework
+        working-directory: ./builder
         run: ./build.sh $PLATFORM
 
       - name: Upload Artifacts
+        working-directory: ./builder
         uses: actions/upload-artifact@v2
         with:
           name: xcarchive-${{ env.PLATFORM }}
-          path: ./build/${{ env.PLATFORM }}.xcarchive
+          path: ./builder/build/${{ env.PLATFORM }}.xcarchive
           if-no-files-found: error
 
   # Merge frameworks
@@ -772,55 +796,60 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Download iOS Framework
+        working-directory: ./builder
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-iOS
-          path: ./build/iOS.xcarchive
+          path: ./builder/build/iOS.xcarchive
 
       - name: Download iOS-simulator Framework
+        working-directory: ./builder
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-iOS-simulator
-          path: ./build/iOS-simulator.xcarchive
+          path: ./builder/build/iOS-simulator.xcarchive
 
       - name: Download macOS Framework
+        working-directory: ./builder
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-macOS
-          path: ./build/macOS.xcarchive
+          path: ./builder/build/macOS.xcarchive
 
       - name: Download watchOS Framework
+        
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-watchOS
-          path: ./build/watchOS.xcarchive
+          path: ./builder/build/watchOS.xcarchive
 
       - name: Download watchOS-simulator Framework
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-watchOS-simulator
-          path: ./build/watchOS-simulator.xcarchive
+          path: ./builder/build/watchOS-simulator.xcarchive
 
       - name: Download tvOS Framework
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-tvOS
-          path: ./build/tvOS.xcarchive
+          path: ./builder/build/tvOS.xcarchive
 
       - name: Download tvOS-simulator Framework
         uses: actions/download-artifact@v2
         with:
           name: xcarchive-tvOS-simulator
-          path: ./build/tvOS-simulator.xcarchive
+          path: ./builder/build/tvOS-simulator.xcarchive
 
       - name: Merge Frameworks
+        working-directory: ./builder
         run: ./merge-frameworks.sh "iOS iOS-simulator macOS watchOS watchOS-simulator tvOS tvOS-simulator"
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: TDLib.xcframework
-          path: ./build/TDLib.xcframework
+          path: ./builder/build/TDLib.xcframework
           if-no-files-found: error
 
   # Tests

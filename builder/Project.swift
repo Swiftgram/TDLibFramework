@@ -18,9 +18,13 @@ func shell(_ command: String) -> String {
     return output
 }
 
+let rootPath = ".."
+let tdPath "\(rootPath)/td"
+let tdIOSPath = "\(tdPath)/example/ios"
+
 func getVersion() -> String {
-    let td_git_tag = shell("cd td && git rev-parse --short HEAD")
-    var version = shell("python3 extract_td_version.py").trimmingCharacters(in: .whitespacesAndNewlines)
+    let td_git_tag = shell("cd \(tdPath) && git rev-parse --short HEAD")
+    var version = shell("python3 \(rootPath)/scripts/extract_td_version.py \(tdPath)/td/telegram/Td.h").trimmingCharacters(in: .whitespacesAndNewlines)
 
     if version.isEmpty {
         version = td_git_tag
@@ -33,7 +37,7 @@ func getVersion() -> String {
 }
 
 let SimulatorSuffix = "-simulator"
-let tdPath = "td/example/ios"
+
 
 
 func getBuildPlatforms() -> [String] {
@@ -88,7 +92,7 @@ func getPlatformDependencies(platform: Platform, isSimulator: Bool = false) -> [
     ] {
         tdDeps.append(
             .library(
-                path: "\(tdPath)/third_party/openssl/\(platformString)/lib/\(opensslInstallLib)",
+                path: "\(tdIOSPath)/third_party/openssl/\(platformString)/lib/\(opensslInstallLib)",
                 publicHeaders: "",
                 swiftModuleMap: nil
             )
@@ -109,7 +113,7 @@ func getPlatformDependencies(platform: Platform, isSimulator: Bool = false) -> [
     ] {
         tdDeps.append(
             .library(
-                path: "\(tdPath)/build/install-\(platformString + suffix)/lib/\(tdInstallLib)",
+                path: "\(tdIOSPath)/build/install-\(platformString + suffix)/lib/\(tdInstallLib)",
                 publicHeaders: "",
                 swiftModuleMap: nil
             )
@@ -169,11 +173,11 @@ func getTargets() -> [Target] {
             infoPlist: "xcodeproj/Info.plist",
             headers: Headers(
                 public: [
-                    "td/td/telegram/td_json_client.h",
-                    "td/td/telegram/td_log.h",
+                    "\(tdPath)/td/telegram/td_json_client.h",
+                    "\(tdPath)/td/telegram/td_log.h",
                     "xcodeproj/td.h",
                     // Additional Compiled header
-                    "\(tdPath)/build/install-\(rawPlatform)/include/td/telegram/tdjson_export.h",
+                    "\(tdIOSPath)/build/install-\(rawPlatform)/include/td/telegram/tdjson_export.h",
                 ]
             ),
             dependencies: deps,

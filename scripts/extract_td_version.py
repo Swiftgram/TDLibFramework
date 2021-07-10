@@ -1,6 +1,7 @@
 import re
+import argparse
 
-def parse_version(file_path: str = 'td/td/telegram/Td.h'):
+def parse_version(file_path: str) -> str:
     """
         Parse Tdlib version from header file
     """
@@ -14,4 +15,8 @@ def parse_version(file_path: str = 'td/td/telegram/Td.h'):
             raise ValueError("Unable to find TDLIB_VERSION in " + file_path)
 
 if __name__ == '__main__':
-    print(parse_version())
+    parser = argparse.ArgumentParser()
+    parser.add_argument("header_path", help="Path to td/td/telegram/Td.h header file")
+    
+    args = parser.parse_args()
+    print(parse_version(args.header_path))
