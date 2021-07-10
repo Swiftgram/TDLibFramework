@@ -965,8 +965,9 @@ jobs:
           path: ${{ env.ARTIFACT_PATH }}
 
       - name: Get Checksum
-        run: |
-          echo "ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})" >> $GITHUB_ENV
+        run: | 
+              ls -R ./builder/build
+              echo "ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})" >> $GITHUB_ENV
 
       - name: Update Package.swift
         run: |
