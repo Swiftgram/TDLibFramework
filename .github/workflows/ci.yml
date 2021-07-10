@@ -912,11 +912,15 @@ jobs:
         working-directory: ./builder
         run: ./merge-frameworks.sh "iOS iOS-simulator macOS watchOS watchOS-simulator tvOS tvOS-simulator"
 
+      - name: Archive XCFramework
+        working-directory: ./builder/build
+        run: zip TDLibFramework.zip TDLibFramework.xcframework
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         with:
           name: TDLib.xcframework
-          path: ./builder/build/TDLib.xcframework
+          path: ./builder/build/TDLibFramework.zip
           if-no-files-found: error
 
   # Tests
