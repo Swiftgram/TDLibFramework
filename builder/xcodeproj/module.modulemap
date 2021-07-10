@@ -1,4 +1,4 @@
-framework module TDLib {
+framework module TDLibFramework {
   umbrella header "td.h"
 
   export *

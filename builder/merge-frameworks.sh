@@ -2,7 +2,7 @@
 set -e
 
 PLATFORMS="$1"
-FRAMEWORK_NAME=TDLib
+FRAMEWORK_NAME=TDLibFramework
 
 xcodebuild_frameworks=()
 

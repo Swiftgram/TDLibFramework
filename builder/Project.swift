@@ -184,7 +184,7 @@ func getTargets() -> [Target] {
             settings: Settings(
                 base: [
                     "SWIFT_VERSION": "5.0",
-                    "PRODUCT_NAME": "TDLib",
+                    "PRODUCT_NAME": "TDLibFramework",
                 ].merging(getExcludedArchs(platform: platform, isSimulator: isSimulator)),
                 configurations: [
                     .release(name: "Release", settings: ["SWIFT_OPTIMIZATION_LEVEL": "-O"]),
@@ -197,7 +197,7 @@ func getTargets() -> [Target] {
 }
 
 let project = Project(
-    name: "TDLib",
+    name: "TDLibFramework",
     settings: Settings(
         base: [
             "IPHONEOS_DEPLOYMENT_TARGET": "12.0",
