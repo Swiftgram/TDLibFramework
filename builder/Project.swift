@@ -19,7 +19,7 @@ func shell(_ command: String) -> String {
 }
 
 let rootPath = ".."
-let tdPath "\(rootPath)/td"
+let tdPath = "\(rootPath)/td"
 let tdIOSPath = "\(tdPath)/example/ios"
 
 func getVersion() -> String {
