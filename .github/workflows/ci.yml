@@ -941,23 +941,22 @@ jobs:
         run: |
           
           ARTIFACT_PATH="./builder/build/${{ env.ARTIFACT_NAME }}"
-          echo "$ARTIFACT_PATH" >> $GITHUB_ENV
+          echo "ARTIFACT_PATH=$ARTIFACT_PATH" >> $GITHUB_ENV
 
           RELEASES_DOWNLOAD_URL=https://github.com/$GITHUB_REPOSITORY/releases/download
-          echo "$RELEASES_DOWNLOAD_URL" >> $GITHUB_ENV
+          echo "RELEASES_DOWNLOAD_URL=$RELEASES_DOWNLOAD_URL" >> $GITHUB_ENV
 
           TDLIB_COMMIT=$(cd td && git rev-parse --short HEAD)
-          echo "$TDLIB_COMMIT" >> $GITHUB_ENV
+          echo "TDLIB_COMMIT=$TDLIB_COMMIT" >> $GITHUB_ENV
 
           TDLIB_VERSION=$(python3 scripts/extract_td_version.py td/td/telegram/Td.h)
-          echo "$TDLIB_VERSION" >> $GITHUB_ENV
+          echo "TDLIB_VERSION=$TDLIB_VERSION" >> $GITHUB_ENV
 
           TDLIB_COMMIT_URL=${{ env.TDLIB_REPO }}/tree/$TDLIB_COMMIT
-
-          echo "$TDLIB_COMMIT_URL" >> $GITHUB_ENV
+          echo "TDLIB_COMMIT_URL=$TDLIB_COMMIT_URL" >> $GITHUB_ENV
 
           RELEASE_TAG=$TDLIB_VERSION-$TDLIB_COMMIT
-          echo "$RELEASE_TAG" >> $GITHUB_ENV
+          echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_ENV
 
       - name: Download XCFramework
         uses: actions/download-artifact@v2
