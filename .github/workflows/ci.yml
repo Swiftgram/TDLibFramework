@@ -930,6 +930,7 @@ jobs:
     env:
       TDLIB_REPO: https://github.com/tdlib/td  
       ARTIFACT_NAME: TDLibFramework.zip
+      ARTIFACT_DIR: ./builder/build
 
     steps:
       - name: Checkout
@@ -962,12 +963,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: TDLibFramework.zip
-          path: ${{ env.ARTIFACT_PATH }}
+          path: ${{ env.ARTIFACT_DIR }}
 
       - name: Get Checksum
-        run: | 
-              ls -R ./builder/build
-              echo "ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})" >> $GITHUB_ENV
+        run: echo "ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})" >> $GITHUB_ENV
 
       - name: Update Package.swift
         run: |
