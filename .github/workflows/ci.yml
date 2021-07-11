@@ -981,7 +981,7 @@ jobs:
           target_commitish: main
           tag_name: ${{ env.RELEASE_TAG }}
           files: ${{ env.ARTIFACT_PATH }}
-          body: "XCFramework based on TDLib-${{ env.TDLIB_VERSION }} commit [${{ env.TDLIB_COMMIT }}](${{ env.TDLIB_COMMIT_URL }}]\n\nZIP Checksum `${{ env.ARTIFACT_CHECKSUM }}`"
+          body: "XCFramework based on TDLib-${{ env.TDLIB_VERSION }} commit [${{ env.TDLIB_COMMIT }}](${{ env.TDLIB_COMMIT_URL }})\n\nZIP Checksum `${{ env.ARTIFACT_CHECKSUM }}`"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
