@@ -976,7 +976,7 @@ jobs:
           git push origin main || true
 
       - name: Release
-        uses: softprops/action-gh-release@v0.1.5
+        uses: softprops/action-gh-release@9729932bfb75c05ad1f6e3a729294e05abaa7001
         with:
           target_commitish: main
           tag_name: ${{ env.RELEASE_TAG }}
