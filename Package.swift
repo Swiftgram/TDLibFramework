@@ -7,7 +7,7 @@ let package = Package(
     platforms: [
         .iOS(.v9),
         .macOS(.v10_12),
-        .watchOS(.v2), // Based on iOS 9 version
+        .watchOS(.v4),
         .tvOS(.v9) // Based on iOS 9 version
     ],
     products: [

@@ -11,6 +11,10 @@ on:
   workflow_dispatch:
 
 jobs:
+  env:
+    TDLIB_REPO: https://github.com/tdlib/td  
+    ARTIFACT_NAME: TDLibFramework.zip
+    ARTIFACT_DIR: ./builder/build
   # iOS
   build-openssl-iOS:
     runs-on: macos-latest
@@ -923,14 +927,33 @@ jobs:
           path: ./builder/build/TDLibFramework.zip
           if-no-files-found: error
 
+  # Tests
+  tests:
+    runs-in: macos-latest
+    strategy:
+      matrix:
+        platform: ["macOS", "iOS-simulator"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Download XCFramework
+        uses: actions/download-artifact@v2
+        with:
+          name: TDLibFramework.zip
+          path: ${{ env.ARTIFACT_DIR }}
+
+      - name: Unpack framework
+        working-directory: ${{ env.ARTIFACT_DIR }}
+        run: unzip ${{ env.ARTIFACT_NAME }}
+      
+      - name: Run Tests for ${{ matrix.platform }}
+        run: ./scripts/test.sh ${{ matrix.platform }}
+
   create-release:
     runs-on: macos-latest
     needs:
-      - merge-xcframework
-    env:
-      TDLIB_REPO: https://github.com/tdlib/td  
-      ARTIFACT_NAME: TDLibFramework.zip
-      ARTIFACT_DIR: ./builder/build
+      - tests
 
     steps:
       - name: Checkout
@@ -984,44 +1007,3 @@ jobs:
           body: "XCFramework based on TDLib-${{ env.TDLIB_VERSION }} commit [${{ env.TDLIB_COMMIT }}](${{ env.TDLIB_COMMIT_URL }})\n\nZIP Checksum `${{ env.ARTIFACT_CHECKSUM }}`"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # Tests
-  # test-iOS:
-  #   runs-on: macos-latest
-  #   needs:
-  #     - merge-xcframework
-  #   steps:
-  #     - uses: actions/checkout@v2
-
-  # test-macOS:
-  #   runs-on: macos-latest
-  #   needs:
-  #     - merge-xcframework
-  #   steps:
-  #     - uses: actions/checkout@v2
-
-  # test-watchOS:
-  #   runs-on: macos-latest
-  #   needs:
-  #     - merge-xcframework
-  #   steps:
-  #     - uses: actions/checkout@v2
-
-  # test-tvOS:
-  #   runs-on: macos-latest
-  #   needs:
-  #     - merge-xcframework
-  #   steps:
-  #     - uses: actions/checkout@v2
-
-  # Publish
-  # publish:
-  #   runs-on: macos-latest
-  #   needs:
-  #     - merge-xcframework
-  #     - test-iOS
-  #     - test-macOS
-  #     - test-watchOS
-  #     - test-tvOS
-  #   steps:
-  #     - uses: actions/checkout@v2
