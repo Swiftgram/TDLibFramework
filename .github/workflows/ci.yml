@@ -931,6 +931,7 @@ jobs:
   # Tests
   tests:
     runs-in: macos-latest
+    needs: [merge-xcframework]
     strategy:
       matrix:
         platform: ["macOS", "iOS-simulator"]
