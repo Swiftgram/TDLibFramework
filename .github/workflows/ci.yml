@@ -930,7 +930,7 @@ jobs:
 
   # Tests
   tests:
-    runs-in: macos-latest
+    runs-on: macos-latest
     needs: [merge-xcframework]
     strategy:
       matrix:
