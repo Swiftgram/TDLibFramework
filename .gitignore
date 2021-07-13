@@ -1,5 +1,6 @@
 *.xcodeproj
 *.xcworkspace
+!Tests/Apps/Apps.xcodeproj
 builder/build
 .DS_Store
 /.build
