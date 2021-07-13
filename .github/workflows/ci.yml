@@ -10,11 +10,12 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  TDLIB_REPO: https://github.com/tdlib/td
+  ARTIFACT_NAME: TDLibFramework.zip
+  ARTIFACT_DIR: ./builder/build
+
 jobs:
-  env:
-    TDLIB_REPO: https://github.com/tdlib/td  
-    ARTIFACT_NAME: TDLibFramework.zip
-    ARTIFACT_DIR: ./builder/build
   # iOS
   build-openssl-iOS:
     runs-on: macos-latest
@@ -946,7 +947,7 @@ jobs:
       - name: Unpack framework
         working-directory: ${{ env.ARTIFACT_DIR }}
         run: unzip ${{ env.ARTIFACT_NAME }}
-      
+
       - name: Run Tests for ${{ matrix.platform }}
         run: ./scripts/test.sh ${{ matrix.platform }}
 
@@ -963,7 +964,7 @@ jobs:
 
       - name: Set Envs
         run: |
-          
+
           ARTIFACT_PATH="./builder/build/${{ env.ARTIFACT_NAME }}"
           echo "ARTIFACT_PATH=$ARTIFACT_PATH" >> $GITHUB_ENV
 
