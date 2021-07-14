@@ -934,7 +934,7 @@ jobs:
     needs: [merge-xcframework]
     strategy:
       matrix:
-        platform: ["macOS", "iOS-simulator"]
+        platform: ["macOS", "iOS-simulator", "tvOS-simulator"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2

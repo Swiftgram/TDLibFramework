@@ -7,7 +7,7 @@ PLATFORM="$1"
 if [[ $PLATFORM = "iOS-simulator" ]]; then # no arm64
     SDK="iphonesimulator"
     SCHEME="iOSApp"
-    DESTINATION='platform=iOS Simulator,name=iPhone 6,OS=9.0'
+    DESTINATION='platform=iOS Simulator,name=iPhone 8'
 elif [[ $PLATFORM = "macOS" ]]; then # no arm64
     SDK="macosx"
     SCHEME="macOSApp"
@@ -15,11 +15,11 @@ elif [[ $PLATFORM = "macOS" ]]; then # no arm64
 elif [[ $PLATFORM = "watchOS-simulator" ]]; then # no arm64
     SDK="watchsimulator"
     SCHEME="watchOSApp"
-    DESTINATION='platform=watchOS Simulator,name=watch OS,OS=4.0'
+    DESTINATION='platform=watchOS Simulator,name=watch OS'
 elif [[ $PLATFORM = "tvOS-simulator" ]]; then # no arm64
     SDK="appletvsimulator"
     SCHEME="tvOSApp"
-    DESTINATION='platform=tvOS Simulator,name=Apple TV,OS=9.0'
+    DESTINATION='platform=tvOS Simulator,name=Apple TV' 
 else
     echo "Unknown SDK for platform \"$PLATFORM\""
     exit 1
