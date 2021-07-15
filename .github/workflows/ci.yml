@@ -19,7 +19,6 @@ jobs:
   # Tests
   tests:
     runs-on: macos-latest
-    needs: [merge-xcframework]
     strategy:
       matrix:
         platform: ["macOS"]
