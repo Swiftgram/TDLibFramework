@@ -950,7 +950,14 @@ jobs:
         run: unzip ${{ env.ARTIFACT_NAME }}
 
       - name: Debug output
-        run: ls -R builder
+        run: zip -r project-${{ matrix.platform }}.zip .
+
+      - name: Upload Project
+        uses: actions/upload-artifact@v2
+        with:
+          name: project-${{ matrix.platform }}.zip
+          path: project-${{ matrix.platform }}.zip
+          if-no-files-found: error
 
       - name: Run Tests for ${{ matrix.platform }}
         run: ./scripts/test.sh ${{ matrix.platform }}
