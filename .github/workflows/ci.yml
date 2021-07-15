@@ -3,7 +3,7 @@ name: CI
 # Controls when the workflow will run
 on:
   push:
-    branches: [main]
+    branches: [test-ci]
     # paths:
     #   - "td" # on TDLib updates
 
