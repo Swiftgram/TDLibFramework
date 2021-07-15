@@ -934,7 +934,7 @@ jobs:
     needs: [merge-xcframework]
     strategy:
       matrix:
-        platform: ["macOS"]
+        platform: ["macOS", "iOS-simulator", "tvOS-simulator"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -948,10 +948,6 @@ jobs:
       - name: Unpack framework
         working-directory: ${{ env.ARTIFACT_DIR }}
         run: unzip ${{ env.ARTIFACT_NAME }}
-
-
-      - name: Debug output
-        run: ls -l ${{ env.ARTIFACT_DIR }}
 
       - name: Debug output
         run: zip -r project-${{ matrix.platform }}.zip .
