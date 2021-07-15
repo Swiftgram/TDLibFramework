@@ -26,12 +26,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Upload Project
-        uses: actions/upload-artifact@v2
-        with:
-          name: project-${{ matrix.platform }}.zip
-          path: project-${{ matrix.platform }}.zip
-          if-no-files-found: error
-
       - name: Run Tests for ${{ matrix.platform }}
         run: ./scripts/test.sh ${{ matrix.platform }}
