@@ -7,7 +7,7 @@ let package = Package(
     platforms: [
         .iOS(.v9),
         .macOS(.v10_12),
-        .watchOS(.v4),
+        .watchOS(.v2), // Based on iOS 9 version
         .tvOS(.v9) // Based on iOS 9 version
     ],
     products: [
@@ -20,8 +20,8 @@ let package = Package(
     targets: [
         .binaryTarget(
             name: "TDLibFramework",
-            url: "https://github.com/Swiftgram/TDLibFramework/releases/download/1.7.5-3ead565/TDLibFramework.zip",
-            checksum: "91ac48e9861b05b6b2ae8638acfcce56d777fc4ea751dd8618dee4b33fe25012"
+            url: "https://github.com/Swiftgram/TDLibFramework/releases/download/1.7.5-1a472ae/TDLibFramework.zip",
+            checksum: "67815fba89202f0e481bce390833b64be2de4dd6641be26f6e66ae933bec1285"
         ),
     ]
 )
