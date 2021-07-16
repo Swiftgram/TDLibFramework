@@ -1000,6 +1000,14 @@ jobs:
           git commit -m "[no ci] Bump tdlib ${{ env.RELEASE_TAG }}" || true
           git push origin main || true
 
+      - name: Remove previous release
+        uses: dev-drprasad/delete-tag-and-release@85fa8bcea0379a6ada9bbfdcb0a9d24d58e1a0d7
+        with:
+          delete_release: true
+          tag_name: ${{ env.RELEASE_TAG }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Release
         uses: softprops/action-gh-release@9729932bfb75c05ad1f6e3a729294e05abaa7001
         with:
