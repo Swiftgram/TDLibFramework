@@ -64,8 +64,11 @@ let request = ["@type": "setTdlibParameters",
                     "enable_storage_optimizer": true
                     ]
                 ] as [String : Any]
+
+// Send request
 td_json_client_send(client, dictToJSONString(request))
 
+// Block thread and wait for response (not more 5.0 seconds)
 if let response = td_json_client_receive(client, 5.0) {
    let responseString = String(cString: res)
    let responseDict = JSONStringToDict(responseString)
