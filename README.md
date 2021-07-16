@@ -49,7 +49,6 @@ if let res = td_json_client_execute(client, dictToJSONString(request)) {
 ```
 
 #### Async requests
-Only for methods with "[Can be called synchronously](https://github.com/tdlib/td/blob/73d8fb4b3584633b0ffde97a20bbff6602e7a5c4/td/generate/scheme/td_api.tl#L4294)" in docs
 ```swift
 let request = ["@type": "setTdlibParameters",
                 "parameters": [
