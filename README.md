@@ -4,6 +4,81 @@
 
 Project contains raw [TDLib](https://github.com/tdlib/td) for iOS, macOS, watchOS, tvOS and simulators in `.xcframework` format
 
+### Installation
+1. Install Xcode 12.5+
+2. Add https://github.com/Swiftgram/TDLibFramework as SPM dependency in `Project > Swift Packages`. 
+This could take a while cause it downloads ~300mb zip file with xcframework
+3. Add `TDLibFramework` as your target dependency.
+4. Add `libz.1.tbd` and `libc++.1.tbd` as your target dependencies.
+5. If something is not accesible from TDLibFramework, make sure to add `libSystem.B.tbd` for all platforms and `libc++abi.tbd` if you're building non-macOS app. [Source](https://github.com/modestman/tdlib-swift/blob/master/td-xcframework/td.xcodeproj/project.pbxproj#L301)
+6. Code!
+
+
+### Usage
+#### Create client
+```swift
+let client: UnsafeMutableRawPointer! = td_json_client_create()
+```
+#### Make request object
+```swift
+let request = ["@type": "getTextEntities", "text": "@telegram /test_command https://telegram.org telegram.me", "@extra": ["5", 7.0, "\\u00e4"]] as [String: Any]
+```
+
+#### JSON Serialization and Deserialization
+Small example for helper functions you will need to talk with TDLib
+```swift
+func dictToJSONString(_ dictionary: [String: Any]) -> String {
+    let dictionaryData = try! JSONSerialization.data(withJSONObject: dictionary)
+    return String(data: dictionaryData, encoding: .utf8)!
+}
+
+func JSONStringToDict(_ string: String) -> [String: Any] {
+    let responseData = string.data(using: .utf8)!
+    return try! JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as! [String: Any]
+}
+```
+
+#### Synchronious requests
+Only for methods with "[Can be called synchronously](https://github.com/tdlib/td/blob/73d8fb4b3584633b0ffde97a20bbff6602e7a5c4/td/generate/scheme/td_api.tl#L4294)" in docs
+```swift
+if let res = td_json_client_execute(client, dictToJSONString(request)) {
+    let responseString = String(cString: res)
+    let responseDict = JSONStringToDict(responseString)
+    print("Response from TDLib \(responseDict)")
+}
+```
+
+#### Async requests
+Only for methods with "[Can be called synchronously](https://github.com/tdlib/td/blob/73d8fb4b3584633b0ffde97a20bbff6602e7a5c4/td/generate/scheme/td_api.tl#L4294)" in docs
+```swift
+let request = ["@type": "setTdlibParameters",
+                "parameters": [
+                    "database_directory": "tdlib",
+                    "use_message_database": true,
+                    "use_secret_chats": true,
+                    "api_id": 94575,
+                    "api_hash": "a3406de8d171bb422bb6ddf3bbd800e2",
+                    "system_language_code": "en",
+                    "device_model": "Desktop",
+                    "application_version": "1.0",
+                    "enable_storage_optimizer": true
+                    ]
+                ] as [String : Any]
+td_json_client_send(client, dictToJSONString(request))
+
+if let response = td_json_client_receive(client, 5.0) {
+   let responseString = String(cString: res)
+   let responseDict = JSONStringToDict(responseString)
+   print("Async response from TDLib \(responseDict)")
+}
+```
+
+Destroy client on exit
+```swift
+td_json_client_destroy(client)
+```
+
+
 ### Releases
 You can find latest releases at [Releases](https://github.com/Swiftgram/TDLibFramework/releases) page.
 
@@ -11,12 +86,11 @@ You can request tdlib version update with an [Issue](https://github.com/Swiftgra
 
 
 ### Build
-You can find more about build process in [Build Docs](BUILD.md)
+You can find more about build process in [Github Actions](.github/workflows/ci.yml) file.
 
 
 ### TODO
-- [ ] Lib tests on simulators
-- [ ] Build docs
+- [ ] Lib tests on simulators (requires Xcode 12.5 on runner)
 
 
 ### M1 Support

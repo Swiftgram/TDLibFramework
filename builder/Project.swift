@@ -204,7 +204,7 @@ let project = Project(
             "MACH_O_TYPE": "staticlib",
             "MODULEMAP_FILE": "$(SRCROOT)/xcodeproj/module.modulemap",
             "SWIFT_VERSION": "5.0",
-            "MACOSX_DEPLOYMENT_TARGET": "10.15",
+            "MACOSX_DEPLOYMENT_TARGET": "10.12",
             "MARKETING_VERSION": .string(getVersion()),
         ]
     ),
