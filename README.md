@@ -49,7 +49,6 @@ if let res = td_json_client_execute(client, dictToJSONString(request)) {
 ```
 
 #### Async requests
-Only for methods with "[Can be called synchronously](https://github.com/tdlib/td/blob/73d8fb4b3584633b0ffde97a20bbff6602e7a5c4/td/generate/scheme/td_api.tl#L4294)" in docs
 ```swift
 let request = ["@type": "setTdlibParameters",
                 "parameters": [
@@ -64,8 +63,11 @@ let request = ["@type": "setTdlibParameters",
                     "enable_storage_optimizer": true
                     ]
                 ] as [String : Any]
+
+// Send request
 td_json_client_send(client, dictToJSONString(request))
 
+// Block thread and wait for response (not more 5.0 seconds)
 if let response = td_json_client_receive(client, 5.0) {
    let responseString = String(cString: res)
    let responseDict = JSONStringToDict(responseString)
@@ -96,7 +98,7 @@ You can find more about build process in [Github Actions](.github/workflows/ci.y
 ### M1 Support
 Apple Silicon is not supported due to lack of Python 2 support in [Python-Apple-Support](https://github.com/beeware/Python-Apple-support) (thus [TDLib](https://github.com/tdlib/td)) can't be compiled natively on arm64 Macs.
 
-If you want to run on M1, please run Xcode under Apple Rosetta 2
+If you want to build on M1, please run Xcode under Apple Rosetta 2
 
 More info in this [Telegram thread](https://t.me/tdlibchat/17955)
 
