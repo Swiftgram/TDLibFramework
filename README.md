@@ -98,7 +98,7 @@ You can find more about build process in [Github Actions](.github/workflows/ci.y
 ### M1 Support
 Apple Silicon is not supported due to lack of Python 2 support in [Python-Apple-Support](https://github.com/beeware/Python-Apple-support) (thus [TDLib](https://github.com/tdlib/td)) can't be compiled natively on arm64 Macs.
 
-If you want to run on M1, please run Xcode under Apple Rosetta 2
+If you want to build on M1, please run Xcode under Apple Rosetta 2
 
 More info in this [Telegram thread](https://t.me/tdlibchat/17955)
 
