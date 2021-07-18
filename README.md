@@ -7,11 +7,12 @@ Project contains raw [TDLib](https://github.com/tdlib/td) for iOS, macOS, watchO
 ### Installation
 1. Install Xcode 12.5+
 2. Add https://github.com/Swiftgram/TDLibFramework as SPM dependency in `Project > Swift Packages`. 
-This could take a while cause it downloads ~300mb zip file with xcframework
-3. Add `TDLibFramework` as your target dependency.
-4. Add `libz.1.tbd` and `libc++.1.tbd` as your target dependencies.
-5. If something is not accesible from TDLibFramework, make sure to add `libSystem.B.tbd` for all platforms and `libc++abi.tbd` if you're building non-macOS app. [Source](https://github.com/modestman/tdlib-swift/blob/master/td-xcframework/td.xcodeproj/project.pbxproj#L301)
-6. Code!
+This could take a while cause it downloads ~300mb zip file with xcframework.
+3. Add `arm64` to `EXCLUDED_ARCHS` due to lack of [arm64 support](#m1-support) or use `ONLY_ACTIVE_ARCH=YES` for debug builds on Intel CPU.
+4. Add `TDLibFramework` as your target dependency.
+5. Add `libz.1.tbd` and `libc++.1.tbd` as your target dependencies.
+6. If something is not accesible from TDLibFramework, make sure to add `libSystem.B.tbd` for all platforms and `libc++abi.tbd` if you're building non-macOS app. [Source](https://github.com/modestman/tdlib-swift/blob/master/td-xcframework/td.xcodeproj/project.pbxproj#L301)
+7. Code!
 
 
 ### Usage
