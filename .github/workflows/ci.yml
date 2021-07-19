@@ -955,7 +955,7 @@ jobs:
 
   create-release:
     runs-on: macos-11
-    needs: [merge-xcframework]
+    needs: [tests]
 
     steps:
       - name: Checkout
