@@ -18,7 +18,7 @@ env:
 jobs:
   # iOS
   build-openssl-iOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     env:
       PLATFORM: iOS
     steps:
@@ -57,7 +57,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-iOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-openssl-iOS]
     env:
       PLATFORM: iOS
@@ -111,7 +111,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-iOS-simulator:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-openssl-iOS]
     env:
       PLATFORM: iOS-simulator
@@ -166,7 +166,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-iOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-tdlib-iOS]
     env:
       PLATFORM: iOS
@@ -208,7 +208,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-iOS-simulator:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-tdlib-iOS-simulator]
     env:
       PLATFORM: iOS-simulator
@@ -252,7 +252,7 @@ jobs:
 
   # macOS
   build-openssl-macOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     env:
       PLATFORM: macOS
     steps:
@@ -291,7 +291,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-macOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-openssl-macOS]
     env:
       PLATFORM: macOS
@@ -346,7 +346,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-macOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-tdlib-macOS]
     env:
       PLATFORM: macOS
@@ -389,7 +389,7 @@ jobs:
 
   # watchOS
   build-openssl-watchOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     env:
       PLATFORM: watchOS
     steps:
@@ -428,7 +428,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-watchOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-openssl-watchOS]
     env:
       PLATFORM: watchOS
@@ -482,7 +482,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-watchOS-simulator:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-openssl-watchOS]
     env:
       PLATFORM: watchOS-simulator
@@ -537,7 +537,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-watchOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-tdlib-watchOS]
     env:
       PLATFORM: watchOS
@@ -579,7 +579,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-watchOS-simulator:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-tdlib-watchOS-simulator]
     env:
       PLATFORM: watchOS-simulator
@@ -623,7 +623,7 @@ jobs:
 
   # tvOS
   build-openssl-tvOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     env:
       PLATFORM: tvOS
     steps:
@@ -662,7 +662,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-tvOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-openssl-tvOS]
     env:
       PLATFORM: tvOS
@@ -716,7 +716,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-tvOS-simulator:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-openssl-tvOS]
     env:
       PLATFORM: tvOS-simulator
@@ -771,7 +771,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-tvOS:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-tdlib-tvOS]
     env:
       PLATFORM: tvOS
@@ -813,7 +813,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-tvOS-simulator:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-tdlib-tvOS-simulator]
     env:
       PLATFORM: tvOS-simulator
@@ -857,7 +857,7 @@ jobs:
 
   # Merge frameworks
   merge-xcframework:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs:
       - build-framework-iOS
       - build-framework-iOS-simulator
@@ -929,32 +929,32 @@ jobs:
           if-no-files-found: error
 
   # Requires Xcode 12.5
-  # # Tests
-  # tests:
-  #   runs-on: macos-latest
-  #   needs: [merge-xcframework]
-  #   strategy:
-  #     matrix:
-  #       platform: ["macOS", "iOS-simulator", "watchOS-simulator", "tvOS-simulator"]
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
+  # Tests
+  tests:
+    runs-on: macos-11
+    needs: [merge-xcframework]
+    strategy:
+      matrix:
+        platform: ["macOS", "iOS-simulator", "watchOS-simulator", "tvOS-simulator"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
 
-  #     - name: Download XCFramework
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: TDLibFramework.zip
-  #         path: ${{ env.ARTIFACT_DIR }}
+      - name: Download XCFramework
+        uses: actions/download-artifact@v2
+        with:
+          name: TDLibFramework.zip
+          path: ${{ env.ARTIFACT_DIR }}
 
-  #     - name: Unpack framework
-  #       working-directory: ${{ env.ARTIFACT_DIR }}
-  #       run: unzip ${{ env.ARTIFACT_NAME }}
+      - name: Unpack framework
+        working-directory: ${{ env.ARTIFACT_DIR }}
+        run: unzip ${{ env.ARTIFACT_NAME }}
 
-  #     - name: Run Tests for ${{ matrix.platform }}
-  #       run: ./scripts/test.sh ${{ matrix.platform }}
+      - name: Run Tests for ${{ matrix.platform }}
+        run: ./scripts/test.sh ${{ matrix.platform }}
 
   create-release:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [merge-xcframework]
 
     steps:
