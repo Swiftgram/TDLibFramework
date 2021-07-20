@@ -2,12 +2,14 @@
 
 [![CI](https://github.com/Swiftgram/TDLibFramework/actions/workflows/ci.yml/badge.svg)](https://github.com/Swiftgram/TDLibFramework/actions/workflows/ci.yml)
 
-Project contains raw [TDLib](https://github.com/tdlib/td) for iOS, macOS, watchOS, tvOS and simulators in `.xcframework` format
+Project contains pre-compiled [TDLib](https://github.com/tdlib/td) binary for iOS, macOS, watchOS, tvOS and simulators in `.xcframework` bundle.
+
+If you're looking for pure Swift library, check out [TDLibKit](https://github.com/Swiftgram/TDLibKit)
 
 ## Installation
 ### Xcode
 1. Install Xcode 12.5+
-2. Add https://github.com/Swiftgram/TDLibFramework as SPM dependency in `Project > Swift Packages`. 
+2. Add `https://github.com/Swiftgram/TDLibFramework` as SPM dependency in `Project > Swift Packages`. 
 This could take a while cause it downloads ~300mb zip file with xcframework.
 3. Add `arm64` to `EXCLUDED_ARCHS` due to lack of [arm64 support](#m1-support) or use `ONLY_ACTIVE_ARCH=YES` for debug builds on Intel CPU.
 4. Add `TDLibFramework` as your target dependency.
