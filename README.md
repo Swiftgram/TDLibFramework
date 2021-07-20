@@ -17,7 +17,7 @@ This could take a while cause it downloads ~300mb zip file with xcframework.
 6. If something is not accesible from TDLibFramework, make sure to add `libSystem.B.tbd` for all platforms and `libc++abi.tbd` if you're building non-macOS app. [Source](https://github.com/modestman/tdlib-swift/blob/master/td-xcframework/td.xcodeproj/project.pbxproj#L301)
 7. Code!
 ### Flutter
-See [Wiki page](https://github.com/Swiftgram/TDLibFramework/wiki/Flutter)
+See [Wiki page](https://github.com/Swiftgram/TDLibFramework/wiki/CocoaPods-&-Flutter)
 
 
 ## Usage
