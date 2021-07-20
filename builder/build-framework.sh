@@ -26,4 +26,5 @@ xcodebuild archive \
     -archivePath "./build/$PLATFORM.xcarchive" \
     -configuration Release \
     -sdk $SDK \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
     SKIP_INSTALL=NO
