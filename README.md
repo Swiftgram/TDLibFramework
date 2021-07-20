@@ -98,7 +98,7 @@ You can find more about build process in [Github Actions](.github/workflows/ci.y
 
 
 ## TODO
-- [ ] Lib tests on simulators (requires Xcode 12.5 on runner)
+- [ ] Lib tests on watchOS simulator
 
 
 ## M1 Support
