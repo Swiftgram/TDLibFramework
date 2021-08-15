@@ -90,8 +90,6 @@ td_json_client_destroy(client)
 ## Releases
 You can find latest releases at [Releases](https://github.com/Swiftgram/TDLibFramework/releases) page.
 
-You can request tdlib version update with an [Issue](https://github.com/Swiftgram/TDLibFramework/issues)
-
 
 ## Build
 You can find more about build process in [Github Actions](.github/workflows/ci.yml) file.
@@ -102,6 +100,8 @@ You can find more about build process in [Github Actions](.github/workflows/ci.y
 
 
 ## M1 Support
+> There is PR in [tdlib repo](https://github.com/tdlib/td/pull/1620) to support Apple Silicon.
+
 Apple Silicon is not supported due to lack of Python 2 support in [Python-Apple-Support](https://github.com/beeware/Python-Apple-support) (thus [TDLib](https://github.com/tdlib/td)) can't be compiled natively on arm64 Macs.
 
 If you want to build on M1, please run Xcode under Apple Rosetta 2
