@@ -145,13 +145,6 @@ func getPlatformDependencies(platform: Platform, isSimulator: Bool = false) -> [
     return []
 }
 
-func getExcludedArchs(platform: String, isSimulator: Bool) -> SettingsDictionary {
-    if isSimulator || platform == "macOS" {
-        return ["EXCLUDED_ARCHS": "arm64"]
-    }
-    return [:]
-}
-
 func getTargets() -> [Target] {
     var targets: [Target] = []
     for rawPlatform in BuildPlatforms {
@@ -185,7 +178,7 @@ func getTargets() -> [Target] {
                 base: [
                     "SWIFT_VERSION": "5.0",
                     "PRODUCT_NAME": "TDLibFramework",
-                ].merging(getExcludedArchs(platform: platform, isSimulator: isSimulator)),
+                ],
                 configurations: [
                     .release(name: "Release", settings: ["SWIFT_OPTIMIZATION_LEVEL": "-O"]),
                 ]

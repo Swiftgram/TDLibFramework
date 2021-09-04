@@ -4,17 +4,17 @@ PLATFORM="$1"
 
 if [[ $PLATFORM = "iOS" ]]; then
     SDK="iphoneos"
-elif [[ $PLATFORM = "iOS-simulator" ]]; then # no arm64
+elif [[ $PLATFORM = "iOS-simulator" ]]; then
     SDK="iphonesimulator"
-elif [[ $PLATFORM = "macOS" ]]; then # no arm64
+elif [[ $PLATFORM = "macOS" ]]; then
     SDK="macosx"
 elif [[ $PLATFORM = "watchOS" ]]; then
     SDK="watchos"
-elif [[ $PLATFORM = "watchOS-simulator" ]]; then # no arm64
+elif [[ $PLATFORM = "watchOS-simulator" ]]; then
     SDK="watchsimulator"
 elif [[ $PLATFORM = "tvOS" ]]; then
     SDK="appletvos"
-elif [[ $PLATFORM = "tvOS-simulator" ]]; then # no arm64
+elif [[ $PLATFORM = "tvOS-simulator" ]]; then
     SDK="appletvsimulator"
 else
     echo "Unknown SDK for platform \"$PLATFORM\""

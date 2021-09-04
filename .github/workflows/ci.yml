@@ -110,12 +110,51 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
 
+  # iOS
+  build-openssl-iOS-simulator:
+    runs-on: macos-11
+    env:
+      PLATFORM: iOS-simulator
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Patch Build script
+        run: |
+          cd td 
+          git apply ../builder/tdlib-patches/build-openssl.patch
+
+      - name: Cache Openssl
+        id: cache-openssl
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+
+      - name: Install deps
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
+      - name: Build Openssl
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: |
+          cd td/example/ios
+          ./build-openssl.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          if-no-files-found: error
+
   build-tdlib-iOS-simulator:
     runs-on: macos-11
     needs: [build-openssl-iOS]
     env:
       PLATFORM: iOS-simulator
-      PARENT_PLATFORM: iOS
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -140,8 +179,8 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         uses: actions/download-artifact@v2
         with:
-          name: openssl-${{ env.PARENT_PLATFORM }}
-          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Pregenerate Sources
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -212,7 +251,6 @@ jobs:
     needs: [build-tdlib-iOS-simulator]
     env:
       PLATFORM: iOS-simulator
-      PARENT_PLATFORM: iOS
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -222,8 +260,8 @@ jobs:
       - name: Download Openssl
         uses: actions/download-artifact@v2
         with:
-          name: openssl-${{ env.PARENT_PLATFORM }}
-          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Download TDLib ${{ env.PLATFORM }} install
         uses: actions/download-artifact@v2
@@ -481,12 +519,50 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
 
+  build-openssl-watchOS-simulator:
+    runs-on: macos-11
+    env:
+      PLATFORM: watchOS-simulator
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Patch Build script
+        run: |
+          cd td 
+          git apply ../builder/tdlib-patches/build-openssl.patch
+
+      - name: Cache Openssl
+        id: cache-openssl
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+
+      - name: Install deps
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
+      - name: Build Openssl
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: |
+          cd td/example/ios
+          ./build-openssl.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          if-no-files-found: error
+
   build-tdlib-watchOS-simulator:
     runs-on: macos-11
     needs: [build-openssl-watchOS]
     env:
       PLATFORM: watchOS-simulator
-      PARENT_PLATFORM: watchOS
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -511,8 +587,8 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         uses: actions/download-artifact@v2
         with:
-          name: openssl-${{ env.PARENT_PLATFORM }}
-          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Pregenerate Sources
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -583,7 +659,6 @@ jobs:
     needs: [build-tdlib-watchOS-simulator]
     env:
       PLATFORM: watchOS-simulator
-      PARENT_PLATFORM: watchOS
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -593,8 +668,8 @@ jobs:
       - name: Download Openssl
         uses: actions/download-artifact@v2
         with:
-          name: openssl-${{ env.PARENT_PLATFORM }}
-          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Download TDLib ${{ env.PLATFORM }} install
         uses: actions/download-artifact@v2
@@ -715,12 +790,50 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
 
+  build-openssl-tvOS-simulator:
+    runs-on: macos-11
+    env:
+      PLATFORM: tvOS-simulator
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Patch Build script
+        run: |
+          cd td 
+          git apply ../builder/tdlib-patches/build-openssl.patch
+
+      - name: Cache Openssl
+        id: cache-openssl
+        uses: actions/cache@v2
+        with:
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+
+      - name: Install deps
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: brew install gperf cmake coreutils
+
+      - name: Build Openssl
+        if: steps.cache-openssl.outputs.cache-hit != 'true'
+        run: |
+          cd td/example/ios
+          ./build-openssl.sh $PLATFORM
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
+          if-no-files-found: error
+
   build-tdlib-tvOS-simulator:
     runs-on: macos-11
     needs: [build-openssl-tvOS]
     env:
       PLATFORM: tvOS-simulator
-      PARENT_PLATFORM: tvOS
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -745,8 +858,8 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         uses: actions/download-artifact@v2
         with:
-          name: openssl-${{ env.PARENT_PLATFORM }}
-          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Pregenerate Sources
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -817,7 +930,6 @@ jobs:
     needs: [build-tdlib-tvOS-simulator]
     env:
       PLATFORM: tvOS-simulator
-      PARENT_PLATFORM: tvOS
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -827,8 +939,8 @@ jobs:
       - name: Download Openssl
         uses: actions/download-artifact@v2
         with:
-          name: openssl-${{ env.PARENT_PLATFORM }}
-          path: td/example/ios/third_party/openssl/${{ env.PARENT_PLATFORM }}
+          name: openssl-${{ env.PLATFORM }}
+          path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Download TDLib ${{ env.PLATFORM }} install
         uses: actions/download-artifact@v2

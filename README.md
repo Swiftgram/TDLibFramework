@@ -11,11 +11,10 @@ If you're looking for pure Swift library, check out [TDLibKit](https://github.co
 1. Install Xcode 12.5+
 2. Add `https://github.com/Swiftgram/TDLibFramework` as SPM dependency in `Project > Swift Packages`. 
 This could take a while cause it downloads ~300mb zip file with xcframework.
-3. Add `arm64` to `EXCLUDED_ARCHS` due to lack of [arm64 support](#m1-support) or use `ONLY_ACTIVE_ARCH=YES` for debug builds on Intel CPU.
-4. Add `TDLibFramework` as your target dependency.
-5. Add `libz.1.tbd` and `libc++.1.tbd` as your target dependencies.
-6. If something is not accesible from TDLibFramework, make sure to add `libSystem.B.tbd` for all platforms and `libc++abi.tbd` if you're building non-macOS app. [Source](https://github.com/modestman/tdlib-swift/blob/master/td-xcframework/td.xcodeproj/project.pbxproj#L301)
-7. Code!
+3. Add `TDLibFramework` as your target dependency.
+4. Add `libz.1.tbd` and `libc++.1.tbd` as your target dependencies.
+5. If something is not accesible from TDLibFramework, make sure to add `libSystem.B.tbd` for all platforms and `libc++abi.tbd` if you're building non-macOS app. [Source](https://github.com/modestman/tdlib-swift/blob/master/td-xcframework/td.xcodeproj/project.pbxproj#L301)
+6. Code!
 ### Flutter
 See [Wiki page](https://github.com/Swiftgram/TDLibFramework/wiki/CocoaPods-&-Flutter)
 
@@ -98,15 +97,6 @@ You can find more about build process in [Github Actions](.github/workflows/ci.y
 ## TODO
 - [ ] Lib tests on watchOS simulator
 
-
-## M1 Support
-> There is PR in [tdlib repo](https://github.com/tdlib/td/pull/1620) to support Apple Silicon.
-
-Apple Silicon is not supported due to lack of Python 2 support in [Python-Apple-Support](https://github.com/beeware/Python-Apple-support) (thus [TDLib](https://github.com/tdlib/td)) can't be compiled natively on arm64 Macs.
-
-If you want to build on M1, please run Xcode under Apple Rosetta 2
-
-More info in this [Telegram thread](https://t.me/tdlibchat/17955)
 
 ## Credits
 - Anton Glezman for [Build Guide](https://github.com/modestman/tdlib-swift) and basic implementation
