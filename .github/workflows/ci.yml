@@ -152,7 +152,7 @@ jobs:
 
   build-tdlib-iOS-simulator:
     runs-on: macos-11
-    needs: [build-openssl-iOS]
+    needs: [build-openssl-iOS-simulator]
     env:
       PLATFORM: iOS-simulator
     steps:
@@ -560,7 +560,7 @@ jobs:
 
   build-tdlib-watchOS-simulator:
     runs-on: macos-11
-    needs: [build-openssl-watchOS]
+    needs: [build-openssl-watchOS-simulator]
     env:
       PLATFORM: watchOS-simulator
     steps:
@@ -831,7 +831,7 @@ jobs:
 
   build-tdlib-tvOS-simulator:
     runs-on: macos-11
-    needs: [build-openssl-tvOS]
+    needs: [build-openssl-tvOS-simulator]
     env:
       PLATFORM: tvOS-simulator
     steps:
