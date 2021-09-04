@@ -92,7 +92,7 @@ func getPlatformDependencies(platform: Platform, isSimulator: Bool = false) -> [
     ] {
         tdDeps.append(
             .library(
-                path: "\(tdIOSPath)/third_party/openssl/\(platformString)/lib/\(opensslInstallLib)",
+                path: "\(tdIOSPath)/third_party/openssl/\(platformString + suffix)/lib/\(opensslInstallLib)",
                 publicHeaders: "",
                 swiftModuleMap: nil
             )
