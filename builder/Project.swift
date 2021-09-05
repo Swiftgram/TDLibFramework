@@ -23,7 +23,7 @@ let tdPath = "\(rootPath)/td"
 let tdIOSPath = "\(tdPath)/example/ios"
 
 func getVersion() -> String {
-    let td_git_tag = shell("cd \(tdPath) && git rev-parse --short HEAD")
+    let td_git_tag = shell("cd \(tdPath) && git rev-parse --short=8 HEAD")
     var version = shell("python3 \(rootPath)/scripts/extract_td_version.py \(tdPath)/td/telegram/Td.h").trimmingCharacters(in: .whitespacesAndNewlines)
 
     if version.isEmpty {
