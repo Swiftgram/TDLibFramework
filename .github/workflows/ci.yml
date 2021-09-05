@@ -1084,7 +1084,7 @@ jobs:
           RELEASES_DOWNLOAD_URL=https://github.com/$GITHUB_REPOSITORY/releases/download
           echo "RELEASES_DOWNLOAD_URL=$RELEASES_DOWNLOAD_URL" >> $GITHUB_ENV
 
-          TDLIB_COMMIT=$(cd td && git rev-parse --short HEAD)
+          TDLIB_COMMIT=$(cd td && git rev-parse --short=8 HEAD)
           echo "TDLIB_COMMIT=$TDLIB_COMMIT" >> $GITHUB_ENV
 
           TDLIB_VERSION=$(python3 scripts/extract_td_version.py td/td/telegram/Td.h)
