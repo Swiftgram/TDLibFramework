@@ -39,44 +39,38 @@ elif [[ $platform == "tvOS"* ]]; then
     platform="tvOS"
 fi
 
+echo "Platform = ${platform}"
 if [[ $platform = "macOS" ]]; then
-  set_cmake_options $platform
-  build="build-${platform}"
-  install="install-${platform}"
-  rm -rf $build
-  mkdir -p $build
-  mkdir -p $install
-  cd $build
-  cmake $td_path $options -DCMAKE_INSTALL_PREFIX=../${install} -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
-  make -j3 install || exit
-  cd ..
+  other_options="-DCMAKE_OSX_ARCHITECTURES='x86_64;arm64'"
 else
-  build="build-${platform}"
-  install="install-${platform}"
-  platform_path=${platform}
-  if [[ $simulator = "1" ]]; then
-    build="${build}-simulator"
-    install="${install}-simulator"
-    platform_path="${platform}-simulator"
-    ios_platform="SIMULATOR"
-  else
-    ios_platform="OS"
-  fi
-  set_cmake_options ${platform_path}
   watchos=""
   if [[ $platform = "watchOS" ]]; then
-    ios_platform="WATCH${ios_platform}"
+    ios_platform="WATCH"
     watchos="-DTD_EXPERIMENTAL_WATCH_OS=ON"
+  elif [[ $platform = "tvOS" ]]; then
+    ios_platform="TV"
+  else
+    ios_platform=""
   fi
-  if [[ $platform = "tvOS" ]]; then
-    ios_platform="TV${ios_platform}"
+
+  if [[ $simulator = "1" ]]; then
+    platform="${platform}-simulator"
+    ios_platform="${ios_platform}SIMULATOR"
+  else
+    ios_platform="${ios_platform}OS"
   fi
-  echo $ios_platform
-  rm -rf $build
-  mkdir -p $build
-  mkdir -p $install
-  cd $build
-  cmake $td_path $options $watchos -DIOS_PLATFORM=${ios_platform} -DCMAKE_TOOLCHAIN_FILE=${td_path}/CMake/iOS.cmake -DCMAKE_INSTALL_PREFIX=../${install}
-  make -j3 install || exit
-  cd ..
+
+  echo "iOS platform = ${ios_platform}"
+  other_options="${watchos} -DIOS_PLATFORM=${ios_platform} -DCMAKE_TOOLCHAIN_FILE=${td_path}/CMake/iOS.cmake"
 fi
+
+set_cmake_options $platform
+build="build-${platform}"
+install="install-${platform}"
+rm -rf $build
+mkdir -p $build
+mkdir -p $install
+cd $build
+cmake $td_path $options $other_options -DCMAKE_INSTALL_PREFIX=../${install}
+make -j3 install || exit
+cd ..
