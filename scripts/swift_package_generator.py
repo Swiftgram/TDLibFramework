@@ -2,6 +2,7 @@ import argparse
 
 def get_file_content(url, checksum):
     return f"""// swift-tools-version:5.3
+// DO NOT EDIT! Generated automatically. See scripts/swift_package_generator.py
 import PackageDescription
 
 
