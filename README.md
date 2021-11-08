@@ -7,7 +7,7 @@ Project contains pre-compiled [TDLib](https://github.com/tdlib/td) binary for iO
 If you're looking for pure Swift library, check out [TDLibKit](https://github.com/Swiftgram/TDLibKit)
 
 ## Installation
-### Xcode
+### Xcode (SPM)
 1. Install Xcode 12.5+
 2. Add `https://github.com/Swiftgram/TDLibFramework` as SPM dependency in `Project > Swift Packages`. 
 This could take a while cause it downloads ~300mb zip file with xcframework.
@@ -15,7 +15,7 @@ This could take a while cause it downloads ~300mb zip file with xcframework.
 4. Add `libz.1.tbd` and `libc++.1.tbd` as your target dependencies.
 5. If something is not accesible from TDLibFramework, make sure to add `libSystem.B.tbd` for all platforms and `libc++abi.tbd` if you're building non-macOS app. [Source](https://github.com/modestman/tdlib-swift/blob/master/td-xcframework/td.xcodeproj/project.pbxproj#L301)
 6. Code!
-### Flutter
+### Cocoapods & Flutter
 See [Wiki page](https://github.com/Swiftgram/TDLibFramework/wiki/CocoaPods-&-Flutter)
 
 
