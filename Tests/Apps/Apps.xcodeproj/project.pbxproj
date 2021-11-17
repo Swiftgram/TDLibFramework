@@ -42,6 +42,9 @@
 		A510FA4F269DF33B000EA28C /* TDLibFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA30269D0C72000EA28C /* TDLibFramework.xcframework */; };
 		A510FA55269DF435000EA28C /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA54269DF435000EA28C /* libc++.1.tbd */; };
 		A510FA57269DF442000EA28C /* libz.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA56269DF442000EA28C /* libz.1.tbd */; };
+		A547C45727456DF80047282F /* TDLibFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA30269D0C72000EA28C /* TDLibFramework.xcframework */; };
+		A547C45927456E230047282F /* libz.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A547C45827456E230047282F /* libz.1.tbd */; };
+		A547C45B27456E2D0047282F /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A547C45A27456E2D0047282F /* libc++.1.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,6 +169,8 @@
 		A510FA52269DF42F000EA28C /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS14.5.sdk/usr/lib/libz.tbd; sourceTree = DEVELOPER_DIR; };
 		A510FA54269DF435000EA28C /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS14.5.sdk/usr/lib/libc++.1.tbd"; sourceTree = DEVELOPER_DIR; };
 		A510FA56269DF442000EA28C /* libz.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.tbd; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS14.5.sdk/usr/lib/libz.1.tbd; sourceTree = DEVELOPER_DIR; };
+		A547C45827456E230047282F /* libz.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.1.tbd; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS8.0.sdk/usr/lib/libz.1.tbd; sourceTree = DEVELOPER_DIR; };
+		A547C45A27456E2D0047282F /* libc++.1.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.1.tbd"; path = "Platforms/WatchOS.platform/Developer/SDKs/WatchOS8.0.sdk/usr/lib/libc++.1.tbd"; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +212,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A547C45727456DF80047282F /* TDLibFramework.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +220,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A547C45B27456E2D0047282F /* libc++.1.tbd in Frameworks */,
+				A547C45927456E230047282F /* libz.1.tbd in Frameworks */,
 				A510FA4F269DF33B000EA28C /* TDLibFramework.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -377,7 +385,9 @@
 		A510FA2F269D0C72000EA28C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A547C45A27456E2D0047282F /* libc++.1.tbd */,
 				A510FA56269DF442000EA28C /* libz.1.tbd */,
+				A547C45827456E230047282F /* libz.1.tbd */,
 				A510FA54269DF435000EA28C /* libc++.1.tbd */,
 				A510FA52269DF42F000EA28C /* libz.tbd */,
 				A510FA50269DF425000EA28C /* libc++.tbd */,
