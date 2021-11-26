@@ -27,7 +27,7 @@
 		<key>NSExtensionAttributes</key>
 		<dict>
 			<key>WKAppBundleIdentifier</key>
-			<string>app.swiftgram.TDLibFramework.watchOSApp.watchkitapp</string>
+			<string>app.swiftgram.TDLibFramework.iOSApp.watchkitapp</string>
 		</dict>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.watchkit</string>
@@ -35,6 +35,6 @@
 	<key>WKExtensionDelegateClassName</key>
 	<string>$(PRODUCT_MODULE_NAME).ExtensionDelegate</string>
 	<key>WKWatchOnly</key>
-	<true/>
+	<false/>
 </dict>
 </plist>
