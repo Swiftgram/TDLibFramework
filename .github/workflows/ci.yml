@@ -1063,7 +1063,7 @@ jobs:
         run: unzip ${{ env.ARTIFACT_NAME }}
 
       - name: Run Tests for ${{ matrix.platform }}
-        run: ./scripts/test.sh ${{ matrix.platform }}
+        run: ./scripts/test.sh ${{ matrix.platform }} || ./scripts/test.sh ${{ matrix.platform }}
 
   create-release:
     runs-on: macos-11
