@@ -101,7 +101,19 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
-          ./build.sh $PLATFORM
+          ./build.sh $PLATFORM || true
+
+      - name: Upload CMakeError.log
+        uses: actions/upload-artifact@v2
+        with:
+          name: CMakeError.log
+          path: td/example/ios/build/build-iOS/CMakeFiles/CMakeError.log
+
+      - name: Upload CMakeOutput.log
+        uses: actions/upload-artifact@v2
+        with:
+          name: CMakeOutput.log
+          path: td/example/ios/build/build-iOS/CMakeFiles/CMakeOutput.log
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v2
