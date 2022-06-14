@@ -14,11 +14,12 @@ env:
   TDLIB_REPO: https://github.com/tdlib/td
   ARTIFACT_NAME: TDLibFramework.zip
   ARTIFACT_DIR: ./builder/build
+  DEVELOPER_DIR: /Applications/Xcode_13.4.1.app/Contents/Developer
 
 jobs:
   # iOS
   build-openssl-iOS:
-    runs-on: macos-11
+    runs-on: macos-12
     env:
       PLATFORM: iOS
     steps:
@@ -57,7 +58,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-iOS:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-openssl-iOS]
     env:
       PLATFORM: iOS
@@ -112,7 +113,7 @@ jobs:
 
   # iOS
   build-openssl-iOS-simulator:
-    runs-on: macos-11
+    runs-on: macos-12
     env:
       PLATFORM: iOS-simulator
     steps:
@@ -151,7 +152,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-iOS-simulator:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-openssl-iOS-simulator]
     env:
       PLATFORM: iOS-simulator
@@ -205,7 +206,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-iOS:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-tdlib-iOS]
     env:
       PLATFORM: iOS
@@ -247,7 +248,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-iOS-simulator:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-tdlib-iOS-simulator]
     env:
       PLATFORM: iOS-simulator
@@ -290,7 +291,7 @@ jobs:
 
   # macOS
   build-openssl-macOS:
-    runs-on: macos-11
+    runs-on: macos-12
     env:
       PLATFORM: macOS
     steps:
@@ -329,7 +330,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-macOS:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-openssl-macOS]
     env:
       PLATFORM: macOS
@@ -384,7 +385,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-macOS:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-tdlib-macOS]
     env:
       PLATFORM: macOS
@@ -427,7 +428,7 @@ jobs:
 
   # watchOS
   build-openssl-watchOS:
-    runs-on: macos-11
+    runs-on: macos-12
     env:
       PLATFORM: watchOS
     steps:
@@ -466,7 +467,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-watchOS:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-openssl-watchOS]
     env:
       PLATFORM: watchOS
@@ -520,7 +521,7 @@ jobs:
           if-no-files-found: error
 
   build-openssl-watchOS-simulator:
-    runs-on: macos-11
+    runs-on: macos-12
     env:
       PLATFORM: watchOS-simulator
     steps:
@@ -559,7 +560,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-watchOS-simulator:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-openssl-watchOS-simulator]
     env:
       PLATFORM: watchOS-simulator
@@ -613,7 +614,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-watchOS:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-tdlib-watchOS]
     env:
       PLATFORM: watchOS
@@ -655,7 +656,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-watchOS-simulator:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-tdlib-watchOS-simulator]
     env:
       PLATFORM: watchOS-simulator
@@ -698,7 +699,7 @@ jobs:
 
   # tvOS
   build-openssl-tvOS:
-    runs-on: macos-11
+    runs-on: macos-12
     env:
       PLATFORM: tvOS
     steps:
@@ -737,7 +738,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-tvOS:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-openssl-tvOS]
     env:
       PLATFORM: tvOS
@@ -791,7 +792,7 @@ jobs:
           if-no-files-found: error
 
   build-openssl-tvOS-simulator:
-    runs-on: macos-11
+    runs-on: macos-12
     env:
       PLATFORM: tvOS-simulator
     steps:
@@ -830,7 +831,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-tvOS-simulator:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-openssl-tvOS-simulator]
     env:
       PLATFORM: tvOS-simulator
@@ -884,7 +885,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-tvOS:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-tdlib-tvOS]
     env:
       PLATFORM: tvOS
@@ -926,7 +927,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-tvOS-simulator:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [build-tdlib-tvOS-simulator]
     env:
       PLATFORM: tvOS-simulator
@@ -969,7 +970,7 @@ jobs:
 
   # Merge frameworks
   merge-xcframework:
-    runs-on: macos-11
+    runs-on: macos-12
     needs:
       - build-framework-iOS
       - build-framework-iOS-simulator
@@ -1043,7 +1044,7 @@ jobs:
   # Requires Xcode 12.5
   # Tests
   tests:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [merge-xcframework]
     strategy:
       matrix:
@@ -1066,7 +1067,7 @@ jobs:
         run: ./scripts/test.sh ${{ matrix.platform }} || ./scripts/test.sh ${{ matrix.platform }}
 
   create-release:
-    runs-on: macos-11
+    runs-on: macos-12
     needs: [tests]
 
     steps:
