@@ -1088,7 +1088,7 @@ jobs:
           TDLIB_COMMIT=$(cd td && git rev-parse --short=8 HEAD)
           echo "TDLIB_COMMIT=$TDLIB_COMMIT" >> $GITHUB_ENV
 
-          TDLIB_VERSION=$(python3 scripts/extract_td_version.py td/td/telegram/Td.h)
+          TDLIB_VERSION=$(python3 scripts/extract_td_version.py td/CMakeLists.txt)
           echo "TDLIB_VERSION=$TDLIB_VERSION" >> $GITHUB_ENV
 
           TDLIB_COMMIT_URL=${{ env.TDLIB_REPO }}/tree/$TDLIB_COMMIT
