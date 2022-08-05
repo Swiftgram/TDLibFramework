@@ -32,18 +32,10 @@
 		A510FA2C269D0A37000EA28C /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A510FA2A269D0A37000EA28C /* Tests.swift */; };
 		A510FA2D269D0A37000EA28C /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A510FA2A269D0A37000EA28C /* Tests.swift */; };
 		A510FA2E269D0A37000EA28C /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A510FA2A269D0A37000EA28C /* Tests.swift */; };
-		A510FA45269D0F39000EA28C /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA3D269D0D57000EA28C /* libc++.1.tbd */; };
-		A510FA47269D0F55000EA28C /* libz.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA41269D0D99000EA28C /* libz.1.tbd */; };
 		A510FA48269D105F000EA28C /* TDLibFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA30269D0C72000EA28C /* TDLibFramework.xcframework */; };
 		A510FA49269D1075000EA28C /* TDLibFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA30269D0C72000EA28C /* TDLibFramework.xcframework */; };
-		A510FA4B269D1093000EA28C /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA4A269D1093000EA28C /* libc++.1.tbd */; };
-		A510FA4D269D109E000EA28C /* libz.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA4C269D109E000EA28C /* libz.1.tbd */; };
 		A510FA4E269DF335000EA28C /* TDLibFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA30269D0C72000EA28C /* TDLibFramework.xcframework */; };
 		A510FA4F269DF33B000EA28C /* TDLibFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA30269D0C72000EA28C /* TDLibFramework.xcframework */; };
-		A510FA55269DF435000EA28C /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA54269DF435000EA28C /* libc++.1.tbd */; };
-		A510FA57269DF442000EA28C /* libz.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA56269DF442000EA28C /* libz.1.tbd */; };
-		A55F5F782751A26700DE6454 /* libc++.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A55F5F772751A26700DE6454 /* libc++.1.tbd */; };
-		A55F5F7A2751A26D00DE6454 /* libz.1.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A55F5F792751A26D00DE6454 /* libz.1.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -185,8 +177,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A510FA48269D105F000EA28C /* TDLibFramework.xcframework in Frameworks */,
-				A510FA45269D0F39000EA28C /* libc++.1.tbd in Frameworks */,
-				A510FA47269D0F55000EA28C /* libz.1.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,8 +191,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A510FA4D269D109E000EA28C /* libz.1.tbd in Frameworks */,
-				A510FA4B269D1093000EA28C /* libc++.1.tbd in Frameworks */,
 				A510FA49269D1075000EA28C /* TDLibFramework.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -218,8 +206,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A55F5F7A2751A26D00DE6454 /* libz.1.tbd in Frameworks */,
-				A55F5F782751A26700DE6454 /* libc++.1.tbd in Frameworks */,
 				A510FA4F269DF33B000EA28C /* TDLibFramework.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -235,8 +221,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A510FA57269DF442000EA28C /* libz.1.tbd in Frameworks */,
-				A510FA55269DF435000EA28C /* libc++.1.tbd in Frameworks */,
 				A510FA4E269DF335000EA28C /* TDLibFramework.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

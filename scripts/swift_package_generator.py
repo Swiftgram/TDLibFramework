@@ -17,16 +17,24 @@ let package = Package(
     products: [
         .library(
             name: "TDLibFramework",
-            targets: ["TDLibFramework"]
+            targets: ["TDLibFrameworkWrapper"]
         )
     ],
     dependencies: [],
     targets: [
+        .target(
+            name: "TDLibFrameworkWrapper",
+            dependencies: [.target(name: "TDLibFramework")],
+            linkerSettings: [
+                .linkedLibrary("c++"),
+                .linkedLibrary("z"),
+            ]
+        ),
         .binaryTarget(
             name: "TDLibFramework",
             url: "{url}",
             checksum: "{checksum}"
-        ),
+        )
     ]
 )
 """
