@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4FB36B2A2924FE49006844C2 /* TDLibFramework in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB36B292924FE49006844C2 /* TDLibFramework */; };
+		4FB36B2C2924FE8E006844C2 /* TDLibFramework in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB36B2B2924FE8E006844C2 /* TDLibFramework */; };
+		4FB36B2E2924FEA2006844C2 /* TDLibFramework in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB36B2D2924FEA2006844C2 /* TDLibFramework */; };
+		4FB36B302924FEA9006844C2 /* TDLibFramework in Frameworks */ = {isa = PBXBuildFile; productRef = 4FB36B2F2924FEA9006844C2 /* TDLibFramework */; };
 		A510F94E269D07A7000EA28C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A510F94D269D07A7000EA28C /* AppDelegate.swift */; };
 		A510F950269D07A7000EA28C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A510F94F269D07A7000EA28C /* ViewController.swift */; };
 		A510F952269D07A7000EA28C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A510F951269D07A7000EA28C /* Assets.xcassets */; };
@@ -32,10 +36,6 @@
 		A510FA2C269D0A37000EA28C /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A510FA2A269D0A37000EA28C /* Tests.swift */; };
 		A510FA2D269D0A37000EA28C /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A510FA2A269D0A37000EA28C /* Tests.swift */; };
 		A510FA2E269D0A37000EA28C /* Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A510FA2A269D0A37000EA28C /* Tests.swift */; };
-		A510FA48269D105F000EA28C /* TDLibFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA30269D0C72000EA28C /* TDLibFramework.xcframework */; };
-		A510FA49269D1075000EA28C /* TDLibFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA30269D0C72000EA28C /* TDLibFramework.xcframework */; };
-		A510FA4E269DF335000EA28C /* TDLibFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA30269D0C72000EA28C /* TDLibFramework.xcframework */; };
-		A510FA4F269DF33B000EA28C /* TDLibFramework.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A510FA30269D0C72000EA28C /* TDLibFramework.xcframework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +109,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4FB36B282924FE07006844C2 /* TDLibFramework */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TDLibFramework; path = ../..; sourceTree = "<group>"; };
 		A510F94A269D07A7000EA28C /* iOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A510F94D269D07A7000EA28C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A510F94F269D07A7000EA28C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -176,7 +177,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A510FA48269D105F000EA28C /* TDLibFramework.xcframework in Frameworks */,
+				4FB36B2A2924FE49006844C2 /* TDLibFramework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,7 +192,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A510FA49269D1075000EA28C /* TDLibFramework.xcframework in Frameworks */,
+				4FB36B2C2924FE8E006844C2 /* TDLibFramework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,7 +207,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A510FA4F269DF33B000EA28C /* TDLibFramework.xcframework in Frameworks */,
+				4FB36B2E2924FEA2006844C2 /* TDLibFramework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,16 +222,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A510FA4E269DF335000EA28C /* TDLibFramework.xcframework in Frameworks */,
+				4FB36B302924FEA9006844C2 /* TDLibFramework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4FB36B272924FE07006844C2 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				4FB36B282924FE07006844C2 /* TDLibFramework */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		A510F941269D07A7000EA28C = {
 			isa = PBXGroup;
 			children = (
+				4FB36B272924FE07006844C2 /* Packages */,
 				A510FA29269D0A37000EA28C /* Shared */,
 				A510F94C269D07A7000EA28C /* iOSApp */,
 				A510F95E269D07A8000EA28C /* iOSAppTests */,
@@ -418,6 +428,9 @@
 				A510F95D269D07A8000EA28C /* PBXTargetDependency */,
 			);
 			name = iOSAppTests;
+			packageProductDependencies = (
+				4FB36B292924FE49006844C2 /* TDLibFramework */,
+			);
 			productName = iOSAppTests;
 			productReference = A510F95B269D07A8000EA28C /* iOSAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -453,6 +466,9 @@
 				A510F98F269D07C9000EA28C /* PBXTargetDependency */,
 			);
 			name = macOSAppTests;
+			packageProductDependencies = (
+				4FB36B2B2924FE8E006844C2 /* TDLibFramework */,
+			);
 			productName = macOSAppTests;
 			productReference = A510F98D269D07C9000EA28C /* macOSAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -522,6 +538,9 @@
 				A510F9D0269D0805000EA28C /* PBXTargetDependency */,
 			);
 			name = watchOSAppTests;
+			packageProductDependencies = (
+				4FB36B2D2924FEA2006844C2 /* TDLibFramework */,
+			);
 			productName = watchOSAppTests;
 			productReference = A510F9CE269D0805000EA28C /* watchOSAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -557,6 +576,9 @@
 				A510FA0A269D0826000EA28C /* PBXTargetDependency */,
 			);
 			name = tvOSAppTests;
+			packageProductDependencies = (
+				4FB36B2F2924FEA9006844C2 /* TDLibFramework */,
+			);
 			productName = tvOSAppTests;
 			productReference = A510FA08269D0826000EA28C /* tvOSAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -1538,6 +1560,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4FB36B292924FE49006844C2 /* TDLibFramework */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TDLibFramework;
+		};
+		4FB36B2B2924FE8E006844C2 /* TDLibFramework */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TDLibFramework;
+		};
+		4FB36B2D2924FEA2006844C2 /* TDLibFramework */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TDLibFramework;
+		};
+		4FB36B2F2924FEA9006844C2 /* TDLibFramework */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TDLibFramework;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A510F942269D07A7000EA28C /* Project object */;
 }

@@ -1063,6 +1063,9 @@ jobs:
         working-directory: ${{ env.ARTIFACT_DIR }}
         run: unzip ${{ env.ARTIFACT_NAME }}
 
+      - name: Update Package.swift with local .xcframework
+        run: python3 scripts/swift_package_generator.py --path ${{ env.ARTIFACT_DIR }}/TDLibFramework.xcframework
+
       - name: Run Tests for ${{ matrix.platform }}
         run: ./scripts/test.sh ${{ matrix.platform }} || ./scripts/test.sh ${{ matrix.platform }}
 
@@ -1108,7 +1111,7 @@ jobs:
 
       - name: Update Package.swift
         run: |
-          python3 scripts/swift_package_generator.py "${{ env.RELEASES_DOWNLOAD_URL }}/${{ env.RELEASE_TAG }}/${{ env.ARTIFACT_NAME }}" ${{ env.ARTIFACT_CHECKSUM }}
+          python3 scripts/swift_package_generator.py --url "${{ env.RELEASES_DOWNLOAD_URL }}/${{ env.RELEASE_TAG }}/${{ env.ARTIFACT_NAME }}" --checksum ${{ env.ARTIFACT_CHECKSUM }}
           git add Package.swift || true
           git commit -m "[no ci] Bump tdlib ${{ env.RELEASE_TAG }}" || true
           git push origin main || true
