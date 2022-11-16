@@ -13,9 +13,8 @@ elif [[ $PLATFORM = "macOS" ]]; then
     SCHEME="macOSApp"
     DESTINATION='platform=OS X'
 elif [[ $PLATFORM = "watchOS-simulator" ]]; then
-    SDK="watchsimulator"
     SCHEME="watchOSApp"
-    DESTINATION='platform=iOS Simulator,name=iPhone 8'
+    DESTINATION='platform=watchOS Simulator,name=Apple Watch Series 5 - 40mm'
 elif [[ $PLATFORM = "tvOS-simulator" ]]; then
     SDK="appletvsimulator"
     SCHEME="tvOSApp"
@@ -27,8 +26,8 @@ fi
 
 cd Tests/Apps
 
-xcodebuild \
-  -scheme ${SCHEME} \
-  -sdk ${SDK} \
-  -destination "${DESTINATION}" \
-  clean test
+if [[ $PLATFORM = "watchOS-simulator" ]]; then
+    xcodebuild -scheme ${SCHEME} -destination "${DESTINATION}" clean test
+else
+    xcodebuild -scheme ${SCHEME} -sdk ${SDK} -destination "${DESTINATION}" clean test
+fi
