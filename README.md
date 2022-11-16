@@ -92,10 +92,6 @@ You can find latest releases at [Releases](https://github.com/Swiftgram/TDLibFra
 You can find more about build process in [Github Actions](.github/workflows/ci.yml) file.
 
 
-## TODO
-- [ ] Lib tests on watchOS simulator
-
-
 ## Credits
 - Anton Glezman for [Build Guide](https://github.com/modestman/tdlib-swift) and basic implementation
 - Telegram Team for [TDLib](https://github.com/tdlib/td)
