@@ -16,7 +16,7 @@ env:
   TDLIB_REPO: https://github.com/tdlib/td
   ARTIFACT_NAME: TDLibFramework.zip
   ARTIFACT_DIR: ./builder/build
-  DEVELOPER_DIR: /Applications/Xcode_13.4.1.app/Contents/Developer
+  DEVELOPER_DIR: /Applications/Xcode_14.2.app/Contents/Developer
 
 jobs:
   # iOS
