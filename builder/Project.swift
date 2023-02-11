@@ -137,17 +137,14 @@ func getPlatformDependencies(platform: Platform, isSimulator: Bool = false) -> [
             return tdDeps
         } else {
             return [
-                .sdk(name: "libz.1.tbd"),
-                .sdk(name: "libSystem.B.tbd"),
-                .sdk(name: "libc++.1.tbd"),
-                .sdk(name: "libc++abi.tbd"),
+                .sdk(name: "libz.tbd"),
+                .sdk(name: "libc++.tbd"),
             ] + tdDeps
         }
     case .macOS:
         return [
-            .sdk(name: "libz.1.tbd"),
-            .sdk(name: "libSystem.B.tbd"),
-            .sdk(name: "libc++.1.tbd"),
+            .sdk(name: "libz.tbd"),
+            .sdk(name: "libc++.tbd"),
         ] + tdDeps
     default:
         return tdDeps
@@ -204,7 +201,7 @@ let project = Project(
     name: "TDLibFramework",
     settings: Settings(
         base: [
-            "IPHONEOS_DEPLOYMENT_TARGET": "12.0",
+            "IPHONEOS_DEPLOYMENT_TARGET": "9.0",
             "MACH_O_TYPE": "staticlib",
             "MODULEMAP_FILE": "$(SRCROOT)/xcodeproj/module.modulemap",
             "SWIFT_VERSION": "5.0",
