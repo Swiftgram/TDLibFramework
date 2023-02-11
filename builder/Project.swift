@@ -2,7 +2,11 @@ import ProjectDescription
 
 import Foundation
 
-func shell(_ command: String) -> String {
+enum ShellError: Error {
+    case generic(statusCode: Int32, message: String, output: String)
+}
+
+func shell(_ command: String) throws -> String {
     let task = Process()
     let pipe = Pipe()
 
@@ -15,6 +19,13 @@ func shell(_ command: String) -> String {
     let data = pipe.fileHandleForReading.readDataToEndOfFile()
     let output = String(data: data, encoding: .utf8)!
 
+    while (task.isRunning) {
+        continue
+    }
+    if task.terminationStatus != 0 {
+        throw ShellError.generic(statusCode: task.terminationStatus, message: "Error running \(command)", output: output)
+    }
+
     return output
 }
 
@@ -23,8 +34,8 @@ let tdPath = "\(rootPath)/td"
 let tdIOSPath = "\(tdPath)/example/ios"
 
 func getVersion() -> String {
-    let td_git_tag = shell("cd \(tdPath) && git rev-parse --short=8 HEAD")
-    var version = shell("python3 \(rootPath)/scripts/extract_td_version.py \(tdPath)/td/telegram/Td.h").trimmingCharacters(in: .whitespacesAndNewlines)
+    let td_git_tag = try! shell("cd \(tdPath) && git rev-parse --short=8 HEAD")
+    var version = try! shell("python3 \(rootPath)/scripts/extract_td_version.py \(tdPath)/CMakeLists.txt").trimmingCharacters(in: .whitespacesAndNewlines)
 
     if version.isEmpty {
         version = td_git_tag
