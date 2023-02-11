@@ -6,6 +6,8 @@ on:
     branches: [main]
     paths:
       - "td" # on TDLib updates
+  pull_request:
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -1110,6 +1112,7 @@ jobs:
         run: echo "ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})" >> $GITHUB_ENV
 
       - name: Update Package.swift
+        if: github.ref == 'refs/heads/main'
         run: |
           python3 scripts/swift_package_generator.py --url "${{ env.RELEASES_DOWNLOAD_URL }}/${{ env.RELEASE_TAG }}/${{ env.ARTIFACT_NAME }}" --checksum ${{ env.ARTIFACT_CHECKSUM }}
           git add Package.swift || true
@@ -1117,6 +1120,7 @@ jobs:
           git push origin main || true
 
       - name: Remove previous release
+        if: github.ref == 'refs/heads/main'
         uses: dev-drprasad/delete-tag-and-release@85fa8bcea0379a6ada9bbfdcb0a9d24d58e1a0d7
         with:
           delete_release: true
@@ -1125,6 +1129,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Release
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@9729932bfb75c05ad1f6e3a729294e05abaa7001
         with:
           target_commitish: main
