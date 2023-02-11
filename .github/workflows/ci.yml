@@ -1109,7 +1109,9 @@ jobs:
           path: ${{ env.ARTIFACT_DIR }}
 
       - name: Get Checksum
-        run: echo "ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})" >> $GITHUB_ENV
+        run: |
+          ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})
+          echo "ARTIFACT_CHECKSUM=$ARTIFACT_CHECKSUM" >> $GITHUB_ENV
 
       - name: Update Package.swift
         if: github.ref == 'refs/heads/main'
