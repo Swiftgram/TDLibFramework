@@ -20,10 +20,10 @@ import PackageDescription
 let package = Package(
     name: "TDLibFramework",
     platforms: [
-        .iOS(.v9),
+        .iOS(.v7),
         .macOS(.v10_12),
-        .watchOS(.v2), // Based on iOS 9 version
-        .tvOS(.v9) // Based on iOS 9 version
+        .watchOS(.v4), // https://github.com/tdlib/td/blob/15944f2a00ef2ae00d2b33a048047ecaf37f1487/example/ios/Python-Apple-support.patch
+        .tvOS(.v9)
     ],
     products: [
         .library(
