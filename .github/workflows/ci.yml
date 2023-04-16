@@ -443,7 +443,6 @@ jobs:
         run: |
           cd td 
           git apply ../builder/tdlib-patches/build-openssl.patch
-          git apply ../builder/tdlib-patches/watchos-arm64-openssl.patch
 
       - name: Cache Openssl
         id: cache-openssl
@@ -481,10 +480,7 @@ jobs:
           submodules: recursive
 
       - name: Patch Build script
-        run: |
-          cp builder/tdlib-patches/build.sh td/example/ios
-          cd td 
-          git apply ../builder/tdlib-patches/watchos-arm64-cmake.patch
+        run: cp builder/tdlib-patches/build.sh td/example/ios
 
       - name: Cache tdlib
         id: cache-tdlib
@@ -577,8 +573,7 @@ jobs:
           submodules: recursive
 
       - name: Patch Build script
-        run: |
-          cp builder/tdlib-patches/build.sh td/example/ios
+        run: cp builder/tdlib-patches/build.sh td/example/ios
 
       - name: Cache tdlib
         id: cache-tdlib
