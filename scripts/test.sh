@@ -2,8 +2,8 @@
 set -ex
 
 PLATFORM="$1"
-NAME="$2"
 OS_LIST="$2"
+NAME="$3"
 
 if [[ $PLATFORM = "iOS-simulator" ]]; then
     SDK="iphonesimulator"
