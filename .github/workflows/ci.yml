@@ -6,6 +6,8 @@ on:
     branches: [main]
     paths:
       - "td" # on TDLib updates
+  pull_request:
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -14,7 +16,7 @@ env:
   TDLIB_REPO: https://github.com/tdlib/td
   ARTIFACT_NAME: TDLibFramework.zip
   ARTIFACT_DIR: ./builder/build
-  DEVELOPER_DIR: /Applications/Xcode_13.4.1.app/Contents/Developer
+  DEVELOPER_DIR: /Applications/Xcode_14.2.app/Contents/Developer
 
 jobs:
   # iOS
@@ -24,7 +26,7 @@ jobs:
       PLATFORM: iOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -35,7 +37,7 @@ jobs:
 
       - name: Cache Openssl
         id: cache-openssl
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
@@ -51,7 +53,7 @@ jobs:
           ./build-openssl.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -64,7 +66,7 @@ jobs:
       PLATFORM: iOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -73,7 +75,7 @@ jobs:
 
       - name: Cache tdlib
         id: cache-tdlib
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
@@ -84,7 +86,7 @@ jobs:
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -105,7 +107,7 @@ jobs:
           ./build.sh $PLATFORM
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -118,7 +120,7 @@ jobs:
       PLATFORM: iOS-simulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -129,7 +131,7 @@ jobs:
 
       - name: Cache Openssl
         id: cache-openssl
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
@@ -145,7 +147,7 @@ jobs:
           ./build-openssl.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -158,7 +160,7 @@ jobs:
       PLATFORM: iOS-simulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -167,7 +169,7 @@ jobs:
 
       - name: Cache tdlib
         id: cache-tdlib
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
@@ -178,7 +180,7 @@ jobs:
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -199,7 +201,7 @@ jobs:
           ./build.sh $PLATFORM
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -212,18 +214,18 @@ jobs:
       PLATFORM: iOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
       - name: Download Openssl
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Download TDLib ${{ env.PLATFORM }} install
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -241,7 +243,7 @@ jobs:
         run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: xcarchive-${{ env.PLATFORM }}
           path: ./builder/build/${{ env.PLATFORM }}.xcarchive
@@ -254,18 +256,18 @@ jobs:
       PLATFORM: iOS-simulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
       - name: Download Openssl
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Download TDLib ${{ env.PLATFORM }} install
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -283,7 +285,7 @@ jobs:
         run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: xcarchive-${{ env.PLATFORM }}
           path: ./builder/build/${{ env.PLATFORM }}.xcarchive
@@ -296,7 +298,7 @@ jobs:
       PLATFORM: macOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -307,7 +309,7 @@ jobs:
 
       - name: Cache Openssl
         id: cache-openssl
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
@@ -323,7 +325,7 @@ jobs:
           ./build-openssl.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -336,7 +338,7 @@ jobs:
       PLATFORM: macOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -345,7 +347,7 @@ jobs:
 
       - name: Cache tdlib
         id: cache-tdlib
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
@@ -356,7 +358,7 @@ jobs:
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -378,7 +380,7 @@ jobs:
           ./build.sh $PLATFORM
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -391,18 +393,18 @@ jobs:
       PLATFORM: macOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
       - name: Download Openssl
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Download TDLib ${{ env.PLATFORM }} install
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -420,7 +422,7 @@ jobs:
         run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: xcarchive-${{ env.PLATFORM }}
           path: ./builder/build/${{ env.PLATFORM }}.xcarchive
@@ -433,7 +435,7 @@ jobs:
       PLATFORM: watchOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -444,7 +446,7 @@ jobs:
 
       - name: Cache Openssl
         id: cache-openssl
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
@@ -460,7 +462,7 @@ jobs:
           ./build-openssl.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -473,7 +475,7 @@ jobs:
       PLATFORM: watchOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -482,7 +484,7 @@ jobs:
 
       - name: Cache tdlib
         id: cache-tdlib
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
@@ -493,7 +495,7 @@ jobs:
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -514,7 +516,7 @@ jobs:
           ./build.sh $PLATFORM
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -526,7 +528,7 @@ jobs:
       PLATFORM: watchOS-simulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -537,7 +539,7 @@ jobs:
 
       - name: Cache Openssl
         id: cache-openssl
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
@@ -553,7 +555,7 @@ jobs:
           ./build-openssl.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -566,7 +568,7 @@ jobs:
       PLATFORM: watchOS-simulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -575,7 +577,7 @@ jobs:
 
       - name: Cache tdlib
         id: cache-tdlib
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
@@ -586,7 +588,7 @@ jobs:
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -607,7 +609,7 @@ jobs:
           ./build.sh $PLATFORM
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -620,18 +622,18 @@ jobs:
       PLATFORM: watchOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
       - name: Download Openssl
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Download TDLib ${{ env.PLATFORM }} install
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -649,7 +651,7 @@ jobs:
         run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: xcarchive-${{ env.PLATFORM }}
           path: ./builder/build/${{ env.PLATFORM }}.xcarchive
@@ -662,18 +664,18 @@ jobs:
       PLATFORM: watchOS-simulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
       - name: Download Openssl
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Download TDLib ${{ env.PLATFORM }} install
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -691,7 +693,7 @@ jobs:
         run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: xcarchive-${{ env.PLATFORM }}
           path: ./builder/build/${{ env.PLATFORM }}.xcarchive
@@ -704,7 +706,7 @@ jobs:
       PLATFORM: tvOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -715,7 +717,7 @@ jobs:
 
       - name: Cache Openssl
         id: cache-openssl
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
@@ -731,7 +733,7 @@ jobs:
           ./build-openssl.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -744,7 +746,7 @@ jobs:
       PLATFORM: tvOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -753,7 +755,7 @@ jobs:
 
       - name: Cache tdlib
         id: cache-tdlib
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
@@ -764,7 +766,7 @@ jobs:
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -785,7 +787,7 @@ jobs:
           ./build.sh $PLATFORM
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -797,7 +799,7 @@ jobs:
       PLATFORM: tvOS-simulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -808,7 +810,7 @@ jobs:
 
       - name: Cache Openssl
         id: cache-openssl
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
           key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
@@ -824,7 +826,7 @@ jobs:
           ./build-openssl.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -837,7 +839,7 @@ jobs:
       PLATFORM: tvOS-simulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -846,7 +848,7 @@ jobs:
 
       - name: Cache tdlib
         id: cache-tdlib
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
@@ -857,7 +859,7 @@ jobs:
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
@@ -878,7 +880,7 @@ jobs:
           ./build.sh $PLATFORM
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -891,18 +893,18 @@ jobs:
       PLATFORM: tvOS
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
       - name: Download Openssl
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Download TDLib ${{ env.PLATFORM }} install
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -920,7 +922,7 @@ jobs:
         run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: xcarchive-${{ env.PLATFORM }}
           path: ./builder/build/${{ env.PLATFORM }}.xcarchive
@@ -933,18 +935,18 @@ jobs:
       PLATFORM: tvOS-simulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
       - name: Download Openssl
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: openssl-${{ env.PLATFORM }}
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
 
       - name: Download TDLib ${{ env.PLATFORM }} install
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
@@ -962,7 +964,7 @@ jobs:
         run: ./build-framework.sh $PLATFORM
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: xcarchive-${{ env.PLATFORM }}
           path: ./builder/build/${{ env.PLATFORM }}.xcarchive
@@ -981,47 +983,47 @@ jobs:
       - build-framework-tvOS-simulator
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Download iOS Framework
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: xcarchive-iOS
           path: ./builder/build/iOS.xcarchive
 
       - name: Download iOS-simulator Framework
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: xcarchive-iOS-simulator
           path: ./builder/build/iOS-simulator.xcarchive
 
       - name: Download macOS Framework
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: xcarchive-macOS
           path: ./builder/build/macOS.xcarchive
 
       - name: Download watchOS Framework
 
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: xcarchive-watchOS
           path: ./builder/build/watchOS.xcarchive
 
       - name: Download watchOS-simulator Framework
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: xcarchive-watchOS-simulator
           path: ./builder/build/watchOS-simulator.xcarchive
 
       - name: Download tvOS Framework
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: xcarchive-tvOS
           path: ./builder/build/tvOS.xcarchive
 
       - name: Download tvOS-simulator Framework
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: xcarchive-tvOS-simulator
           path: ./builder/build/tvOS-simulator.xcarchive
@@ -1035,26 +1037,36 @@ jobs:
         run: zip -r TDLibFramework.zip TDLibFramework.xcframework
 
       - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: TDLibFramework.zip
           path: ./builder/build/TDLibFramework.zip
           if-no-files-found: error
 
-  # Requires Xcode 12.5
   # Tests
   tests:
     runs-on: macos-12
     needs: [merge-xcframework]
     strategy:
       matrix:
-        platform: ["macOS", "iOS-simulator", "tvOS-simulator"] # TODO: watchOS-simulator
+        include:
+          # https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md#installed-sdks
+          - platform: "macOS"
+          - platform: "iOS-simulator"
+            os_list: "16.2"
+            device_name: "iPhone 14"
+          - platform: "tvOS-simulator"
+            os_list: "16.1"
+            device_name: "Apple TV 4K (3rd generation) (at 1080p)"
+          - platform: "watchOS-simulator"
+            os_list: "9.1"
+            device_name: "Apple Watch Series 8 (45mm)"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Download XCFramework
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: TDLibFramework.zip
           path: ${{ env.ARTIFACT_DIR }}
@@ -1067,7 +1079,7 @@ jobs:
         run: python3 scripts/swift_package_generator.py --path ${{ env.ARTIFACT_DIR }}/TDLibFramework.xcframework
 
       - name: Run Tests for ${{ matrix.platform }}
-        run: ./scripts/test.sh ${{ matrix.platform }} || ./scripts/test.sh ${{ matrix.platform }}
+        run: ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}" || ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}"
 
   create-release:
     runs-on: macos-12
@@ -1075,7 +1087,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
 
@@ -1101,15 +1113,18 @@ jobs:
           echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_ENV
 
       - name: Download XCFramework
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: TDLibFramework.zip
           path: ${{ env.ARTIFACT_DIR }}
 
       - name: Get Checksum
-        run: echo "ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})" >> $GITHUB_ENV
+        run: |
+          ARTIFACT_CHECKSUM=$(swift package compute-checksum ${{ env.ARTIFACT_PATH }})
+          echo "ARTIFACT_CHECKSUM=$ARTIFACT_CHECKSUM" >> $GITHUB_ENV
 
       - name: Update Package.swift
+        if: github.ref == 'refs/heads/main'
         run: |
           python3 scripts/swift_package_generator.py --url "${{ env.RELEASES_DOWNLOAD_URL }}/${{ env.RELEASE_TAG }}/${{ env.ARTIFACT_NAME }}" --checksum ${{ env.ARTIFACT_CHECKSUM }}
           git add Package.swift || true
@@ -1117,6 +1132,7 @@ jobs:
           git push origin main || true
 
       - name: Remove previous release
+        if: github.ref == 'refs/heads/main'
         uses: dev-drprasad/delete-tag-and-release@85fa8bcea0379a6ada9bbfdcb0a9d24d58e1a0d7
         with:
           delete_release: true
@@ -1125,6 +1141,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Release
+        if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@9729932bfb75c05ad1f6e3a729294e05abaa7001
         with:
           target_commitish: main

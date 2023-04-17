@@ -1,33 +1,32 @@
 #!/bin/sh
-set -e
+set -ex
 
 PLATFORM="$1"
-
+OS_LIST="$2"
+NAME="$3"
 
 if [[ $PLATFORM = "iOS-simulator" ]]; then
     SDK="iphonesimulator"
-    SCHEME="iOSApp"
-    DESTINATION='platform=iOS Simulator,name=iPhone 8'
+    DESTINATION="platform=iOS Simulator,name=${NAME}"
 elif [[ $PLATFORM = "macOS" ]]; then
     SDK="macosx"
-    SCHEME="macOSApp"
-    DESTINATION='platform=OS X'
+    DESTINATION="platform=OS X"
 elif [[ $PLATFORM = "watchOS-simulator" ]]; then
-    SCHEME="watchOSApp"
-    DESTINATION='platform=watchOS Simulator,name=Apple Watch Series 5 - 40mm,OS=8.5'
+    SDK="watchsimulator"
+    DESTINATION="platform=watchOS Simulator,name=${NAME}"
 elif [[ $PLATFORM = "tvOS-simulator" ]]; then
     SDK="appletvsimulator"
-    SCHEME="tvOSApp"
-    DESTINATION='platform=tvOS Simulator,name=Apple TV' 
+    DESTINATION="platform=tvOS Simulator,name=${NAME}"
 else
     echo "Unknown SDK for platform \"$PLATFORM\""
     exit 1
 fi
 
-cd Tests/Apps
-
-if [[ $PLATFORM = "watchOS-simulator" ]]; then
-    xcodebuild -scheme ${SCHEME} -destination "${DESTINATION}" clean test
+if [[ $OS_LIST != "" ]]; then
+    for OS in $OS_LIST;
+    do
+    xcodebuild -scheme TDLibFramework -sdk ${SDK} -destination "${DESTINATION},OS=${OS}" clean test
+    done
 else
-    xcodebuild -scheme ${SCHEME} -sdk ${SDK} -destination "${DESTINATION}" clean test
+    xcodebuild -scheme TDLibFramework -sdk ${SDK} -destination "${DESTINATION}" clean test
 fi

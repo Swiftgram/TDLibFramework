@@ -2,7 +2,11 @@ import ProjectDescription
 
 import Foundation
 
-func shell(_ command: String) -> String {
+enum ShellError: Error {
+    case generic(statusCode: Int32, message: String, output: String)
+}
+
+func shell(_ command: String) throws -> String {
     let task = Process()
     let pipe = Pipe()
 
@@ -15,6 +19,13 @@ func shell(_ command: String) -> String {
     let data = pipe.fileHandleForReading.readDataToEndOfFile()
     let output = String(data: data, encoding: .utf8)!
 
+    while (task.isRunning) {
+        continue
+    }
+    if task.terminationStatus != 0 {
+        throw ShellError.generic(statusCode: task.terminationStatus, message: "Error running \(command)", output: output)
+    }
+
     return output
 }
 
@@ -23,8 +34,8 @@ let tdPath = "\(rootPath)/td"
 let tdIOSPath = "\(tdPath)/example/ios"
 
 func getVersion() -> String {
-    let td_git_tag = shell("cd \(tdPath) && git rev-parse --short=8 HEAD")
-    var version = shell("python3 \(rootPath)/scripts/extract_td_version.py \(tdPath)/td/telegram/Td.h").trimmingCharacters(in: .whitespacesAndNewlines)
+    let td_git_tag = try! shell("cd \(tdPath) && git rev-parse --short=8 HEAD")
+    var version = try! shell("python3 \(rootPath)/scripts/extract_td_version.py \(tdPath)/CMakeLists.txt").trimmingCharacters(in: .whitespacesAndNewlines)
 
     if version.isEmpty {
         version = td_git_tag
@@ -126,17 +137,14 @@ func getPlatformDependencies(platform: Platform, isSimulator: Bool = false) -> [
             return tdDeps
         } else {
             return [
-                .sdk(name: "libz.1.tbd"),
-                .sdk(name: "libSystem.B.tbd"),
-                .sdk(name: "libc++.1.tbd"),
-                .sdk(name: "libc++abi.tbd"),
+                .sdk(name: "libz.tbd"),
+                .sdk(name: "libc++.tbd"),
             ] + tdDeps
         }
     case .macOS:
         return [
-            .sdk(name: "libz.1.tbd"),
-            .sdk(name: "libSystem.B.tbd"),
-            .sdk(name: "libc++.1.tbd"),
+            .sdk(name: "libz.tbd"),
+            .sdk(name: "libc++.tbd"),
         ] + tdDeps
     default:
         return tdDeps
@@ -176,8 +184,8 @@ func getTargets() -> [Target] {
             dependencies: deps,
             settings: Settings(
                 base: [
-                    "SWIFT_VERSION": "5.0",
                     "PRODUCT_NAME": "TDLibFramework",
+                    "SWIFT_VERSION": "5.0", // stub
                 ],
                 configurations: [
                     .release(name: "Release", settings: ["SWIFT_OPTIMIZATION_LEVEL": "-O"]),
@@ -193,11 +201,14 @@ let project = Project(
     name: "TDLibFramework",
     settings: Settings(
         base: [
-            "IPHONEOS_DEPLOYMENT_TARGET": "12.0",
+            // Keep in sync with Package.swift
+            "IPHONEOS_DEPLOYMENT_TARGET": "11.0",
+            "MACOSX_DEPLOYMENT_TARGET": "10.13",
+            "WATCHOS_DEPLOYMENT_TARGET": "4.0",
+            "TVOS_DEPLOYMENT_TARGET": "11.0",
             "MACH_O_TYPE": "staticlib",
             "MODULEMAP_FILE": "$(SRCROOT)/xcodeproj/module.modulemap",
-            "SWIFT_VERSION": "5.0",
-            "MACOSX_DEPLOYMENT_TARGET": "10.12",
+            "SWIFT_VERSION": "5.0", // stub
             "MARKETING_VERSION": .string(getVersion()),
         ]
     ),
