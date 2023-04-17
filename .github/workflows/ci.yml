@@ -40,7 +40,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -78,7 +78,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -104,7 +104,7 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
-          ./build.sh $PLATFORM
+          ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
@@ -134,7 +134,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -172,7 +172,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -198,7 +198,7 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
-          ./build.sh $PLATFORM
+          ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
@@ -312,7 +312,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -350,7 +350,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -377,7 +377,7 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
-          ./build.sh $PLATFORM
+          ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
@@ -449,7 +449,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -487,7 +487,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -513,7 +513,7 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
-          ./build.sh $PLATFORM
+          ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
@@ -542,7 +542,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -580,7 +580,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -606,7 +606,7 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
-          ./build.sh $PLATFORM
+          ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
@@ -720,7 +720,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -758,7 +758,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -784,7 +784,7 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
-          ./build.sh $PLATFORM
+          ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
@@ -813,7 +813,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -851,7 +851,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -877,7 +877,7 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
-          ./build.sh $PLATFORM
+          ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3

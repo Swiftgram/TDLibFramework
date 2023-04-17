@@ -47,6 +47,10 @@ func getVersion() -> String {
     return version
 }
 
+func getMinimumOSVersion(_ platform: String) -> String {
+    return try! shell("python3 \(rootPath)/scripts/extract_os_version.py \(platform)")
+}
+
 let SimulatorSuffix = "-simulator"
 
 
@@ -201,11 +205,10 @@ let project = Project(
     name: "TDLibFramework",
     settings: Settings(
         base: [
-            // Keep in sync with Package.swift
-            "IPHONEOS_DEPLOYMENT_TARGET": "11.0",
-            "MACOSX_DEPLOYMENT_TARGET": "10.13",
-            "WATCHOS_DEPLOYMENT_TARGET": "4.0",
-            "TVOS_DEPLOYMENT_TARGET": "11.0",
+            "IPHONEOS_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("iOS")),
+            "MACOSX_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("macOS")),
+            "WATCHOS_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("watchOS")),
+            "TVOS_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("tvOS")),
             "MACH_O_TYPE": "staticlib",
             "MODULEMAP_FILE": "$(SRCROOT)/xcodeproj/module.modulemap",
             "SWIFT_VERSION": "5.0", // stub

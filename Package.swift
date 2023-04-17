@@ -7,7 +7,6 @@ let package = Package(
     name: "TDLibFramework",
     platforms: [
         // Minimum versions as of Xcode 14.2
-        // Keep in sync with DEPLOYMENT_TARGET in builder/Project.swift
         .iOS(.v11),
         .macOS(.v10_13),
         .watchOS(.v4),
