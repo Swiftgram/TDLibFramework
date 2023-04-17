@@ -185,6 +185,7 @@ func getTargets() -> [Target] {
             settings: Settings(
                 base: [
                     "PRODUCT_NAME": "TDLibFramework",
+                    "SWIFT_VERSION": "5.0", // stub
                 ],
                 configurations: [
                     .release(name: "Release", settings: ["SWIFT_OPTIMIZATION_LEVEL": "-O"]),
@@ -207,6 +208,7 @@ let project = Project(
             "TVOS_DEPLOYMENT_TARGET": "11.0",
             "MACH_O_TYPE": "staticlib",
             "MODULEMAP_FILE": "$(SRCROOT)/xcodeproj/module.modulemap",
+            "SWIFT_VERSION": "5.0", // stub
             "MARKETING_VERSION": .string(getVersion()),
         ]
     ),
