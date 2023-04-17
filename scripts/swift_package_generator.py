@@ -20,10 +20,12 @@ import PackageDescription
 let package = Package(
     name: "TDLibFramework",
     platforms: [
-        .iOS(.v7),
-        .macOS(.v10_12),
-        .watchOS(.v4), // https://github.com/tdlib/td/blob/15944f2a00ef2ae00d2b33a048047ecaf37f1487/example/ios/Python-Apple-support.patch
-        .tvOS(.v9)
+        // Minimum versions as of Xcode 14.2
+        // Keep in sync with DEPLOYMENT_TARGET in builder/Project.swift
+        .iOS(.v11),
+        .macOS(.v10_13),
+        .watchOS(.v4),
+        .tvOS(.v11)
     ],
     products: [
         .library(
@@ -44,7 +46,11 @@ let package = Package(
         .binaryTarget(
             name: "TDLibFramework",
 {target}
-        )
+        ),
+        .testTarget(
+            name: "TDLibFrameworkTests",
+            dependencies: ["TDLibFrameworkWrapper"]
+        ),
     ]
 )
 """

@@ -184,7 +184,6 @@ func getTargets() -> [Target] {
             dependencies: deps,
             settings: Settings(
                 base: [
-                    "SWIFT_VERSION": "5.0",
                     "PRODUCT_NAME": "TDLibFramework",
                 ],
                 configurations: [
@@ -201,11 +200,13 @@ let project = Project(
     name: "TDLibFramework",
     settings: Settings(
         base: [
-            "IPHONEOS_DEPLOYMENT_TARGET": "9.0",
+            // Keep in sync with Package.swift
+            "IPHONEOS_DEPLOYMENT_TARGET": "11.0",
+            "MACOSX_DEPLOYMENT_TARGET": "10.13",
+            "WATCHOS_DEPLOYMENT_TARGET": "4.0",
+            "TVOS_DEPLOYMENT_TARGET": "11.0",
             "MACH_O_TYPE": "staticlib",
             "MODULEMAP_FILE": "$(SRCROOT)/xcodeproj/module.modulemap",
-            "SWIFT_VERSION": "5.0",
-            "MACOSX_DEPLOYMENT_TARGET": "10.12",
             "MARKETING_VERSION": .string(getVersion()),
         ]
     ),

@@ -6,10 +6,12 @@ import PackageDescription
 let package = Package(
     name: "TDLibFramework",
     platforms: [
-        .iOS(.v9),
-        .macOS(.v10_12),
-        .watchOS(.v2), // Based on iOS 9 version
-        .tvOS(.v9) // Based on iOS 9 version
+        // Minimum versions as of Xcode 14.2
+        // Keep in sync with DEPLOYMENT_TARGET in builder/Project.swift
+        .iOS(.v11),
+        .macOS(.v10_13),
+        .watchOS(.v4),
+        .tvOS(.v11)
     ],
     products: [
         .library(
@@ -31,6 +33,10 @@ let package = Package(
             name: "TDLibFramework",
             url: "https://github.com/Swiftgram/TDLibFramework/releases/download/1.8.11-1543c41f/TDLibFramework.zip",
             checksum: "fc4a37505c7c0858e67e8d636479a8f8d3e725de1c67a78480e61901cbde6ec0"
-        )
+        ),
+        .testTarget(
+            name: "TDLibFrameworkTests",
+            dependencies: ["TDLibFrameworkWrapper"]
+        ),
     ]
 )

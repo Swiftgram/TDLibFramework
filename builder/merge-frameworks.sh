@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -ex
 
 PLATFORMS="$1"
 FRAMEWORK_NAME=TDLibFramework

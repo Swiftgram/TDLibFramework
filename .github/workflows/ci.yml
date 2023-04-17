@@ -1043,14 +1043,24 @@ jobs:
           path: ./builder/build/TDLibFramework.zip
           if-no-files-found: error
 
-  # Requires Xcode 12.5
   # Tests
   tests:
     runs-on: macos-12
     needs: [merge-xcframework]
     strategy:
       matrix:
-        platform: ["macOS", "iOS-simulator", "tvOS-simulator"] # TODO: watchOS-simulator
+        include:
+          # https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md#installed-sdks
+          - platform: "macOS"
+          - platform: "iOS-simulator"
+            os_list: "16.2"
+            device_name: "iPhone 14"
+          - platform: "tvOS-simulator"
+            os_list: "16.1"
+            device_name: "Apple TV 4K (3rd generation) (at 1080p)"
+          - platform: "watchOS-simulator"
+            os_list: "9.1"
+            device_name: "Apple Watch Series 8 (45mm)"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -1069,7 +1079,7 @@ jobs:
         run: python3 scripts/swift_package_generator.py --path ${{ env.ARTIFACT_DIR }}/TDLibFramework.xcframework
 
       - name: Run Tests for ${{ matrix.platform }}
-        run: ./scripts/test.sh ${{ matrix.platform }} || ./scripts/test.sh ${{ matrix.platform }}
+        run: ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}" || ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}"
 
   create-release:
     runs-on: macos-12
