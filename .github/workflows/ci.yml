@@ -70,8 +70,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
+      - name: Patch Build
+        run: |
+          cp builder/tdlib-patches/build.sh td/example/ios
+          cd td 
+          git apply ../builder/tdlib-patches/ios-cmake.patch
 
       - name: Cache tdlib
         id: cache-tdlib
@@ -164,8 +167,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
+      - name: Patch Build
+        run: |
+          cp builder/tdlib-patches/build.sh td/example/ios
+          cd td 
+          git apply ../builder/tdlib-patches/ios-cmake.patch
 
       - name: Cache tdlib
         id: cache-tdlib
@@ -342,8 +348,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
+      - name: Patch Build
+        run: |
+          cp builder/tdlib-patches/build.sh td/example/ios
+          cd td 
+          git apply ../builder/tdlib-patches/ios-cmake.patch
 
       - name: Cache tdlib
         id: cache-tdlib
@@ -479,8 +488,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
+      - name: Patch Build
+        run: |
+          cp builder/tdlib-patches/build.sh td/example/ios
+          cd td 
+          git apply ../builder/tdlib-patches/ios-cmake.patch
 
       - name: Cache tdlib
         id: cache-tdlib
@@ -572,8 +584,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
+      - name: Patch Build
+        run: |
+          cp builder/tdlib-patches/build.sh td/example/ios
+          cd td 
+          git apply ../builder/tdlib-patches/ios-cmake.patch
 
       - name: Cache tdlib
         id: cache-tdlib
@@ -750,8 +765,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
+      - name: Patch Build
+        run: |
+          cp builder/tdlib-patches/build.sh td/example/ios
+          cd td 
+          git apply ../builder/tdlib-patches/ios-cmake.patch
 
       - name: Cache tdlib
         id: cache-tdlib
@@ -843,8 +861,11 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Patch Build script
-        run: cp builder/tdlib-patches/build.sh td/example/ios
+      - name: Patch Build
+        run: |
+          cp builder/tdlib-patches/build.sh td/example/ios
+          cd td 
+          git apply ../builder/tdlib-patches/ios-cmake.patch
 
       - name: Cache tdlib
         id: cache-tdlib
