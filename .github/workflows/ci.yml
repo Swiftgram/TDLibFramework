@@ -73,8 +73,7 @@ jobs:
       - name: Patch Build
         run: |
           cp builder/tdlib-patches/build.sh td/example/ios
-          cd td 
-          git apply ../builder/tdlib-patches/ios-cmake-min-version.patch
+          cd td
           git apply ../builder/tdlib-patches/ios-cmake-arch.patch
 
       - name: Cache tdlib
@@ -171,8 +170,7 @@ jobs:
       - name: Patch Build
         run: |
           cp builder/tdlib-patches/build.sh td/example/ios
-          cd td 
-          git apply ../builder/tdlib-patches/ios-cmake-min-version.patch
+          cd td
           git apply ../builder/tdlib-patches/ios-cmake-arch.patch
 
       - name: Cache tdlib
@@ -353,8 +351,7 @@ jobs:
       - name: Patch Build
         run: |
           cp builder/tdlib-patches/build.sh td/example/ios
-          cd td 
-          git apply ../builder/tdlib-patches/ios-cmake-min-version.patch
+          cd td
           git apply ../builder/tdlib-patches/ios-cmake-arch.patch
 
       - name: Cache tdlib
@@ -494,8 +491,7 @@ jobs:
       - name: Patch Build
         run: |
           cp builder/tdlib-patches/build.sh td/example/ios
-          cd td 
-          git apply ../builder/tdlib-patches/ios-cmake-min-version.patch
+          cd td
           git apply ../builder/tdlib-patches/ios-cmake-arch.patch
 
       - name: Cache tdlib
@@ -591,8 +587,7 @@ jobs:
       - name: Patch Build
         run: |
           cp builder/tdlib-patches/build.sh td/example/ios
-          cd td 
-          git apply ../builder/tdlib-patches/ios-cmake-min-version.patch
+          cd td
           git apply ../builder/tdlib-patches/ios-cmake-arch.patch
 
       - name: Cache tdlib
@@ -774,7 +769,6 @@ jobs:
         run: |
           cp builder/tdlib-patches/build.sh td/example/ios
           cd td 
-          git apply ../builder/tdlib-patches/ios-cmake-min-version.patch
           git apply ../builder/tdlib-patches/ios-cmake-arch.patch
 
       - name: Cache tdlib
@@ -870,8 +864,7 @@ jobs:
       - name: Patch Build
         run: |
           cp builder/tdlib-patches/build.sh td/example/ios
-          cd td 
-          git apply ../builder/tdlib-patches/ios-cmake-min-version.patch
+          cd td
           git apply ../builder/tdlib-patches/ios-cmake-arch.patch
 
       - name: Cache tdlib
