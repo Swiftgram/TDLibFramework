@@ -1041,7 +1041,7 @@ jobs:
 
       - name: Archive XCFramework
         working-directory: ./builder/build
-        run: zip -r TDLibFramework.zip TDLibFramework.xcframework
+        run: zip --symlinks -r TDLibFramework.zip TDLibFramework.xcframework
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
