@@ -13,10 +13,10 @@ func JSONStringToDict(_ string: String) -> [String: Any] {
 
 final class TDLibFrameworkTests: XCTestCase {
     func testOffline() {
-        let client: UnsafeMutableRawPointer! = td_json_client_create()
-        let request = ["@type": "getTextEntities", "text": "@telegram /test_command https://telegram.org telegram.me", "@extra": ["5", 7.0, "\\u00e4"]] as [String: Any]
+        let _: Int32 = td_create_client_id()
+        let request = ["@type": "getTextEntities", "text": "@telegram /test_command https://telegram.org telegram.me", "@extra": ["5", 7.0, "\\u00e4"] as [Any]] as [String: Any]
         
-        if let res = td_json_client_execute(client, dictToJSONString(request)) {
+        if let res = td_execute(dictToJSONString(request)) {
             let responseString = String(cString: res)
             let responseDict = JSONStringToDict(responseString)
             print("Response from TDLib \(responseDict)")
@@ -25,11 +25,9 @@ final class TDLibFrameworkTests: XCTestCase {
         } else {
             preconditionFailure("No result for td_json_client_execute")
         }
-        
-        td_json_client_destroy(client)
     }
     func testLogin() {
-        let client: UnsafeMutableRawPointer! = td_json_client_create()
+        let clientId: Int32 = td_create_client_id()
         guard let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
             XCTFail("Unable to get cache path")
             return
@@ -65,7 +63,7 @@ final class TDLibFrameworkTests: XCTestCase {
         
         backgroundQueue.async {
             while true {
-                if let res = td_json_client_receive(client, 5) {
+                if let res = td_receive(5.0) {
                     let responseString = String(cString: res)
                     let responseDict = JSONStringToDict(responseString)
                     print("Response from TDLib \(responseDict)")
@@ -73,8 +71,8 @@ final class TDLibFrameworkTests: XCTestCase {
                         print("@extra value \(extra)")
                         switch (extra) {
                         case "setTdlibParameters-request-1":
-                            td_json_client_send(
-                                client,
+                            td_send(
+                                clientId,
                                 dictToJSONString(
                                     [
                                         "@type": "getAuthorizationState",
@@ -96,7 +94,7 @@ final class TDLibFrameworkTests: XCTestCase {
             }
         }
         
-        td_json_client_send(client, dictToJSONString(request))
+        td_send(clientId, dictToJSONString(request))
         
         // Wait for the expectation to be fulfilled
         wait(for: [setTdlibParametersExpectation, authStateExpectation], timeout: 180.0)

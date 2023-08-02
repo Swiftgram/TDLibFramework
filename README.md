@@ -27,7 +27,7 @@ Simple examples can be found in [Tests](Tests) directory.
 ### Create client
 
 ```swift
-let client: UnsafeMutableRawPointer! = td_json_client_create()
+let clientId: Int32 = td_create_client_id()
 ```
 
 ### Make request object
@@ -57,7 +57,7 @@ func JSONStringToDict(_ string: String) -> [String: Any] {
 Only for methods with "[Can be called synchronously](https://github.com/tdlib/td/blob/73d8fb4b3584633b0ffde97a20bbff6602e7a5c4/td/generate/scheme/td_api.tl#L4294)" in docs
 
 ```swift
-if let res = td_json_client_execute(client, dictToJSONString(request)) {
+if let res = td_execute(dictToJSONString(request)) {
     let responseString = String(cString: res)
     let responseDict = JSONStringToDict(responseString)
     print("Response from TDLib \(responseDict)")
@@ -87,10 +87,10 @@ let request = [
     "use_test_dc": false,
 ] as [String: Any]
 // Send request
-td_json_client_send(client, dictToJSONString(request))
+td_send(clientId, dictToJSONString(request))
 
 // Block thread and wait for response (not more 5.0 seconds)
-if let response = td_json_client_receive(client, 5.0) {
+if let response = td_receive(5.0) {
    let responseString = String(cString: res)
    let responseDict = JSONStringToDict(responseString)
    print("Async response from TDLib \(responseDict)")
