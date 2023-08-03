@@ -21,6 +21,7 @@ env:
 jobs:
   # iOS
   build-openssl-iOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     env:
       PLATFORM: iOS
@@ -60,6 +61,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-iOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-openssl-iOS]
     env:
@@ -116,6 +118,7 @@ jobs:
 
   # iOS
   build-openssl-iOS-simulator:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     env:
       PLATFORM: iOS-simulator
@@ -155,6 +158,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-iOS-simulator:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-openssl-iOS-simulator]
     env:
@@ -210,6 +214,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-iOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-tdlib-iOS]
     env:
@@ -252,6 +257,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-iOS-simulator:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-tdlib-iOS-simulator]
     env:
@@ -295,6 +301,7 @@ jobs:
 
   # macOS
   build-openssl-macOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     env:
       PLATFORM: macOS
@@ -334,6 +341,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-macOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-openssl-macOS]
     env:
@@ -390,6 +398,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-macOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-tdlib-macOS]
     env:
@@ -433,6 +442,7 @@ jobs:
 
   # watchOS
   build-openssl-watchOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     env:
       PLATFORM: watchOS
@@ -472,6 +482,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-watchOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-openssl-watchOS]
     env:
@@ -527,6 +538,7 @@ jobs:
           if-no-files-found: error
 
   build-openssl-watchOS-simulator:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     env:
       PLATFORM: watchOS-simulator
@@ -566,6 +578,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-watchOS-simulator:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-openssl-watchOS-simulator]
     env:
@@ -621,6 +634,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-watchOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-tdlib-watchOS]
     env:
@@ -663,6 +677,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-watchOS-simulator:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-tdlib-watchOS-simulator]
     env:
@@ -706,6 +721,7 @@ jobs:
 
   # tvOS
   build-openssl-tvOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     env:
       PLATFORM: tvOS
@@ -745,6 +761,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-tvOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-openssl-tvOS]
     env:
@@ -800,6 +817,7 @@ jobs:
           if-no-files-found: error
 
   build-openssl-tvOS-simulator:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     env:
       PLATFORM: tvOS-simulator
@@ -839,6 +857,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib-tvOS-simulator:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-openssl-tvOS-simulator]
     env:
@@ -894,6 +913,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-tvOS:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-tdlib-tvOS]
     env:
@@ -936,6 +956,7 @@ jobs:
           if-no-files-found: error
 
   build-framework-tvOS-simulator:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [build-tdlib-tvOS-simulator]
     env:
@@ -979,6 +1000,7 @@ jobs:
 
   # Merge frameworks
   merge-xcframework:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs:
       - build-framework-iOS
@@ -1052,6 +1074,7 @@ jobs:
 
   # Tests
   tests:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [merge-xcframework]
     strategy:
@@ -1089,6 +1112,7 @@ jobs:
         run: ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}" || ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}"
 
   create-release:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: macos-12
     needs: [tests]
 
