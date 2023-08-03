@@ -40,7 +40,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh', 'td/example/ios/Python-Apple-support.patch', 'builder/tdlib-patches/build-openssl.patch') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -79,7 +79,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -135,7 +135,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh', 'td/example/ios/Python-Apple-support.patch', 'builder/tdlib-patches/build-openssl.patch') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -174,7 +174,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -314,7 +314,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh', 'td/example/ios/Python-Apple-support.patch', 'builder/tdlib-patches/build-openssl.patch') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -353,7 +353,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -452,7 +452,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh', 'td/example/ios/Python-Apple-support.patch', 'builder/tdlib-patches/build-openssl.patch') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -491,7 +491,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -546,7 +546,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh', 'td/example/ios/Python-Apple-support.patch', 'builder/tdlib-patches/build-openssl.patch') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -585,7 +585,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -725,7 +725,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh', 'td/example/ios/Python-Apple-support.patch', 'builder/tdlib-patches/build-openssl.patch') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -764,7 +764,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -819,7 +819,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh', 'td/example/ios/Python-Apple-support.patch', 'builder/tdlib-patches/build-openssl.patch') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -858,7 +858,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
