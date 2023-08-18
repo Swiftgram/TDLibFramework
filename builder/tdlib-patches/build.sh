@@ -18,6 +18,13 @@ set_cmake_options () {
   options="$options -DOPENSSL_INCLUDE_DIR=${openssl_path}/include"
   options="$options -DOPENSSL_LIBRARIES=${openssl_crypto_library};${openssl_ssl_library}"
   options="$options -DCMAKE_BUILD_TYPE=Release"
+  if command -v ccache &> /dev/null
+  then
+    echo "ccache available, setting compiler options. Don't trust what cmake says, caching will work. https://t.me/tdlibchat/108338"
+    options="$options -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+  else
+    echo "ccache is not available"
+  fi
 }
 
 platform="$1"
