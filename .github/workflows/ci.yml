@@ -131,20 +131,6 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
 
-      - name: Save ccache cache
-        if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        uses: actions/cache@v3
-        with:
-          path: ~/Library/Caches/ccache
-          key: ${{ steps.cache-ccache.outputs.cache-primary-key }}
-
-      - name: Save ccache cache
-        if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        uses: actions/cache@v3
-        with:
-          path: ~/Library/Caches/ccache
-          key: ${{ steps.cache-ccache.outputs.cache-primary-key }}
-
   # iOS
   build-openssl-iOS-simulator:
     if: ${{ github.actor != 'dependabot[bot]' }}
@@ -455,20 +441,6 @@ jobs:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
-
-      - name: Save ccache cache
-        if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        uses: actions/cache@v3
-        with:
-          path: ~/Library/Caches/ccache
-          key: ${{ steps.cache-ccache.outputs.cache-primary-key }}
-
-      - name: Save ccache cache
-        if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        uses: actions/cache@v3
-        with:
-          path: ~/Library/Caches/ccache
-          key: ${{ steps.cache-ccache.outputs.cache-primary-key }}
 
   build-framework-macOS:
     if: ${{ github.actor != 'dependabot[bot]' }}
