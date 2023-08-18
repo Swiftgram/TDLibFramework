@@ -7,8 +7,8 @@ let package = Package(
     name: "TDLibFramework",
     platforms: [
         // Minimum versions as of Xcode 14.2
-        .iOS(.v11),
-        .macOS(.v10_13),
+        .iOS(.v11), // v12 is minimum version for openssl, may cause some incompatibility
+        .macOS(.v10_13), // v10_15 is minimum version for openssl, may cause some incompatibility
         .watchOS(.v4),
         .tvOS(.v11)
     ],

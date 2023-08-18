@@ -83,9 +83,20 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
+      - name: Restore ccache cache
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        id: cache-ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/ccache
+          key: tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-
+            tdlib-ccache-v1-${{ env.PLATFORM }}-
+
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        run: brew install gperf cmake coreutils
+        run: brew install gperf cmake coreutils ccache
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -109,12 +120,30 @@ jobs:
           cd td/example/ios
           ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
 
+      - name: Show ccache stats
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: ccache -s
+
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
+
+      - name: Save ccache cache
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/ccache
+          key: ${{ steps.cache-ccache.outputs.cache-primary-key }}
+
+      - name: Save ccache cache
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/ccache
+          key: ${{ steps.cache-ccache.outputs.cache-primary-key }}
 
   # iOS
   build-openssl-iOS-simulator:
@@ -180,9 +209,20 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
+      - name: Restore ccache cache
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        id: cache-ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/ccache
+          key: tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-
+            tdlib-ccache-v1-${{ env.PLATFORM }}-
+
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        run: brew install gperf cmake coreutils
+        run: brew install gperf cmake coreutils ccache
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -205,6 +245,10 @@ jobs:
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
+
+      - name: Show ccache stats
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: ccache -s
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
@@ -363,9 +407,20 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
+      - name: Restore ccache cache
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        id: cache-ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/ccache
+          key: tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-
+            tdlib-ccache-v1-${{ env.PLATFORM }}-
+
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        run: brew install gperf cmake coreutils
+        run: brew install gperf cmake coreutils ccache
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -390,12 +445,30 @@ jobs:
           cd td/example/ios
           ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
 
+      - name: Show ccache stats
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: ccache -s
+
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
         with:
           name: tdlib-install-${{ env.PLATFORM }}
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           if-no-files-found: error
+
+      - name: Save ccache cache
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/ccache
+          key: ${{ steps.cache-ccache.outputs.cache-primary-key }}
+
+      - name: Save ccache cache
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/ccache
+          key: ${{ steps.cache-ccache.outputs.cache-primary-key }}
 
   build-framework-macOS:
     if: ${{ github.actor != 'dependabot[bot]' }}
@@ -504,9 +577,20 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
+      - name: Restore ccache cache
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        id: cache-ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/ccache
+          key: tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-
+            tdlib-ccache-v1-${{ env.PLATFORM }}-
+
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        run: brew install gperf cmake coreutils
+        run: brew install gperf cmake coreutils ccache
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -529,6 +613,10 @@ jobs:
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
+
+      - name: Show ccache stats
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: ccache -s
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
@@ -600,9 +688,20 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
+      - name: Restore ccache cache
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        id: cache-ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/ccache
+          key: tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-
+            tdlib-ccache-v1-${{ env.PLATFORM }}-
+
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        run: brew install gperf cmake coreutils
+        run: brew install gperf cmake coreutils ccache
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -625,6 +724,10 @@ jobs:
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
+
+      - name: Show ccache stats
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: ccache -s
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
@@ -783,9 +886,20 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
+      - name: Restore ccache cache
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        id: cache-ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/ccache
+          key: tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-
+            tdlib-ccache-v1-${{ env.PLATFORM }}-
+
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        run: brew install gperf cmake coreutils
+        run: brew install gperf cmake coreutils ccache
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -808,6 +922,10 @@ jobs:
         run: |
           cd td/example/ios
           ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
+
+      - name: Show ccache stats
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: ccache -s
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
@@ -879,9 +997,20 @@ jobs:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
           key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
+      - name: Restore ccache cache
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        id: cache-ccache
+        uses: actions/cache@v3
+        with:
+          path: ~/Library/Caches/ccache
+          key: tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-
+            tdlib-ccache-v1-${{ env.PLATFORM }}-
+
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        run: brew install gperf cmake coreutils
+        run: brew install gperf cmake coreutils ccache
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -903,7 +1032,11 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
-          ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
+          source ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
+
+      - name: Show ccache stats
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: ccache -s
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v3
