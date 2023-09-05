@@ -97,10 +97,10 @@ if let response = td_receive(5.0) {
 }
 ```
 
-Destroy client on exit
+Close client on exit
 
 ```swift
-td_json_client_destroy(client)
+td_send(clientId, dictToJSONString(["@type": "Close"] as [String: String]))
 ```
 
 ## Releases
