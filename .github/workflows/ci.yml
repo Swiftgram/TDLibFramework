@@ -17,7 +17,7 @@ env:
   TDLIB_REPO: https://github.com/tdlib/td
   ARTIFACT_NAME: TDLibFramework.zip
   ARTIFACT_DIR: ./builder/build
-  DEVELOPER_DIR: /Applications/Xcode_14.3.1.app/Contents/Developer
+  DEVELOPER_DIR: /Applications/Xcode_14.2.app/Contents/Developer
 
 jobs:
   build:
@@ -29,12 +29,12 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       platform: ${{ matrix.platform }}
-      developer-dir: "/Applications/Xcode_14.3.1.app/Contents/Developer"
+      developer-dir: "/Applications/Xcode_14.2.app/Contents/Developer"
 
   # Merge frameworks
   merge-xcframework:
     if: ${{ github.actor != 'dependabot[bot]' }}
-    runs-on: macos-14
+    runs-on: macos-12
     needs: [build]
     steps:
       - name: Checkout
@@ -100,21 +100,21 @@ jobs:
   # Tests
   tests:
     if: ${{ github.actor != 'dependabot[bot]' }}
-    runs-on: macos-14
+    runs-on: macos-12
     needs: [merge-xcframework]
     strategy:
       matrix:
         include:
-          # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md#installed-sdks
+          # https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md#installed-sdks
           - platform: "macOS"
           - platform: "iOS-simulator"
-            os_list: "16.4"
+            os_list: "16.2"
             device_name: "iPhone 14"
           - platform: "tvOS-simulator"
-            os_list: "16.4"
+            os_list: "16.1"
             device_name: "Apple TV 4K (3rd generation) (at 1080p)"
           - platform: "watchOS-simulator"
-            os_list: "9.4"
+            os_list: "9.1"
             device_name: "Apple Watch Series 8 (45mm)"
     steps:
       - name: Checkout
@@ -138,7 +138,7 @@ jobs:
 
   create-release:
     if: ${{ github.actor != 'dependabot[bot]' }}
-    runs-on: macos-14
+    runs-on: macos-12
     needs: [tests]
 
     steps:

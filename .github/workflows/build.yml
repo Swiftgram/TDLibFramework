@@ -16,7 +16,7 @@ env:
 
 jobs:
   build-openssl:
-    runs-on: macos-14
+    runs-on: macos-12
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -53,7 +53,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib:
-    runs-on: macos-14
+    runs-on: macos-12
     needs: [build-openssl]
     steps:
       - name: Checkout
@@ -87,9 +87,9 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: brew install gperf cmake coreutils ccache
     
-      - name: Upgrade cmake  # we need 3.28.2 to escape "SDK settings were ignored as 'SDKSettings.json' could not be parsed" on Xcode 14.3.1 and tvOS
-        if: env.PLATFORM == 'tvOS'
-        run: brew update && brew upgrade cmake
+      # - name: Upgrade cmake  # we need 3.28.2 to escape "SDK settings were ignored as 'SDKSettings.json' could not be parsed" on Xcode 14.2 and tvOS
+      #   if: env.PLATFORM == 'tvOS'
+      #   run: brew update && brew upgrade cmake
 
       - name: Download Artifacts
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -126,7 +126,7 @@ jobs:
           if-no-files-found: error
 
   build-framework:
-    runs-on: macos-14
+    runs-on: macos-12
     needs: [build-tdlib]
     steps:
       - name: Checkout
