@@ -16,7 +16,7 @@ env:
 
 jobs:
   build-openssl:
-    runs-on: macos-12
+    runs-on: macos-14
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -53,7 +53,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib:
-    runs-on: macos-12
+    runs-on: macos-14
     needs: [build-openssl]
     steps:
       - name: Checkout
@@ -126,7 +126,7 @@ jobs:
           if-no-files-found: error
 
   build-framework:
-    runs-on: macos-12
+    runs-on: macos-14
     needs: [build-tdlib]
     steps:
       - name: Checkout
