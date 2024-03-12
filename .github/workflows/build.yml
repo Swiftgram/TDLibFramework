@@ -149,12 +149,16 @@ jobs:
       - name: Patch headers
         working-directory: ./builder
         run: ./patch-headers.sh
+      
+      - name: Install mise
+        run: |
+          curl https://mise.run | sh
+          ~/.local/bin/mise --version
+  
+          echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
 
       - name: Generate project
         run: |
-          curl https://mise.run | sh
-          ~/.local/bin/mise activate
-
           mise install tuist
 
           cd builder
