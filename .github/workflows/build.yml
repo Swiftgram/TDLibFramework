@@ -112,7 +112,12 @@ jobs:
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
         run: |
           cd td/example/ios
-          ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
+          if [[ $PLATFORM == "visionOS"* ]]; then
+              ./build.sh $PLATFORM ""
+          else
+              ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
+          fi
+          
 
       - name: Show ccache stats
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
