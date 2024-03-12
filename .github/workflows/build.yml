@@ -149,17 +149,14 @@ jobs:
       - name: Patch headers
         working-directory: ./builder
         run: ./patch-headers.sh
-      
-      - name: Install mise
-        run: |
-          curl https://mise.run | sh
-          ~/.local/bin/mise --version
-  
-          echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
 
       - name: Generate project
         run: |
-          mise install tuist
+          curl https://mise.run | sh
+          export PATH="$HOME/.local/bin:$PATH"
+          
+          mise install # Installs the tools in .mise.toml
+          eval "$(mise activate bash --shims)" # Adds the activated tools to $PATH
 
           cd builder
           TUIST_PLATFORM=$PLATFORM tuist generate
