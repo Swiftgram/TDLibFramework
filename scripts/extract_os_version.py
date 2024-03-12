@@ -19,6 +19,8 @@ def main(platform):
             version += ".0"
         return version
     else:
+        if platform == "visionOS":
+            return "1.0"
         raise ValueError(f"Could not find {platform} version in Package.swift")
 
 

@@ -210,7 +210,7 @@ let project = Project(
             "MACOSX_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("macOS")),
             "WATCHOS_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("watchOS")),
             "TVOS_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("tvOS")),
-            "XROS_DEPLOYMENT_TARGET": .string("1.0"), // .string(getMinimumOSVersion("visionOS")),
+            "XROS_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("visionOS")),
             "MACH_O_TYPE": "staticlib",
             "MODULEMAP_FILE": "$(SRCROOT)/xcodeproj/module.modulemap",
             "SWIFT_VERSION": "5.0", // stub
