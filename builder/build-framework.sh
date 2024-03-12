@@ -16,9 +16,9 @@ elif [[ $PLATFORM = "tvOS" ]]; then
     SDK="appletvos"
 elif [[ $PLATFORM = "tvOS-simulator" ]]; then
     SDK="appletvsimulator"
-elif [[ $platform = "visionOS" ]]; then
+elif [[ $PLATFORM = "visionOS" ]]; then
     SDK="visionos"
-elif [[ $platform = "visionOS-simulator" ]]; then
+elif [[ $PLATFORM = "visionOS-simulator" ]]; then
     SDK="visionossimulator"
 else
     echo "Unknown SDK for platform \"$PLATFORM\""
