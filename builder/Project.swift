@@ -175,7 +175,7 @@ func getTargets() -> [Target] {
             .target(
                 name: rawPlatform,
                 destinations: destinationFromPlatformString(platform),
-                product: .staticFramework,
+                product: .framework,
                 bundleId: "app.swiftgram.tdlibframework.\(rawPlatform)",
                 infoPlist: "xcodeproj/Info.plist",
                 headers: .headers(public: .list([
