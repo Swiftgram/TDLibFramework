@@ -128,7 +128,7 @@ jobs:
           - platform: "watchOS-simulator"
             os_list: "9.1"
             device_name: "Apple Watch Series 8 (45mm)"
-          - platform: "visionOS"
+          - platform: "visionOS-simulator"
             os_list: "1.0"
             device_name: "Apple Vision Pro"
 
