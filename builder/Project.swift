@@ -56,13 +56,13 @@ let SimulatorSuffix = "-simulator"
 
 
 func getBuildPlatforms() -> [String] {
-  return Environment.platform.getString(default: "iOS,iOS-simulator,macOS,watchOS,watchOS-simulator,tvOS,tvOS-simulator").components(separatedBy: ",")
+return Environment.platform.getString(default: "iOS,iOS-simulator,macOS,watchOS,watchOS-simulator,tvOS,tvOS-simulator,visionOS,visionOS-simulator").components(separatedBy: ",")
 }
 
 let BuildPlatforms = getBuildPlatforms()
 print("\nGenerating project for platforms \(BuildPlatforms)")
 
-func platformFromString(_ platformString: String) -> Platform {
+func destinationFromPlatformString(_ platformString: String) -> Destinations {
     switch platformString.lowercased() {
     case "ios":
         return .iOS
@@ -72,6 +72,8 @@ func platformFromString(_ platformString: String) -> Platform {
         return .tvOS
     case "watchos":
         return .watchOS
+    case "visionos":
+        return .visionOS
     default:
         fatalError("UNKNOWN PLATFORM FROM STRING \(platformString)")
     }
@@ -87,12 +89,14 @@ func stringFromPlatform(_ platform: Platform) -> String {
         return "tvOS"
     case .watchOS:
         return "watchOS"
+    case .visionOS:
+        return "visionOS"
     default:
         fatalError("UNKNOWN STRING FROM PLATFORM \(platform)")
     }
 }
 
-func getPlatformDependencies(platform: Platform, isSimulator: Bool = false) -> [TargetDependency] {
+func getPlatformDependencies(platform: Destinations, isSimulator: Bool = false) -> [TargetDependency] {
     var platformString = "\(platform)"
     var suffix = ""
     if isSimulator {
@@ -113,7 +117,7 @@ func getPlatformDependencies(platform: Platform, isSimulator: Bool = false) -> [
             )
         )
     }
-
+    
     for tdInstallLib in [
         "libtdactor.a",
         "libtdapi.a",
@@ -134,26 +138,26 @@ func getPlatformDependencies(platform: Platform, isSimulator: Bool = false) -> [
             )
         )
     }
-
+    
     switch platform {
     case .iOS:
         if isSimulator {
             return tdDeps
         } else {
             return [
-                .sdk(name: "libz.tbd"),
-                .sdk(name: "libc++.tbd"),
+                .sdk(name: "libz.tbd", type: .library),
+                .sdk(name: "libc++.tbd", type: .library),
             ] + tdDeps
         }
     case .macOS:
         return [
-            .sdk(name: "libz.tbd"),
-            .sdk(name: "libc++.tbd"),
+            .sdk(name: "libz.tbd", type: .library),
+            .sdk(name: "libc++.tbd", type: .library),
         ] + tdDeps
     default:
         return tdDeps
     }
-
+    
     return []
 }
 
@@ -162,53 +166,51 @@ func getTargets() -> [Target] {
     for rawPlatform in BuildPlatforms {
         var isSimulator = false
         var platform = rawPlatform
-        var platformSuffix = ""
         if rawPlatform.hasSuffix(SimulatorSuffix) {
             platform = String(platform.dropLast(SimulatorSuffix.count))
             isSimulator = true
-            platformSuffix = "-simulator"
         }
-        let deps = getPlatformDependencies(platform: platformFromString(platform), isSimulator: isSimulator)
-
-        targets.append(Target(
-            name: rawPlatform,
-            platform: platformFromString(platform),
-            product: .framework,
-            bundleId: "app.swiftgram.tdlibframework.\(rawPlatform)",
-            infoPlist: "xcodeproj/Info.plist",
-            headers: Headers(
-                public: [
+        let deps = getPlatformDependencies(platform: destinationFromPlatformString(platform), isSimulator: isSimulator)
+        targets.append(
+            .target(
+                name: rawPlatform,
+                destinations: destinationFromPlatformString(rawPlatform),
+                product: .staticFramework,
+                bundleId: "app.swiftgram.tdlibframework.\(rawPlatform)",
+                infoPlist: "xcodeproj/Info.plist",
+                headers: .headers(public: .list([
                     "\(tdPath)/td/telegram/td_json_client.h",
                     "\(tdPath)/td/telegram/td_log.h",
                     "xcodeproj/td.h",
                     // Additional Compiled header
                     "\(tdIOSPath)/build/install-\(rawPlatform)/include/td/telegram/tdjson_export.h",
-                ]
-            ),
-            dependencies: deps,
-            settings: Settings(
-                base: [
-                    "PRODUCT_NAME": "TDLibFramework",
-                    "SWIFT_VERSION": "5.0", // stub
-                ],
-                configurations: [
-                    .release(name: "Release", settings: ["SWIFT_OPTIMIZATION_LEVEL": "-O"]),
-                ]
+                ])),
+                dependencies: deps,
+                settings: .settings(
+                    base: [
+                        "PRODUCT_NAME": "TDLibFramework",
+                        "SWIFT_VERSION": "5.0" //stub
+                    ],
+                    configurations: [
+                        .release(name: .release, settings: ["SWIFT_OPTIMIZATION_LEVEL": "-O"])
+                    ]
+                )
             )
-        ))
+        )
     }
-
+    
     return targets
 }
 
 let project = Project(
     name: "TDLibFramework",
-    settings: Settings(
+    settings: .settings(
         base: [
             "IPHONEOS_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("iOS")),
             "MACOSX_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("macOS")),
             "WATCHOS_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("watchOS")),
             "TVOS_DEPLOYMENT_TARGET": .string(getMinimumOSVersion("tvOS")),
+            "XROS_DEPLOYMENT_TARGET": .string("1.0"), // .string(getMinimumOSVersion("visionOS")),
             "MACH_O_TYPE": "staticlib",
             "MODULEMAP_FILE": "$(SRCROOT)/xcodeproj/module.modulemap",
             "SWIFT_VERSION": "5.0", // stub

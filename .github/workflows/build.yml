@@ -152,7 +152,12 @@ jobs:
 
       - name: Generate project
         working-directory: ./builder
-        run: TUIST_PLATFORM=$PLATFORM ../.tuist-bin/tuist generate
+        run: |
+          curl https://mise.run | sh
+          ~/.local/bin/mise activate
+
+          mise install tuist
+          TUIST_PLATFORM=$PLATFORM tuist generate
 
       - name: Build .framework
         working-directory: ./builder
