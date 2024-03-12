@@ -113,6 +113,7 @@ jobs:
         run: |
           cd td/example/ios
           if [[ $PLATFORM == "visionOS"* ]]; then
+              # NOTE: for visionOS, no (-mxros-version-min) flag exists yet, so we omit the flag completely
               ./build.sh $PLATFORM ""
           else
               ./build.sh $PLATFORM "$(python3 ../../../scripts/extract_os_version.py ${PLATFORM})"
