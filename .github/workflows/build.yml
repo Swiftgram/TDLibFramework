@@ -151,12 +151,13 @@ jobs:
         run: ./patch-headers.sh
 
       - name: Generate project
-        working-directory: ./builder
         run: |
           curl https://mise.run | sh
           ~/.local/bin/mise activate
 
           mise install tuist
+
+          cd builder
           TUIST_PLATFORM=$PLATFORM tuist generate
 
       - name: Build .framework

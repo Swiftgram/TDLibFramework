@@ -17,7 +17,7 @@ env:
   TDLIB_REPO: https://github.com/tdlib/td
   ARTIFACT_NAME: TDLibFramework.zip
   ARTIFACT_DIR: ./builder/build
-  DEVELOPER_DIR: /Applications/Xcode_14.2.app/Contents/Developer
+  DEVELOPER_DIR: /Applications/Xcode_15.2.app/Contents/Developer
 
 jobs:
   build:
@@ -29,12 +29,12 @@ jobs:
     uses: ./.github/workflows/build.yml
     with:
       platform: ${{ matrix.platform }}
-      developer-dir: "/Applications/Xcode_14.2.app/Contents/Developer"
+      developer-dir: "/Applications/Xcode_15.2.app/Contents/Developer"
 
   # Merge frameworks
   merge-xcframework:
     if: ${{ github.actor != 'dependabot[bot]' }}
-    runs-on: macos-12
+    runs-on: macos-14
     needs: [build]
     steps:
       - name: Checkout
@@ -81,10 +81,22 @@ jobs:
         with:
           name: xcarchive-tvOS-simulator
           path: ./builder/build/tvOS-simulator.xcarchive
+        
+      - name: Download visionOS Framework
+        uses: actions/download-artifact@v4
+        with:
+          name: xcarchive-visionOS
+          path: ./builder/build/visionOS.xcarchive
+      
+      - name: Download visionOS-simulator Framework
+        uses: actions/download-artifact@v4
+        with:
+          name: xcarchive-visionOS-simulator
+          path: ./builder/build/visionOS-simulator.xcarchive
 
       - name: Merge Frameworks
         working-directory: ./builder
-        run: ./merge-frameworks.sh "iOS iOS-simulator macOS watchOS watchOS-simulator tvOS tvOS-simulator"
+        run: ./merge-frameworks.sh "iOS iOS-simulator macOS watchOS watchOS-simulator tvOS tvOS-simulator visionOS visionOS-simulator"
 
       - name: Archive XCFramework
         working-directory: ./builder/build
@@ -100,12 +112,12 @@ jobs:
   # Tests
   tests:
     if: ${{ github.actor != 'dependabot[bot]' }}
-    runs-on: macos-12
+    runs-on: macos-14
     needs: [merge-xcframework]
     strategy:
       matrix:
         include:
-          # https://github.com/actions/runner-images/blob/main/images/macos/macos-12-Readme.md#installed-sdks
+          # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-arm64-Readme.md#installed-sdks
           - platform: "macOS"
           - platform: "iOS-simulator"
             os_list: "16.2"
@@ -116,6 +128,10 @@ jobs:
           - platform: "watchOS-simulator"
             os_list: "9.1"
             device_name: "Apple Watch Series 8 (45mm)"
+          - platform: "visionOS"
+            os_list: "1.0"
+            device_name: "Apple Vision Pro"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -138,7 +154,7 @@ jobs:
 
   create-release:
     if: ${{ github.actor != 'dependabot[bot]' }}
-    runs-on: macos-12
+    runs-on: macos-14
     needs: [tests]
 
     steps:

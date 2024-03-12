@@ -5,7 +5,7 @@ index ce489e71..69d2462b 100755
 @@ -7,13 +7,13 @@ git apply ../Python-Apple-support.patch
  cd ..
  
--platforms="macOS iOS watchOS tvOS"
+-platforms="macOS iOS watchOS tvOS visionOS"
 +platforms="$1"
  
  for platform in $platforms;

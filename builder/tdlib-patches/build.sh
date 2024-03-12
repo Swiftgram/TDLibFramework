@@ -45,6 +45,8 @@ elif [[ $platform == "watchOS"* ]]; then
     platform="watchOS"
 elif [[ $platform == "tvOS"* ]]; then
     platform="tvOS"
+elif [[ $platform == "visionOS"* ]]; then
+    platform="visionOS"
 fi
 
 echo "Platform = ${platform}"
@@ -55,6 +57,8 @@ else
     ios_platform="WATCH"
   elif [[ $platform = "tvOS" ]]; then
     ios_platform="TV"
+  elif [[ $platform = "visionOS" ]]; then
+    ios_platform="VISION"
   else
     ios_platform=""
   fi

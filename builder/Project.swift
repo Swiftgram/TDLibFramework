@@ -62,8 +62,8 @@ return Environment.platform.getString(default: "iOS,iOS-simulator,macOS,watchOS,
 let BuildPlatforms = getBuildPlatforms()
 print("\nGenerating project for platforms \(BuildPlatforms)")
 
-func destinationFromPlatformString(_ platformString: String) -> Destinations {
-    switch platformString.lowercased() {
+func destinationFromPlatformString(_ destinationString: String) -> Destinations {
+    switch destinationString.lowercased() {
     case "ios":
         return .iOS
     case "macos":
@@ -75,12 +75,12 @@ func destinationFromPlatformString(_ platformString: String) -> Destinations {
     case "visionos":
         return .visionOS
     default:
-        fatalError("UNKNOWN PLATFORM FROM STRING \(platformString)")
+        fatalError("UNKNOWN DESTINATION FROM STRING \(destinationString)")
     }
 }
 
-func stringFromPlatform(_ platform: Platform) -> String {
-    switch platform {
+func stringFromDestination(_ destination: Destinations) -> String {
+    switch destination {
     case .iOS:
         return "iOS"
     case .macOS:
@@ -92,12 +92,12 @@ func stringFromPlatform(_ platform: Platform) -> String {
     case .visionOS:
         return "visionOS"
     default:
-        fatalError("UNKNOWN STRING FROM PLATFORM \(platform)")
+        fatalError("UNKNOWN STRING FROM DESTINATION \(destination)")
     }
 }
 
-func getPlatformDependencies(platform: Destinations, isSimulator: Bool = false) -> [TargetDependency] {
-    var platformString = "\(platform)"
+func getPlatformDependencies(destination: Destinations, isSimulator: Bool = false) -> [TargetDependency] {
+    var platformString = stringFromDestination(destination)
     var suffix = ""
     if isSimulator {
         suffix = "-simulator"
@@ -139,7 +139,7 @@ func getPlatformDependencies(platform: Destinations, isSimulator: Bool = false) 
         )
     }
     
-    switch platform {
+    switch destination {
     case .iOS:
         if isSimulator {
             return tdDeps
@@ -170,7 +170,7 @@ func getTargets() -> [Target] {
             platform = String(platform.dropLast(SimulatorSuffix.count))
             isSimulator = true
         }
-        let deps = getPlatformDependencies(platform: destinationFromPlatformString(platform), isSimulator: isSimulator)
+        let deps = getPlatformDependencies(destination: destinationFromPlatformString(platform), isSimulator: isSimulator)
         targets.append(
             .target(
                 name: rawPlatform,

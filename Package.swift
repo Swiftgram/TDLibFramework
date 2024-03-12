@@ -6,11 +6,11 @@ import PackageDescription
 let package = Package(
     name: "TDLibFramework",
     platforms: [
-        // Minimum versions as of Xcode 14.2
-        .iOS(.v11), // v12 is minimum version for openssl, may cause some incompatibility
-        .macOS(.v10_13), // v10_15 is minimum version for openssl, may cause some incompatibility
+        // Minimum versions for openssl - td/example/ios/Python-Apple-support/Makefile
+        .iOS(.v12),
+        .macOS(.v10_15),
         .watchOS(.v4),
-        .tvOS(.v11)
+        .tvOS(.v12), // Synced with iOS, but actually v9
     ],
     products: [
         .library(
