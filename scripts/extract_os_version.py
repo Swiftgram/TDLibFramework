@@ -39,6 +39,8 @@ if __name__ == "__main__":
             "watchOS-simulator",
             "tvOS",
             "tvOS-simulator",
+            "visionOS",
+            "visionOS-simulator"
         ],
         help="the platform to extract the minimum version for",
     )
