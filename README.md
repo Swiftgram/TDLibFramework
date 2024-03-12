@@ -111,6 +111,21 @@ You can find latest releases at [Releases](https://github.com/Swiftgram/TDLibFra
 
 You can find more about build process in [Github Actions](.github/workflows/ci.yml) file.
 
+## Contribute
+
+Editing `builder/Project.swift` requires [tuist](https://tuist.io/). See [installation](https://docs.tuist.io/documentation/tuist/installation) instructions for more info.
+
+Tuist's main distribution channel is the [mise](https://mise.jdx.dev/) tool. Check their [installation](https://mise.jdx.dev/getting-started.html) steps as well
+
+```shell
+mise install tuist
+```
+
+```shell
+cd builder
+tuist edit
+```
+
 ## Credits
 
 - Anton Glezman for [Build Guide](https://github.com/modestman/tdlib-swift) and basic implementation
