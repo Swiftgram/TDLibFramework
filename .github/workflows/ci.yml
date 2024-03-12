@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [iOS, iOS-simulator, macOS, watchOS, watchOS-simulator, tvOS, tvOS-simulator]
+        platform: [iOS, iOS-simulator, macOS, watchOS, watchOS-simulator, tvOS, tvOS-simulator, visionOS, visionOS-simulator]
     uses: ./.github/workflows/build.yml
     with:
       platform: ${{ matrix.platform }}
