@@ -165,6 +165,7 @@ jobs:
           eval "$(mise activate bash --shims)" # Adds the activated tools to $PATH
 
           cd builder
+          tuist install
           TUIST_PLATFORM=$PLATFORM tuist generate
 
       - name: Build .framework
