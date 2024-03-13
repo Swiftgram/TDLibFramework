@@ -19,7 +19,7 @@ elif [[ $PLATFORM = "tvOS-simulator" ]]; then
     DESTINATION="platform=tvOS Simulator,name=${NAME}"
 elif [[ $PLATFORM = "visionOS-simulator" ]]; then
     SDK="xrsimulator"
-    DESTINATION="platform=visionOS,name=${NAME}"
+    DESTINATION="platform=visionOS Simulator,name=${NAME}"
 else
     echo "Unknown SDK for platform \"$PLATFORM\""
     exit 1

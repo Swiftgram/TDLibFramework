@@ -118,15 +118,16 @@ jobs:
       matrix:
         include:
           # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-arm64-Readme.md#installed-sdks
+          # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-arm64-Readme.md#installed-simulators
           - platform: "macOS"
           - platform: "iOS-simulator"
-            os_list: "16.2"
+            os_list: "17.0"
             device_name: "iPhone 14"
           - platform: "tvOS-simulator"
-            os_list: "16.1"
+            os_list: "17.0"
             device_name: "Apple TV 4K (3rd generation) (at 1080p)"
           - platform: "watchOS-simulator"
-            os_list: "9.1"
+            os_list: "9.4"
             device_name: "Apple Watch Series 8 (45mm)"
           - platform: "visionOS-simulator"
             os_list: "1.0"
