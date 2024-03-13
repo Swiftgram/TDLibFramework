@@ -13,7 +13,7 @@ SPM_DEPS = [
       requirement: {
         kind: "upToNextMajorVersion",
         # Grab latest version from https://github.com/Swiftgram/TDLibFramework/releases
-        minimumVersion: "1.8.4-07b7faf6"
+        minimumVersion: "1.8.26-b41f3219"
       },
       product_name: "TDLibFramework"
     }

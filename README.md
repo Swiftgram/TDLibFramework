@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/Swiftgram/TDLibFramework/actions/workflows/ci.yml/badge.svg)](https://github.com/Swiftgram/TDLibFramework/actions/workflows/ci.yml)
 
-Project contains pre-compiled [TDLib](https://github.com/tdlib/td) binary for iOS, macOS, watchOS, tvOS and simulators in `.xcframework` bundle.
+Project contains pre-compiled [TDLib](https://github.com/tdlib/td) binary for iOS, macOS, watchOS, tvOS, visionOS and simulators in `.xcframework` bundle.
 
 If you're looking for pure Swift library, check out [TDLibKit](https://github.com/Swiftgram/TDLibKit)
 
