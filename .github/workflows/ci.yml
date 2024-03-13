@@ -121,7 +121,7 @@ jobs:
           # https://github.com/actions/runner-images/blob/main/images/macos/macos-14-arm64-Readme.md#installed-simulators
           - platform: "macOS"
           - platform: "iOS-simulator"
-            os_list: "17.0"
+            os_list: "17.0.1"
             device_name: "iPhone 14"
           - platform: "tvOS-simulator"
             os_list: "17.0"
