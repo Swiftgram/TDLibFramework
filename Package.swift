@@ -30,8 +30,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "TDLibFramework",
-            url: "https://github.com/Swiftgram/TDLibFramework/releases/download/1.8.26-b41f3219/TDLibFramework.zip",
-            checksum: "9315379ccdb0af1615ae0d5084befe794e89c95f3624892d9819ebb4ed3339e6"
+            url: "https://github.com/Swiftgram/TDLibFramework/releases/download/1.8.26-586bc784/TDLibFramework.zip",
+            checksum: "12f7403e66cb3daca0045f5df64226244f0d3e5ae6bc0ef6116b171fb67e236c"
         ),
         .testTarget(
             name: "TDLibFrameworkTests",
