@@ -33,9 +33,17 @@ let rootPath = ".."
 let tdPath = "\(rootPath)/td"
 let tdIOSPath = "\(tdPath)/example/ios"
 
-func getVersion() -> String {
-    let td_git_tag = try! shell("cd \(tdPath) && git rev-parse --short=8 HEAD")
-    var version = try! shell("python3 \(rootPath)/scripts/extract_td_version.py \(tdPath)/CMakeLists.txt").trimmingCharacters(in: .whitespacesAndNewlines)
+func getTDLibCommitSha() -> String {
+    return try! shell("cd \(tdPath) && git rev-parse --short=8 HEAD")
+}
+
+func getTDLibVersion() -> String {
+    return try! shell("python3 \(rootPath)/scripts/extract_td_version.py \(tdPath)/CMakeLists.txt").trimmingCharacters(in: .whitespacesAndNewlines)
+}
+
+func getFullVersion() -> String {
+    let td_git_tag = getTDLibCommitSha()
+    var version = getTDLibVersion()
 
     if version.isEmpty {
         version = td_git_tag
@@ -214,7 +222,8 @@ let project = Project(
             "MACH_O_TYPE": "staticlib",
             "MODULEMAP_FILE": "$(SRCROOT)/xcodeproj/module.modulemap",
             "SWIFT_VERSION": "5.0", // stub
-            "MARKETING_VERSION": .string(getVersion()),
+            "MARKETING_VERSION": .string(getTDLibVersion()),
+            "TDLIB_VERSION": .string(getFullVersion())
         ]
     ),
     targets: getTargets()
