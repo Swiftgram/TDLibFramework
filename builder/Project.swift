@@ -34,7 +34,7 @@ let tdPath = "\(rootPath)/td"
 let tdIOSPath = "\(tdPath)/example/ios"
 
 func getTDLibCommitSha() -> String {
-    return try! shell("cd \(tdPath) && git rev-parse --short=8 HEAD")
+    return try! shell("cd \(tdPath) && git rev-parse --short=8 HEAD").trimmingCharacters(in: .whitespacesAndNewlines)
 }
 
 func getTDLibVersion() -> String {
