@@ -1,0 +1,23 @@
+name: 'Download and unpack xcarchive'
+inputs:
+  platform:
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - name: Download ${{ inputs.platform }} Framework
+      uses: actions/download-artifact@v4
+      with:
+        name: xcarchive-${{ inputs.platform }}
+        path: ./builder/build
+    
+    - name: Unpack ${{ inputs.platform }} Framework
+      working-directory: ./builder/build
+      run: |
+        unzip ${{ inputs.platform }}.xcarchive.zip
+        rm ${{ inputs.platform }}.xcarchive.zip
+
+        ls -la
+        ls ${{ inputs.platform }}.xcarchive

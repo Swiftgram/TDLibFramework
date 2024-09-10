@@ -40,59 +40,41 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Download iOS Framework
-        uses: actions/download-artifact@v4
+      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
         with:
-          name: xcarchive-iOS
-          path: ./builder/build/iOS.xcarchive
-
-      - name: Download iOS-simulator Framework
-        uses: actions/download-artifact@v4
-        with:
-          name: xcarchive-iOS-simulator
-          path: ./builder/build/iOS-simulator.xcarchive
-
-      - name: Download macOS Framework
-        uses: actions/download-artifact@v4
-        with:
-          name: xcarchive-macOS
-          path: ./builder/build/macOS.xcarchive
-
-      - name: Download watchOS Framework
-        uses: actions/download-artifact@v4
-        with:
-          name: xcarchive-watchOS
-          path: ./builder/build/watchOS.xcarchive
-
-      - name: Download watchOS-simulator Framework
-        uses: actions/download-artifact@v4
-        with:
-          name: xcarchive-watchOS-simulator
-          path: ./builder/build/watchOS-simulator.xcarchive
-
-      - name: Download tvOS Framework
-        uses: actions/download-artifact@v4
-        with:
-          name: xcarchive-tvOS
-          path: ./builder/build/tvOS.xcarchive
-
-      - name: Download tvOS-simulator Framework
-        uses: actions/download-artifact@v4
-        with:
-          name: xcarchive-tvOS-simulator
-          path: ./builder/build/tvOS-simulator.xcarchive
-        
-      - name: Download visionOS Framework
-        uses: actions/download-artifact@v4
-        with:
-          name: xcarchive-visionOS
-          path: ./builder/build/visionOS.xcarchive
+          platform: iOS
       
-      - name: Download visionOS-simulator Framework
-        uses: actions/download-artifact@v4
+      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
         with:
-          name: xcarchive-visionOS-simulator
-          path: ./builder/build/visionOS-simulator.xcarchive
+          platform: iOS-simulator
+      
+      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+        with:
+          platform: macOS
+
+      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+        with:
+          platform: watchOS
+
+      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+        with:
+          platform: watchOS-simulator
+
+      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+        with:
+          platform: tvOS
+
+      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+        with:
+          platform: tvOS-simulator
+
+      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+        with:
+          platform: visionOS
+
+      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+        with:
+          platform: visionOS-simulator
 
       - name: Merge Frameworks
         working-directory: ./builder

@@ -171,9 +171,14 @@ jobs:
         working-directory: ./builder
         run: ./build-framework.sh $PLATFORM
 
+      - name: Compress xcarchive
+        run: |
+          cd builder/build
+          zip --symlinks -r ${{ env.PLATFORM }}.xcarchive.zip ${{ env.PLATFORM }}.xcarchive
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: xcarchive-${{ env.PLATFORM }}
-          path: ./builder/build/${{ env.PLATFORM }}.xcarchive
+          path: ./builder/build/${{ env.PLATFORM }}.xcarchive.zip
           if-no-files-found: error
