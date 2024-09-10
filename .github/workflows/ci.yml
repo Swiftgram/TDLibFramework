@@ -40,39 +40,39 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+      - uses: ./.github/actions/download-and-unpack-xcarchive
         with:
           platform: iOS
       
-      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+      - uses: ./.github/actions/download-and-unpack-xcarchive
         with:
           platform: iOS-simulator
       
-      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+      - uses: ./.github/actions/download-and-unpack-xcarchive
         with:
           platform: macOS
 
-      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+      - uses: ./.github/actions/download-and-unpack-xcarchive
         with:
           platform: watchOS
 
-      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+      - uses: ./.github/actions/download-and-unpack-xcarchive
         with:
           platform: watchOS-simulator
 
-      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+      - uses: ./.github/actions/download-and-unpack-xcarchive
         with:
           platform: tvOS
 
-      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+      - uses: ./.github/actions/download-and-unpack-xcarchive
         with:
           platform: tvOS-simulator
 
-      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+      - uses: ./.github/actions/download-and-unpack-xcarchive
         with:
           platform: visionOS
 
-      - uses: ./.github/actions/download-and-unpack-xcarchive.yml
+      - uses: ./.github/actions/download-and-unpack-xcarchive
         with:
           platform: visionOS-simulator
 
