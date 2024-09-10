@@ -14,10 +14,11 @@ runs:
         path: ./builder/build
     
     - name: Unpack ${{ inputs.platform }} Framework
+      shell: bash
       working-directory: ./builder/build
       run: |
         unzip ${{ inputs.platform }}.xcarchive.zip
         rm ${{ inputs.platform }}.xcarchive.zip
 
         ls -la
-        ls ${{ inputs.platform }}.xcarchive
+        ls -la ${{ inputs.platform }}.xcarchive
