@@ -1,8 +1,9 @@
-name: 'Download and unpack xcarchive'
+name: "Download and unpack xcarchive"
+description: "Download and unpack xcarchive"
 inputs:
   platform:
+    description: "Platform to download and unpack"
     required: true
-    type: string
 
 runs:
   using: "composite"
@@ -12,7 +13,7 @@ runs:
       with:
         name: xcarchive-${{ inputs.platform }}
         path: ./builder/build
-    
+
     - name: Unpack ${{ inputs.platform }} Framework
       shell: bash
       working-directory: ./builder/build
