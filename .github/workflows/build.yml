@@ -171,6 +171,7 @@ jobs:
         # https://github.com/actions/runner-images/issues/10692
         if: ${{ env.PLATFORM == 'visionOS' || env.PLATFORM == 'visionOS-simulator' }}
         run: |
+            sudo xcode-select -s ${{ env.DEVELOPER_DIR }}
             sudo xcodebuild -runFirstLaunch
             sudo xcrun simctl list
             sudo xcodebuild -downloadPlatform visionOS
