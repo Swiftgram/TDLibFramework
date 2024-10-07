@@ -122,7 +122,7 @@ jobs:
 
       - name: Show ccache stats
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        run: ccache -s
+        run: ccache --show-stats --verbose
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v4
