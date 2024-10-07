@@ -166,16 +166,12 @@ jobs:
 
           cd builder
           TUIST_PLATFORM=$PLATFORM tuist generate
-      
-      - name: Install visionOS runtime
-        # https://github.com/actions/runner-images/issues/10692
+
+      # https://github.com/actions/runner-images/issues/10692
+      - uses: ./.github/actions/install-visionos-runtime
         if: ${{ env.PLATFORM == 'visionOS' || env.PLATFORM == 'visionOS-simulator' }}
-        run: |
-            sudo xcode-select -s ${{ env.DEVELOPER_DIR }}
-            sudo xcodebuild -runFirstLaunch
-            sudo xcrun simctl list
-            sudo xcodebuild -downloadPlatform visionOS
-            sudo xcodebuild -runFirstLaunch
+        with:
+          developer_dir: ${{ env.DEVELOPER_DIR }}
 
       - name: Build .framework
         working-directory: ./builder

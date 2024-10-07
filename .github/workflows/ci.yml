@@ -128,7 +128,13 @@ jobs:
       - name: Unpack framework
         working-directory: ${{ env.ARTIFACT_DIR }}
         run: unzip ${{ env.ARTIFACT_NAME }}
-
+       
+      # https://github.com/actions/runner-images/issues/10692
+      - uses: ./.github/actions/install-visionos-runtime
+        if: ${{ matrix.platform == 'visionOS' || matrix.platform == 'visionOS-simulator' }}
+        with:
+          developer_dir: ${{ env.DEVELOPER_DIR }}
+      
       - name: Update Package.swift with local .xcframework
         run: python3 scripts/swift_package_generator.py --path ${{ env.ARTIFACT_DIR }}/TDLibFramework.xcframework
 
