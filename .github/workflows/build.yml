@@ -33,7 +33,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-v1-${{ env.PLATFORM }}-${{ hashFiles('td/example/ios/build-openssl.sh', 'td/example/ios/Python-Apple-support.patch', 'builder/tdlib-patches/build-openssl.patch') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ hashFiles('td/example/ios/build-openssl.sh', 'td/example/ios/Python-Apple-support.patch', 'builder/tdlib-patches/build-openssl.patch') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
@@ -70,7 +70,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ hashFiles('td', 'builder/tdlib-patches/build.sh') }}
 
       - name: Restore ccache cache
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -78,10 +78,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/Library/Caches/ccache
-          key: tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-${{ github.sha }}
+          key: tdlib-ccache-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ github.ref }}-${{ github.sha }}
           restore-keys: |
-            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ github.ref }}-
-            tdlib-ccache-v1-${{ env.PLATFORM }}-
+            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ github.ref }}-
+            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
