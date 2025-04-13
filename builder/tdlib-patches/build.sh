@@ -71,7 +71,7 @@ else
   fi
 
   echo "iOS platform = ${ios_platform}. Minimum OS version ${minimum_deployment_version}"
-  other_options="-DIOS_PLATFORM=${ios_platform} -DCMAKE_TOOLCHAIN_FILE=${td_path}/CMake/iOS.cmake -DIOS_DEPLOYMENT_TARGET=${minimum_deployment_version}"
+  other_options="-DIOS_PLATFORM=${ios_platform} -DCMAKE_TOOLCHAIN_FILE=${td_path}/CMake/iOS.cmake -DCMAKE_MAKE_PROGRAM=make -DIOS_DEPLOYMENT_TARGET=${minimum_deployment_version}"
 fi
 
 set_cmake_options $platform
