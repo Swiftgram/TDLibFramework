@@ -61,11 +61,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        with:
-          limit-access-to-actor: true
-
       - name: Patch Build
         run: |
           cp builder/tdlib-patches/build.sh td/example/ios
