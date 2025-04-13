@@ -138,6 +138,7 @@ func getPlatformDependencies(destination: Destinations, isSimulator: Bool = fals
         "libtdcore.a",
         "libtdutils.a",
         "libtdmtproto.a",
+        "libtde2e.a",
     ] {
         tdDeps.append(
             .library(
