@@ -37,7 +37,10 @@ jobs:
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
-        run: brew install gperf cmake coreutils
+        run: |
+          brew install gperf cmake coreutils
+          cmake --version
+          gperf --version
 
       - name: Build Openssl
         if: steps.cache-openssl.outputs.cache-hit != 'true'
