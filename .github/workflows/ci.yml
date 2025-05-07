@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 env:
-  TDLIB_REPO: https://github.com/tdlib/td
+  TDLIB_REPO: https://github.com/moderato-app/td
   ARTIFACT_NAME: TDLibFramework.zip
   ARTIFACT_DIR: ./builder/build
   DEVELOPER_DIR: /Applications/Xcode_16.0.app/Contents/Developer

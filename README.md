@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/Swiftgram/TDLibFramework/actions/workflows/ci.yml/badge.svg)](https://github.com/Swiftgram/TDLibFramework/actions/workflows/ci.yml)
 
-Project contains pre-compiled [TDLib](https://github.com/tdlib/td) binary for iOS, macOS, watchOS, tvOS, visionOS and simulators in `.xcframework` bundle.
+Project contains pre-compiled [TDLib](https://github.com/moderato-app/td) binary for iOS, macOS, watchOS, tvOS, visionOS and simulators in `.xcframework` bundle.
 
 If you're looking for pure Swift library, check out [TDLibKit](https://github.com/Swiftgram/TDLibKit)
 
@@ -54,7 +54,7 @@ func JSONStringToDict(_ string: String) -> [String: Any] {
 
 ### Synchronious requests
 
-Only for methods with "[Can be called synchronously](https://github.com/tdlib/td/blob/73d8fb4b3584633b0ffde97a20bbff6602e7a5c4/td/generate/scheme/td_api.tl#L4294)" in docs
+Only for methods with "[Can be called synchronously](https://github.com/moderato-app/td/blob/73d8fb4b3584633b0ffde97a20bbff6602e7a5c4/td/generate/scheme/td_api.tl#L4294)" in docs
 
 ```swift
 if let res = td_execute(dictToJSONString(request)) {
@@ -129,7 +129,7 @@ tuist edit
 ## Credits
 
 - Anton Glezman for [Build Guide](https://github.com/modestman/tdlib-swift) and basic implementation
-- Telegram Team for [TDLib](https://github.com/tdlib/td)
+- Telegram Team for [TDLib](https://github.com/moderato-app/td)
 
 ## License
 
