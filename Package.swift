@@ -31,7 +31,7 @@ let package = Package(
         .binaryTarget(
             name: "TDLibFramework",
             url: "https://github.com/moderato-app/TDLibFramework/releases/download/1.8.48-b6303f0c/TDLibFramework.zip",
-            checksum: "133454db612e8bb25eeff0bbe70a44218e667c3df4d72430aed9dd3f95d4b848"
+            checksum: "49561051d6ec833f07c2c11b347937e2d46d5d6c05dd3d18439fe98e86d30567"
         ),
         .testTarget(
             name: "TDLibFrameworkTests",
