@@ -33,6 +33,7 @@ final class TDLibFrameworkTests: XCTestCase {
             return
         }
         let tdlibPath = cachesUrl.appendingPathComponent("tdlib", isDirectory: true).path
+        let logVerbosityRequest = ["@type": "setLogVerbosityLevel", "new_verbosity_level": 10] as [String : Any]
         let request = [
             "@type": "setTdlibParameters",
             "api_hash": "5e6d7b36f0e363cf0c07baf2deb26076",
@@ -93,7 +94,15 @@ final class TDLibFrameworkTests: XCTestCase {
                 Thread.sleep(forTimeInterval: 0.1)
             }
         }
-        
+                
+        if let res = td_execute(dictToJSONString(logVerbosityRequest)) {
+            let responseString = String(cString: res)
+            let responseDict = JSONStringToDict(responseString)
+            print("Response from TDLib \(responseDict)")
+            XCTAssertEqual(responseDict["@type"] as! String, "ok")
+        } else {
+            preconditionFailure("logVerbosityRequest: No result for td_json_client_execute")
+        }
         td_send(clientId, dictToJSONString(request))
         
         // Wait for the expectation to be fulfilled
