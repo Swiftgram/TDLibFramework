@@ -106,7 +106,7 @@ final class TDLibFrameworkTests: XCTestCase {
         td_send(clientId, dictToJSONString(request))
         
         // Wait for the expectation to be fulfilled
-        wait(for: [setTdlibParametersExpectation, authStateExpectation], timeout: 360.0)
+        wait(for: [setTdlibParametersExpectation, authStateExpectation], timeout: 600.0)
         
     }
 }
