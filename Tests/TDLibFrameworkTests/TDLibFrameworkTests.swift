@@ -33,7 +33,7 @@ final class TDLibFrameworkTests: XCTestCase {
             return
         }
         let tdlibPath = cachesUrl.appendingPathComponent("tdlib", isDirectory: true).path
-        let logVerbosityRequest = ["@type": "setLogVerbosityLevel", "new_verbosity_level": 10] as [String : Any]
+        let logVerbosityRequest = ["@type": "setLogVerbosityLevel", "new_verbosity_level": 15] as [String : Any]
         let request = [
             "@type": "setTdlibParameters",
             "api_hash": "5e6d7b36f0e363cf0c07baf2deb26076",
