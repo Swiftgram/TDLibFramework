@@ -17,7 +17,7 @@ env:
   TDLIB_REPO: https://github.com/tdlib/td
   ARTIFACT_NAME: TDLibFramework.zip
   ARTIFACT_DIR: ./builder/build
-  DEVELOPER_DIR: /Applications/Xcode_16.0.app/Contents/Developer
+  DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
 
 jobs:
   build:
@@ -103,16 +103,12 @@ jobs:
           # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md#installed-simulators
           - platform: "macOS"
           - platform: "iOS-simulator"
-            os_list: "18.4"
             device_name: "iPhone 16"
           - platform: "tvOS-simulator"
-            os_list: "18.2"
             device_name: "Apple TV 4K (3rd generation) (at 1080p)"
           - platform: "watchOS-simulator"
-            os_list: "11.2"
             device_name: "Apple Watch Series 10 (46mm)"
           - platform: "visionOS-simulator"
-            os_list: "2.0"
             device_name: "Apple Vision Pro"
 
     steps:
