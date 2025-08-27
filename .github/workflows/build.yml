@@ -27,13 +27,14 @@ jobs:
         run: |
           cd td 
           git apply ../builder/tdlib-patches/build-openssl.patch
+          git apply ../builder/tdlib-patches/Python-Apple-Support-patch.patch
 
       - name: Cache Openssl
         id: cache-openssl
         uses: actions/cache@v4
         with:
           path: td/example/ios/third_party/openssl/${{ env.PLATFORM }}
-          key: openssl-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ hashFiles('td/example/ios/build-openssl.sh', 'td/example/ios/Python-Apple-support.patch', 'builder/tdlib-patches/build-openssl.patch') }}
+          key: openssl-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ hashFiles('td/example/ios/build-openssl.sh', 'td/example/ios/Python-Apple-support.patch', 'builder/tdlib-patches/build-openssl.patch', 'builder/tdlib-patches/Python-Apple-Support-patch.patch') }}
 
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
