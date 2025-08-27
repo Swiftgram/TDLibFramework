@@ -38,7 +38,7 @@ jobs:
       - name: Install deps
         if: steps.cache-openssl.outputs.cache-hit != 'true'
         run: |
-          brew install gperf cmake coreutils
+          brew install gperf coreutils # cmake
           cmake --version
           gperf --version
 
@@ -88,7 +88,7 @@ jobs:
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        run: brew install gperf cmake coreutils ccache
+        run: brew install gperf coreutils ccache # cmake
     
       # - name: Upgrade cmake  # we need 3.28.2 to escape "SDK settings were ignored as 'SDKSettings.json' could not be parsed" on Xcode 14.2 and tvOS
       #   if: env.PLATFORM == 'tvOS'
