@@ -161,6 +161,8 @@ jobs:
         run: ./patch-headers.sh
 
       - name: Generate project
+        env:
+          MISE_GITHUB_TOKEN: ${{ secrets.MISE_GITHUB_TOKEN }}
         run: |
           curl https://mise.run | sh
           export PATH="$HOME/.local/bin:$PATH"

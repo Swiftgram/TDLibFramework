@@ -27,6 +27,7 @@ jobs:
       matrix:
         platform: [iOS, iOS-simulator, macOS, watchOS, watchOS-simulator, tvOS, tvOS-simulator, visionOS, visionOS-simulator]
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       platform: ${{ matrix.platform }}
       developer-dir: "/Applications/Xcode_16.4.app/Contents/Developer"
