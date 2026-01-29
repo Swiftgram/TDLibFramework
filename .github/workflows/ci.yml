@@ -140,8 +140,16 @@ jobs:
       - name: Update Package.swift with local .xcframework
         run: python3 scripts/swift_package_generator.py --path ${{ env.ARTIFACT_DIR }}/TDLibFramework.xcframework
 
-      - name: Run Tests for ${{ matrix.platform }}
-        run: ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}" || ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}"
+      - name: Install timeout (coreutils)
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+          HOMEBREW_NO_INSTALL_CLEANUP: "1"
+        run: brew install coreutils
+
+      - name: Run Tests for ${{ matrix.platform }} (20m timeout + retry)
+        run: |
+          gtimeout 20m ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}" \
+            || gtimeout 20m ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}"
 
   create-release:
     if: ${{ github.actor != 'dependabot[bot]' }}
