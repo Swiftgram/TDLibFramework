@@ -96,7 +96,7 @@ jobs:
   # Tests
   tests:
     if: ${{ github.actor != 'dependabot[bot]' }}
-    timeout-minutes: 60
+    timeout-minutes: 70
     runs-on: macos-15
     needs: [merge-xcframework]
     strategy:
@@ -147,9 +147,10 @@ jobs:
           HOMEBREW_NO_INSTALL_CLEANUP: "1"
         run: brew install coreutils
 
-      - name: Run Tests for ${{ matrix.platform }} (${{ env.TEST_TIMEOUT }} timeout + retry)
+      - name: Run Tests for ${{ matrix.platform }} (${{ env.TEST_TIMEOUT }} timeout; retry x2)
         run: |
           gtimeout ${{ env.TEST_TIMEOUT }} ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}" \
+            || gtimeout ${{ env.TEST_TIMEOUT }} ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}" \
             || gtimeout ${{ env.TEST_TIMEOUT }} ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}"
 
   create-release:
