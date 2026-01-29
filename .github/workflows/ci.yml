@@ -18,6 +18,7 @@ env:
   ARTIFACT_NAME: TDLibFramework.zip
   ARTIFACT_DIR: ./builder/build
   DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer # Remember to change in developer-dir: below, since envs are not evaluated in matrixes
+  TEST_TIMEOUT: 20m
 
 jobs:
   build:
@@ -146,10 +147,10 @@ jobs:
           HOMEBREW_NO_INSTALL_CLEANUP: "1"
         run: brew install coreutils
 
-      - name: Run Tests for ${{ matrix.platform }} (20m timeout + retry)
+      - name: Run Tests for ${{ matrix.platform }} (${{ env.TEST_TIMEOUT }} timeout + retry)
         run: |
-          gtimeout 20m ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}" \
-            || gtimeout 20m ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}"
+          gtimeout ${{ env.TEST_TIMEOUT }} ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}" \
+            || gtimeout ${{ env.TEST_TIMEOUT }} ./scripts/test.sh ${{ matrix.platform }} "${{ matrix.os_list }}" "${{ matrix.device_name }}"
 
   create-release:
     if: ${{ github.actor != 'dependabot[bot]' }}
