@@ -95,7 +95,7 @@ jobs:
   # Tests
   tests:
     if: ${{ github.actor != 'dependabot[bot]' }}
-    timeout-minutes: 45
+    timeout-minutes: 60
     runs-on: macos-15
     needs: [merge-xcframework]
     strategy:
