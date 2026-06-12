@@ -116,8 +116,17 @@ jobs:
           cmake -DTD_GENERATE_SOURCE_FILES=ON ..
           cmake --build .
 
+      - name: Reset ccache stats
+        if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p "${{ runner.temp }}/ccache"
+          ccache --zero-stats
+          ccache --show-config
+
       - name: Build TDLib
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
+        env:
+          CCACHE_LOGFILE: ${{ runner.temp }}/ccache/ccache-${{ env.PLATFORM }}.log
         run: |
           cd td/example/ios
           if [[ $PLATFORM == "visionOS"* ]]; then
