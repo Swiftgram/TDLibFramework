@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "td" # on TDLib updates
+      - "builder/**" # on TDLib build script updates
       - ".github/workflows/**" # on CI updates
   pull_request:
     branches: [main]
