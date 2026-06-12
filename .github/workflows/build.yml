@@ -78,7 +78,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ hashFiles('td', 'builder/tdlib-patches/**') }}
+          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ hashFiles('td/**', 'builder/tdlib-patches/**') }}
 
       - name: Restore ccache cache
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
