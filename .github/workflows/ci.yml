@@ -183,8 +183,18 @@ jobs:
           TDLIB_COMMIT_URL=${{ env.TDLIB_REPO }}/tree/$TDLIB_COMMIT
           echo "TDLIB_COMMIT_URL=$TDLIB_COMMIT_URL" >> $GITHUB_ENV
 
-          RELEASE_TAG=$TDLIB_VERSION-$TDLIB_COMMIT
+          BASE_RELEASE_TAG=$TDLIB_VERSION-$TDLIB_COMMIT
+          RELEASE_TAG=$BASE_RELEASE_TAG
+          HAS_TAG_SUFFIX=false
+
+          if gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$BASE_RELEASE_TAG" > /dev/null 2>&1; then
+            RELEASE_TAG=$BASE_RELEASE_TAG-$GITHUB_RUN_NUMBER
+            HAS_TAG_SUFFIX=true
+          fi
+
+          echo "BASE_RELEASE_TAG=$BASE_RELEASE_TAG" >> $GITHUB_ENV
           echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_ENV
+          echo "HAS_TAG_SUFFIX=$HAS_TAG_SUFFIX" >> $GITHUB_ENV
 
       - name: Download XCFramework
         uses: actions/download-artifact@v4
@@ -205,17 +215,11 @@ jobs:
           git commit -m "[no ci] Bump TDLib ${{ env.RELEASE_TAG }}" || true
           git push origin main || true
 
-      - name: Remove previous release
-        if: github.ref == 'refs/heads/main'
-        run: gh release delete ${{ env.RELEASE_TAG }} --cleanup-tag || true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Release
         if: github.ref == 'refs/heads/main'
         run: |
-          echo -e "XCFramework based on TDLib-${{ env.TDLIB_VERSION }} commit [${{ env.TDLIB_COMMIT }}](${{ env.TDLIB_COMMIT_URL }})\n\nZIP Checksum \`${{ env.ARTIFACT_CHECKSUM }}\`" > release.md
-          gh release create ${{ env.RELEASE_TAG }} ${{ env.ARTIFACT_PATH }} --target main --notes-file release.md
+          echo -e "XCFramework based on TDLib-${{ env.TDLIB_VERSION }} commit [${{ env.TDLIB_COMMIT }}](${{ env.TDLIB_COMMIT_URL }})\n\nZIP Checksum \`${{ env.ARTIFACT_CHECKSUM }}\`\n\nGitHub Actions [Workflow](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)" > release.md
+          gh release create "$RELEASE_TAG" "$ARTIFACT_PATH" --target main --notes-file release.md
           rm release.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
