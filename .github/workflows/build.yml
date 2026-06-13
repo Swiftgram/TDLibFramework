@@ -137,9 +137,42 @@ jobs:
           fi
           
 
-      - name: Show ccache stats
-        if: steps.cache-tdlib.outputs.cache-hit != 'true'
-        run: ccache --show-stats --verbose
+      - name: Archive ccache logs
+        if: ${{ always() }}
+        run: |
+          CCACHE_DIR="${{ runner.temp }}/ccache"
+          # Keep this path in sync with CCACHE_LOGFILE in "Build TDLib", or move CCACHE_LOGFILE to job-level env.
+          CCACHE_LOG="$CCACHE_DIR/ccache-${{ env.PLATFORM }}.log"
+          CCACHE_LOGS_DIR="${{ runner.temp }}/ccache-logs"
+          ARCHIVE="${{ runner.temp }}/tdlib-ccache-logs-${{ env.PLATFORM }}.zip"
+
+          mkdir -p "$CCACHE_DIR" "$CCACHE_LOGS_DIR"
+
+          if ! ccache --show-config --verbose > "$CCACHE_LOGS_DIR/ccache-config.txt" 2>&1; then
+            rm -f "$CCACHE_LOGS_DIR/ccache-config.txt"
+          fi
+
+          if ! ccache --show-stats --verbose | tee "$CCACHE_LOGS_DIR/ccache-stats.txt"; then
+            rm -f "$CCACHE_LOGS_DIR/ccache-stats.txt"
+          fi
+
+          if [ -f "$CCACHE_LOG" ]; then
+            cp "$CCACHE_LOG" "$CCACHE_LOGS_DIR/ccache.log" || true
+          fi
+
+          shopt -s nullglob
+          files=("$CCACHE_LOGS_DIR"/*)
+          if [ ${#files[@]} -gt 0 ]; then
+            (cd "$CCACHE_LOGS_DIR" && zip -q -r "$ARCHIVE" .) || rm -f "$ARCHIVE"
+          fi
+
+      - name: Upload ccache logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: tdlib-ccache-logs-${{ env.PLATFORM }}
+          path: ${{ runner.temp }}/tdlib-ccache-logs-${{ env.PLATFORM }}.zip
+          if-no-files-found: warn
 
       - name: Upload ${{ env.PLATFORM }} install artifacts
         uses: actions/upload-artifact@v4
