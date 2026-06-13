@@ -78,7 +78,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: td/example/ios/build/install-${{ env.PLATFORM }}
-          key: tdlib-install-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ hashFiles('td/**', 'builder/tdlib-patches/**') }}
+          key: tdlib-install-v2-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ hashFiles('td/**', 'builder/tdlib-patches/**') }}
 
       - name: Restore ccache cache
         if: steps.cache-tdlib.outputs.cache-hit != 'true'
@@ -86,10 +86,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/Library/Caches/ccache
-          key: tdlib-ccache-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ github.ref }}-${{ github.sha }}
+          key: tdlib-ccache-v2-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ github.ref }}-${{ github.sha }}
           restore-keys: |
-            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ github.ref }}-
-            tdlib-ccache-v1-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-
+            tdlib-ccache-v2-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-${{ github.ref }}-
+            tdlib-ccache-v2-${{ env.PLATFORM }}-${{ inputs.developer-dir }}-
 
       - name: Install deps
         if: steps.cache-tdlib.outputs.cache-hit != 'true'

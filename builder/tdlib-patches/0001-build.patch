@@ -1,17 +1,8 @@
 diff --git a/example/ios/build.sh b/example/ios/build.sh
 --- a/example/ios/build.sh
 +++ b/example/ios/build.sh
-@@ -19,17 +19,28 @@ set_cmake_options () {
-   options="$options -DOPENSSL_INCLUDE_DIR=${openssl_path}/include"
-   options="$options -DOPENSSL_LIBRARIES=${openssl_crypto_library};${openssl_ssl_library}"
+@@ -21,15 +21,19 @@ set_cmake_options () {
    options="$options -DCMAKE_BUILD_TYPE=Release"
-+  if command -v ccache &> /dev/null
-+  then
-+    echo "ccache available, setting compiler options. Don't trust what cmake says, caching will work. https://t.me/tdlibchat/108338"
-+    options="$options -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
-+  else
-+    echo "ccache is not available"
-+  fi
  }
  
 -platforms="macOS iOS watchOS tvOS visionOS"
@@ -33,19 +24,18 @@ diff --git a/example/ios/build.sh b/example/ios/build.sh
    fi
  
    for simulator in $simulators;
-@@ -55,7 +65,10 @@ do
+@@ -57,7 +61,10 @@ do
        fi
  
        echo "iOS platform = ${ios_platform}"
--      other_options="-DIOS_PLATFORM=${ios_platform} -DCMAKE_TOOLCHAIN_FILE=${td_path}/CMake/iOS.cmake -DCMAKE_MAKE_PROGRAM=make"
-+      other_options="-DIOS_PLATFORM=${ios_platform} -DCMAKE_TOOLCHAIN_FILE=${td_path}/CMake/iOS.cmake -DCMAKE_MAKE_PROGRAM=make"
+       other_options="-DIOS_PLATFORM=${ios_platform} -DCMAKE_TOOLCHAIN_FILE=${td_path}/CMake/iOS.cmake"
 +      if [[ -n "$minimum_deployment_version" ]]; then
 +        other_options="$other_options -DIOS_DEPLOYMENT_TARGET=${minimum_deployment_version}"
 +      fi
      fi
  
      set_cmake_options $platform
-@@ -67,26 +80,6 @@ do
+@@ -67,26 +74,6 @@ do
      cd $build
      cmake $td_path $options $other_options -DCMAKE_INSTALL_PREFIX=../${install}
      ZERO_AR_DATE=1 make -j3 install || exit
