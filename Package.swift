@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.9
 // DO NOT EDIT! Generated automatically. See scripts/swift_package_generator.py
 import PackageDescription
 
@@ -6,11 +6,11 @@ import PackageDescription
 let package = Package(
     name: "TDLibFramework",
     platforms: [
-        // Minimum versions for openssl - td/example/ios/Python-Apple-support/Makefile
-        .iOS(.v12),
-        .macOS(.v10_15),
-        .watchOS(.v4),
-        .tvOS(.v12), // Synced with iOS, but actually v9
+        // Oldest deployment targets supported by Xcode 27
+        .iOS(.v15),
+        .macOS(.v12),
+        .watchOS(.v9),
+        .tvOS(.v15), // Synced with iOS
     ],
     products: [
         .library(
