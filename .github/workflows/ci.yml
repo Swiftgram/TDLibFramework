@@ -18,7 +18,7 @@ env:
   TDLIB_REPO: https://github.com/tdlib/td
   ARTIFACT_NAME: TDLibFramework.zip
   ARTIFACT_DIR: ./builder/build
-  DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer # Remember to change in developer-dir: below, since envs are not evaluated in matrixes
+  DEVELOPER_DIR: /Applications/Xcode_27.2.app/Contents/Developer # Remember to change in developer-dir: below, since envs are not evaluated in matrixes
   TEST_TIMEOUT: 20m
 
 jobs:
@@ -32,12 +32,12 @@ jobs:
     secrets: inherit
     with:
       platform: ${{ matrix.platform }}
-      developer-dir: "/Applications/Xcode_16.4.app/Contents/Developer"
+      developer-dir: "/Applications/Xcode_27.2.app/Contents/Developer"
 
   # Merge frameworks
   merge-xcframework:
     if: ${{ github.actor != 'dependabot[bot]' }}
-    runs-on: macos-15
+    runs-on: xcode-27
     needs: [build]
     steps:
       - name: Checkout
@@ -98,25 +98,25 @@ jobs:
   tests:
     if: ${{ github.actor != 'dependabot[bot]' }}
     timeout-minutes: 70
-    runs-on: macos-15
+    runs-on: xcode-27
     needs: [merge-xcframework]
     strategy:
       matrix:
         include:
-          # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md#installed-sdks
-          # https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md#installed-simulators
+          # https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md#installed-sdks
+          # https://github.com/actions/runner-images/blob/main/images/macos/xcode-27-arm64-Readme.md#installed-simulators
           - platform: "macOS"
           - platform: "iOS-simulator"
-            os_list: "18.5"
-            device_name: "iPhone 16"
+            os_list: "27.2"
+            device_name: "iPhone 18 Pro"
           - platform: "tvOS-simulator"
-            os_list: "18.5"
-            device_name: "Apple TV 4K (3rd generation) (at 1080p)"
+            os_list: "27.2"
+            device_name: "Apple TV 4K (4th generation)"
           - platform: "watchOS-simulator"
-            os_list: "11.5"
-            device_name: "Apple Watch Series 10 (46mm)"
+            os_list: "27.2"
+            device_name: "Apple Watch Series 12 (46mm)"
           - platform: "visionOS-simulator"
-            os_list: "2.3"
+            os_list: "27.2"
             device_name: "Apple Vision Pro"
 
     steps:
@@ -133,12 +133,6 @@ jobs:
         working-directory: ${{ env.ARTIFACT_DIR }}
         run: unzip ${{ env.ARTIFACT_NAME }}
        
-      # https://github.com/actions/runner-images/issues/10692
-      - uses: ./.github/actions/install-visionos-runtime
-        if: ${{ matrix.platform == 'visionOS' || matrix.platform == 'visionOS-simulator' }}
-        with:
-          developer_dir: ${{ env.DEVELOPER_DIR }}
-      
       - name: Update Package.swift with local .xcframework
         run: python3 scripts/swift_package_generator.py --path ${{ env.ARTIFACT_DIR }}/TDLibFramework.xcframework
 
@@ -156,7 +150,7 @@ jobs:
 
   create-release:
     if: ${{ github.actor != 'dependabot[bot]' }}
-    runs-on: macos-15
+    runs-on: xcode-27
     needs: [tests]
 
     steps:
