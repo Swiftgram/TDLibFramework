@@ -16,7 +16,7 @@ env:
 
 jobs:
   build-openssl:
-    runs-on: macos-15
+    runs-on: xcode-27
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -58,7 +58,7 @@ jobs:
           if-no-files-found: error
 
   build-tdlib:
-    runs-on: macos-15
+    runs-on: xcode-27
     needs: [build-openssl]
     steps:
       - name: Checkout
@@ -182,7 +182,7 @@ jobs:
           if-no-files-found: error
 
   build-framework:
-    runs-on: macos-15
+    runs-on: xcode-27
     needs: [build-tdlib]
     steps:
       - name: Checkout
@@ -218,12 +218,6 @@ jobs:
 
           cd builder
           TUIST_PLATFORM=$PLATFORM tuist generate
-
-      # https://github.com/actions/runner-images/issues/10692
-      - uses: ./.github/actions/install-visionos-runtime
-        if: ${{ env.PLATFORM == 'visionOS' || env.PLATFORM == 'visionOS-simulator' }}
-        with:
-          developer_dir: ${{ env.DEVELOPER_DIR }}
 
       - name: Build .framework
         working-directory: ./builder
